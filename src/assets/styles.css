@@ -1,30 +1,30 @@
 /* color style by habitat type */
 .eelgrass {
-  color: #76DF41;
+  /* color: #76DF41; */
   background-color: #76DF41;
 }
 
 .salt-marsh {
-  color: #00A3CC;
+  /* color: #00A3CC; */
   background-color: #00A3CC;
 }
 
 .tidal-flats {
-  color: #36BCAC;
+  /* color: #36BCAC; */
   background-color: #36BCAC;
 }
 
 .diadromous {
-  color: #1850AD;
+  /* color: #1850AD; */
   background-color: #1850AD;
 }
 
 .habitat {
-  color: #76DF41;
+  /* color: #76DF41; */
   background-color: #76DF41;
 }
 
 .water-quality {
-  color: #00B0F0;
+  /* color: #00B0F0; */
   background-color: #00B0F0;
 }
