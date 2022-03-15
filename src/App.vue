@@ -11,7 +11,7 @@
       </div> 
       <div class="col-3">
         Margin Right
-        <p> {{ view }} </p>
+        <p> {{ view }} - {{waterQuality}} </p>
       </div>      
     </div>
   </div>
@@ -25,6 +25,9 @@ export default {
   computed: {
     view() {
       return this.$store.state.view;
+    },
+    waterQuality() {
+      return this.$store.state.waterQuality;
     }
   },
   components: {

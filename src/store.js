@@ -25,6 +25,9 @@ export const store = new Vuex.Store({
     },
     SET_HABITAT: (state, payload) => {
       state.habitat = payload;
+    },
+    SET_WATER_QUALITY: (state, payload) => {
+      state.waterQuality = payload;
     }
   },
   actions: {
@@ -37,6 +40,9 @@ export const store = new Vuex.Store({
     },
     switchHabitat: ({commit}, payload) => {
       commit('SET_HABITAT', payload);
+    },
+    switchWaterQuality: ({commit}, payload) => {
+      commit('SET_WATER_QUALITY', payload);
     }
   }
 });

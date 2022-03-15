@@ -5,11 +5,11 @@
           <!-- Problem here making image fit -->
           <img src="../assets/logos/ett_square_no_border.png" style="background-color: white; max-height: 85%; margin: auto; display: block">
       </div>
-      <div class="col-5">
+      <div class="col-4">
         <app-header-habitat></app-header-habitat>
       </div>
-      <div class="col-5" style="color: orange">
-        Right Block
+      <div class="col-6" style="width=50%">
+        <app-header-water-quality></app-header-water-quality>
       </div>
     </div>
     <div class="row" id="bottomRow">
@@ -27,9 +27,11 @@
 
 <script>
 import HeaderHabitat from './HeaderHabitat.vue'
+import HeaderWaterQuality from './HeaderWaterQuality.vue'
 export default {
   components: {
-    appHeaderHabitat: HeaderHabitat
+    appHeaderHabitat: HeaderHabitat,
+    appHeaderWaterQuality: HeaderWaterQuality
   }
 }
 </script>

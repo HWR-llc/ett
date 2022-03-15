@@ -1,24 +1,24 @@
 <template>
   <div>
     <div class="row" style="padding-top: 10px">
-      <div class="col-3"  style="padding-left: 40px; padding-top: 20px">    
+      <div class="col-3"  style="padding-left: 20px; padding-top: 20px">    
         <div class="row">
-          <h5 class="habitat-main">Habitats</h5>
+          <h6 class="habitat-main">Habitats</h6>
         </div>
-        <div>
-          <toggle-button @change="flipHabitat" :value="habitatOnOff" color="#76DF41"></toggle-button>
+        <div class="row" style="display: block; margin-left: auto; margin-right: auto">
+          <toggle-button @change="flipHabitat" v-model="habitatOnOff" color="#76DF41" :sync="true"></toggle-button>
         </div>
       </div>
       <div class="col-9" v-if="habitatOnOff==true" id="outer">
-          <div class="row">
-            <div class="col-3" v-for="(item, key) in habitatImages" :key="key">
+          <!-- <div class="row"> -->
+            <div class="col-3 inner" v-for="(item, key) in habitatImages" :key="key"  >
               <figure  class="figure"   @click="clicked(key)">
-                  <img :src="item.pic" class="figure-img" style="max-width: 75%">
-                  <figcaption class="figure-caption">{{ item.title }}</figcaption>
+                  <img :src="item.pic" class="figure-img" style="width: 50px">
+                  <figcaption class="figure-caption" style="font-size: 10px">{{ item.title }}</figcaption>
               </figure> 
             </div>
 
-          </div>
+          <!-- </div> -->
       </div>
     </div>
   </div>
