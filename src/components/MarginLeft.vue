@@ -17,14 +17,14 @@
     <div class="row">
       <div id="outer">
         <div class="inner">
-          <b-button squared class="eelgrass" href="https://www.google.com/" target="_blank">About</b-button>
-          <b-button squared class="salt-marsh" href="https://www.google.com/" target="_blank">MassBays<br>Region</b-button>
+          <b-button squared class="eelgrass-background" href="https://www.google.com/" target="_blank">About</b-button>
+          <b-button squared class="salt-marsh-background" href="https://www.google.com/" target="_blank">MassBays<br>Region</b-button>
         </div>
       </div>
       <div id="outer">
         <div class="inner">
-            <b-button squared class="tidal-flats" href="https://www.google.com/" target="_blank">References</b-button>
-            <b-button squared class="diadromous" href="https://www.google.com/" target="_blank">Metadata</b-button>         
+            <b-button squared class="tidal-flats-background" href="https://www.google.com/" target="_blank">References</b-button>
+            <b-button squared class="diadromous-background" href="https://www.google.com/" target="_blank">Metadata</b-button>         
         </div>
       </div>      
 
@@ -41,33 +41,13 @@
 
 <script>
 import { habitatSelections } from '../lib/constants'
+import { imageLibraryHabitat } from '../lib/constants'
 import HabitatDescription from './subs/HabitatDescription.vue'
 export default {
   data () {
     return {
       habitatSelections: habitatSelections,
-      habitatImages: {
-        'eelgrass': {
-          title: 'Eelgrass',
-          img: require('@/assets/imgs/eelgrass_img.png'),
-          pic: require('@/assets/icons/eelgrass_pic.png')
-        },
-        'salt marsh': {
-          title: 'Salt Marsh',
-          img: require('@/assets/imgs/salt_marsh_img.png'),
-          pic: require('@/assets/icons/salt_marsh_pic.png')
-        },
-        'tidal flats': {
-          title: 'Tidal Flats',
-          img: require('@/assets/imgs/tidal_flats_img.png'),
-          pic: require('@/assets/icons/tidal_flats_pic.png')
-        },
-        'diadromous': {
-          title: 'Diadromous',
-          img: require('@/assets/imgs/diadromous_img.png'),
-          pic: require('@/assets/icons/diadromous_pic.png')
-        }
-      }
+      habitatImages: imageLibraryHabitat
     }
   },
   computed: {

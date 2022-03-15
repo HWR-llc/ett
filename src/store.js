@@ -15,5 +15,28 @@ export const store = new Vuex.Store({
     habitatIndexLayer: false,
     embayment: null,
     station: null
+  },
+  mutations: {
+    VIEW_HABITAT: state => {
+      state.view = 'habitat';
+    },
+    VIEW_WATER_QUALITY: state => {
+      state.view = 'water quality';
+    },
+    SET_HABITAT: (state, payload) => {
+      state.habitat = payload;
+    }
+  },
+  actions: {
+    switchView: ({commit, state}) => {
+      if (state.view == 'habitat') {
+        commit('VIEW_WATER_QUALITY');
+      } else {
+        commit('VIEW_HABITAT');
+      }
+    },
+    switchHabitat: ({commit}, payload) => {
+      commit('SET_HABITAT', payload);
+    }
   }
 });

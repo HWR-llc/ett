@@ -5,6 +5,8 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+import ToggleButton from 'vue-js-toggle-button'
+
 import { store } from './store'
 
 import App from './App.vue'
@@ -15,6 +17,7 @@ Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(ToggleButton)
 
 new Vue({
   store,

@@ -5,8 +5,8 @@
           <!-- Problem here making image fit -->
           <img src="../assets/logos/ett_square_no_border.png" style="background-color: white; max-height: 85%; margin: auto; display: block">
       </div>
-      <div class="col-5" style="color: blue">
-        Middle Block
+      <div class="col-5">
+        <app-header-habitat></app-header-habitat>
       </div>
       <div class="col-5" style="color: orange">
         Right Block
@@ -26,8 +26,11 @@
 </template>
 
 <script>
+import HeaderHabitat from './HeaderHabitat.vue'
 export default {
-
+  components: {
+    appHeaderHabitat: HeaderHabitat
+  }
 }
 </script>
 
@@ -40,7 +43,7 @@ export default {
 }
 
 #bottomRow {
-  min-height: 30px;
+  min-height: 20px;
   background-color: lightgreen;
 }
 #logoBox {
