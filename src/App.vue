@@ -8,10 +8,10 @@
       </div>
       <div class="col-7">
         Map
+        <p> {{ view }} - {{waterQuality}} </p>
       </div> 
       <div class="col-3">
-        Margin Right
-        <p> {{ view }} - {{waterQuality}} </p>
+        <app-margin-right></app-margin-right>
       </div>      
     </div>
   </div>
@@ -20,6 +20,7 @@
 <script>
 import HeaderContainer from './components/HeaderContainer.vue'
 import MarginLeft from './components/MarginLeft.vue'
+import MarginRight from './components/MarginRight.vue'
 export default {
   name: 'App',
   computed: {
@@ -28,11 +29,15 @@ export default {
     },
     waterQuality() {
       return this.$store.state.waterQuality;
+    },
+    habitat() {
+      return this.$store.state.habitat;
     }
   },
   components: {
     appHeaderContainer: HeaderContainer,
-    appMarginLeft: MarginLeft
+    appMarginLeft: MarginLeft,
+    appMarginRight: MarginRight    
   }
 }
 </script>

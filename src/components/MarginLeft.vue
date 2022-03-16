@@ -13,14 +13,7 @@
         <hr>
       </div>
       <div v-if="view=='water quality'">
-        <!-- <div v-for="(item, key) in habitatImages" :key="key">
-          <div v-if="habitat==key">
-            <img :src="item.img" style="max-width: 100%">
-            <h2 class="overlay-text">{{ item.title }}</h2>
-            <img :src="item.pic" style="max-width: 20%" class="overlay-icon">
-          </div>
-        </div>       -->
-        <div style="max-width: 100%; height: 80px; background-color: gray">
+        <div style="max-width: 100%; height: 95px; background-color: gray">
         </div>
         <h2 class="overlay-text">{{ waterQuality }}</h2>
         <app-water-quality-description v-if="view=='water quality'"></app-water-quality-description>

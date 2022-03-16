@@ -9,16 +9,14 @@
           <toggle-button @change="flipHabitat" v-model="habitatOnOff" color="#76DF41" :sync="true"></toggle-button>
         </div>
       </div>
-      <div class="col-9" v-if="habitatOnOff==true" id="outer">
-          <!-- <div class="row"> -->
-            <div class="col-3 inner" v-for="(item, key) in habitatImages" :key="key"  >
-              <figure  class="figure"   @click="clicked(key)">
-                  <img :src="item.pic" class="figure-img" style="width: 50px">
-                  <figcaption class="figure-caption" style="font-size: 10px">{{ item.title }}</figcaption>
-              </figure> 
-            </div>
+      <div class="col-9" v-if="habitatOnOff==true" id="outer" style="padding-top: 10px">
+          <div class="col-3 inner" v-for="(item, key) in habitatImages" :key="key"  >
+            <figure  class="figure"   @click="clicked(key)">
+                <img :src="item.pic" class="figure-img" style="width: 50px">
+                <figcaption class="figure-caption" style="font-size: 10px">{{ item.title }}</figcaption>
+            </figure> 
+          </div>
 
-          <!-- </div> -->
       </div>
     </div>
   </div>

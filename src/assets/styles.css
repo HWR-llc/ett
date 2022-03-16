@@ -7,12 +7,22 @@
   color: #76DF41;
 }
 
+.eelgrass-base-current {
+  fill: #76DF41;
+  stroke: lightgray;
+}
+
 .salt-marsh-background {
   background-color: #00A3CC;
 }
 
 .salt-marsh-main {
   color: #00A3CC;
+}
+
+.salt-marsh-base-current {
+  fill: #00A3CC;
+  stroke: lightgray;
 }
 
 .tidal-flats-background {
@@ -23,12 +33,22 @@
   color: #36BCAC;
 }
 
+.tidal-flats-base-current {
+  fill: #36BCAC;
+  stroke: lightgray;
+}
+
 .diadromous-background {
   background-color: #1850AD;
 }
 
 .diadromous-main {
   color: #1850AD;
+  stroke: lightgray;
+}
+
+.diadromous-base-current {
+  fill: #1850AD;
 }
 
 .habitat-background {
