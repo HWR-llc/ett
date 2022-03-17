@@ -8,7 +8,14 @@
       </div>
       <div class="col-7">
         Map
-        <p> {{ view }} - {{waterQuality}} </p>
+        <br>
+        <br>
+        <p><b>view:</b> {{ view }}</p>
+        <p><b>water quality:</b> {{ waterQuality }}</p>
+        <p><b>habitat:</b> {{ habitat }}</p>
+        <p><b>show current base layer:</b> {{ currentBaseLayer }} </p>
+        <p><b>show historic base layer:</b> {{ historicBaseLayer }} </p>
+
       </div> 
       <div class="col-3">
         <app-margin-right></app-margin-right>
@@ -32,6 +39,12 @@ export default {
     },
     habitat() {
       return this.$store.state.habitat;
+    },
+    historicBaseLayer() {
+      return this.$store.state.historicBaseLayer;
+    },
+    currentBaseLayer() {
+      return this.$store.state.currentBaseLayer;
     }
   },
   components: {

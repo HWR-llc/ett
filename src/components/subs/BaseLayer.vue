@@ -2,7 +2,7 @@
   <div>
     <div class="row">
       <div class="col-3" style="padding-top: 5px">
-        <toggle-button v-model="baseLayer" color="#76DF41" :sync="true"></toggle-button>
+        <toggle-button v-model="baseLayer2" color="#76DF41" :sync="true"></toggle-button>
       </div>
       <div class="col-9">
         <div class="row">
@@ -65,8 +65,16 @@ export default {
       return this.$store.state.waterQuality;
     },
     baseLayer() {
-      return this.$store.state[this.time + 'baseLayer']
-    }
+      return this.$store.state[this.time + 'BaseLayer']
+    },
+    baseLayer2: {
+      get () {
+        return this.$store.state[this.time + 'BaseLayer'];
+      },
+      set () {
+        this.$store.dispatch('switch' + this.time[0].toUpperCase() + this.time.substring(1));
+      }      
+    },
   }
 }
 </script>

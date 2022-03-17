@@ -28,6 +28,12 @@ export const store = new Vuex.Store({
     },
     SET_WATER_QUALITY: (state, payload) => {
       state.waterQuality = payload;
+    },
+    SWITCH_CURRENT: state => {
+      state.currentBaseLayer = !state.currentBaseLayer;
+    },
+    SWITCH_HISTORIC: state => {
+      state.historicBaseLayer = !state.historicBaseLayer;
     }
   },
   actions: {
@@ -43,6 +49,12 @@ export const store = new Vuex.Store({
     },
     switchWaterQuality: ({commit}, payload) => {
       commit('SET_WATER_QUALITY', payload);
+    },
+    switchCurrent: ({commit}) => {
+      commit('SWITCH_CURRENT');
+    },
+    switchHistoric: ({commit}) => {
+      commit('SWITCH_HISTORIC');
     }
   }
 });

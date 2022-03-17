@@ -4,7 +4,7 @@ export const habitatIndexSelections = ['index 1', 'index 2', 'index 3']
 export const imageLibraryHabitat = {
   'eelgrass': {
     title: 'Eelgrass',
-    img: require('@/assets/imgs/eelgrass_img.png'),
+    img: require('@/assets/imgs/eelgrass_img.jpg'),
     pic: require('@/assets/icons/eelgrass_pic.png'),
     currentYear: '**2017',
     historicYear: '**1992',
@@ -12,7 +12,7 @@ export const imageLibraryHabitat = {
   },
   'salt marsh': {
     title: 'Salt Marsh',
-    img: require('@/assets/imgs/salt_marsh_img.png'),
+    img: require('@/assets/imgs/salt_marsh_img.jpg'),
     pic: require('@/assets/icons/salt_marsh_pic.png'),
     currentYear: '**2005',
     historicYear: '**1995',
@@ -20,7 +20,7 @@ export const imageLibraryHabitat = {
   },
   'tidal flats': {
     title: 'Tidal Flats',
-    img: require('@/assets/imgs/tidal_flats_img.png'),
+    img: require('@/assets/imgs/tidal_flats_img.jpg'),
     pic: require('@/assets/icons/tidal_flats_pic.png'),
     currentYear: '**2005',
     historicYear: '**1995',
@@ -28,7 +28,7 @@ export const imageLibraryHabitat = {
   },
   'diadromous': {
     title: 'Diadromous',
-    img: require('@/assets/imgs/diadromous_img.png'),
+    img: require('@/assets/imgs/diadromous_img.jpg'),
     pic: require('@/assets/icons/diadromous_pic.png'),
     currentYear: '**2012',
     historicYear: '**2012',
