@@ -13,28 +13,28 @@
 }
 
 .salt-marsh-background {
-  background-color: #00A3CC;
+  background-color: #36BCAC;
 }
 
 .salt-marsh-main {
-  color: #00A3CC;
+  color: #36BCAC;
 }
 
 .salt-marsh-base-current {
-  fill: #00A3CC;
+  fill: #36BCAC;
   stroke: lightgray;
 }
 
 .tidal-flats-background {
-  background-color: #36BCAC;
+  background-color: #00A3CC;
 }
 
 .tidal-flats-main {
-  color: #36BCAC;
+  color: #00A3CC;
 }
 
 .tidal-flats-base-current {
-  fill: #36BCAC;
+  fill: #00A3CC;
   stroke: lightgray;
 }
 

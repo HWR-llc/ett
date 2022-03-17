@@ -2,11 +2,11 @@
   <div>
     <div class="row">
       <div class="col-3" style="padding-top: 5px">
-        <toggle-button @change="flipHabitat" v-model="habitatOnOff" color="#76DF41" :sync="true"></toggle-button>
+        <toggle-button v-model="baseLayer" color="#76DF41" :sync="true"></toggle-button>
       </div>
       <div class="col-9">
         <div class="row">
-          prop {{ habitatCapital }} Extent
+          {{ time }} {{ habitat }} extent
         </div>
         <div class="row">
           <div class="col-2">
@@ -31,18 +31,21 @@ export default {
         habitatYears: imageLibraryHabitat
     }
   },
+  props: [
+    'time'
+  ],
   computed: {
     currentHabitatYear() {
-      return this.habitatYears[this.habitat].currentYear
+      return this.habitatYears[this.habitat][this.time + 'Year']
     },
     historicHabitatYear() {
-      return this.habitatYears[this.habitat].historicYear
+      return this.habitatYears[this.habitat][this.time + 'Year']
     },
     habitatSource() {
       return this.habitatYears[this.habitat].source
     },
     svgClass() {
-      const habString = this.$store.state.habitat.split(" ").join("-") + '-base-current';
+      const habString = this.$store.state.habitat.split(" ").join("-") + '-base-' + this.time;
       return habString
     },
     habitat() {
@@ -60,6 +63,9 @@ export default {
     },
     waterQuality() {
       return this.$store.state.waterQuality;
+    },
+    baseLayer() {
+      return this.$store.state[this.time + 'baseLayer']
     }
   }
 }

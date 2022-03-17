@@ -24,11 +24,11 @@
         </div>
       </div>
       <div class="row">
-          <app-base-layer></app-base-layer>
+          <app-base-layer :time="'current'"></app-base-layer>
       </div>
       <br>
       <div class="row">
-        <app-base-layer></app-base-layer>
+        <app-base-layer :time="'historic'"></app-base-layer>
       </div>        
       <div class="row">
         <u><h6>{{ habitatCapital }} Metrics</h6></u>
