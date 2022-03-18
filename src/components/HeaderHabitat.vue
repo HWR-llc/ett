@@ -1,19 +1,19 @@
 <template>
   <div>
     <div class="row" style="padding-top: 10px">
-      <div class="col-3"  style="padding-left: 20px; padding-top: 20px">    
+      <div class="col-2"  style="padding-left: 20px; padding-top: 20px">    
         <div class="row">
           <h6 class="habitat-main">Habitats</h6>
         </div>
-        <div class="row" style="display: block; margin-left: auto; margin-right: auto">
+        <div class="row" style="display: block; margin-left: -10px">
           <toggle-button @change="flipHabitat" v-model="habitatOnOff" color="#76DF41" :sync="true"></toggle-button>
         </div>
       </div>
-      <div class="col-9" v-if="habitatOnOff==true" id="outer" style="padding-top: 10px">
-          <div class="col-3 inner" v-for="(item, key) in habitatImages" :key="key"  >
+      <div class="col-10" v-if="habitatOnOff==true" id="outer" style="padding-top: 5px">
+          <div class="col-3 inner" v-for="(item, key) in habitatImages" :key="key">
             <figure  class="figure"   @click="clicked(key)">
-                <img :src="item.pic" class="figure-img" style="width: 50px">
-                <figcaption class="figure-caption" style="font-size: 10px">{{ item.title }}</figcaption>
+                <img :src="item.pic" class="figure-img" style="width: 60px; padding-right: 5px">
+                <figcaption class="figure-caption" style="font-size: 12px">{{ item.title }}</figcaption>
             </figure> 
           </div>
 

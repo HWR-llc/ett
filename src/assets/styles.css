@@ -1,40 +1,40 @@
 /* color style by habitat type */
 .eelgrass-background {
-  background-color: #76DF41;
+  background-color: #00A3CC;
 }
 
 .eelgrass-main {
-  color: #76DF41;
+  color: #00A3CC;
 }
 
 .eelgrass-base-current {
-  fill: #76DF41;
+  fill: #00A3CC;
   stroke: lightgray;
 }
 
 .salt-marsh-background {
-  background-color: #36BCAC;
+  background-color: #76DF41;
 }
 
 .salt-marsh-main {
-  color: #36BCAC;
+  color: #76DF41;
 }
 
 .salt-marsh-base-current {
-  fill: #36BCAC;
+  fill: #76DF41;
   stroke: lightgray;
 }
 
 .tidal-flats-background {
-  background-color: #00A3CC;
+  background-color: #34B2A3;
 }
 
 .tidal-flats-main {
-  color: #00A3CC;
+  color: #34B2A3C;
 }
 
 .tidal-flats-base-current {
-  fill: #00A3CC;
+  fill: #34B2A3;
   stroke: lightgray;
 }
 

@@ -1,31 +1,36 @@
 <template>
   <div>
     <div class="row" style="padding-top: 10px">
-      <div class="col-3"  style="padding-left: 40px; padding-top: 20px">    
+      <div class="col-2"  style="padding-left: 40px; padding-top: 1px">    
         <div class="row">
           <h6 class="water-quality-main">Water Quality</h6>
         </div>
-        <div class="row" style="display: block; margin-left: auto; margin-right: auto">
+        <div class="row" style="display: block; margin-left: -15px">
             <toggle-button @change="flipHabitat" v-model="waterQualityOnOff" color="#00B0F0" :sync="true"></toggle-button>
         </div>
       </div>
-      <div v-if="waterQualityOnOff==true" class="row">
-        <div class="col-3">
-          <div class="form-check" v-for="selection in waterQualitySelections.slice(0,3)" :key="selection">
-            <input class="form-check-input" type="radio" id="key" :value="selection" v-model="waterQuality">
-            <label class="form-check-label" for="key" style="color: white"> {{selection}} </label>
+      <div class="col-10">
+        <div v-if="waterQualityOnOff==true" class="row">
+          <div class="col-2">
+            <b-button squared @click="setWaterQualityToAll" style="background-color: black; border: 1px solid #00B0F0; height: 100%; width: 70px">See all stations</b-button>
           </div>
-        </div>
-        <div class="col-4">
-          <div class="form-check" v-for="selection in waterQualitySelections.slice(3,6)" :key="selection">
-            <input class="form-check-input" type="radio" id="key" :value="selection" v-model="waterQuality">
-            <label class="form-check-label" for="key" style="color: white"> {{selection}} </label>
+          <div class="col-3">
+            <div class="form-check" v-for="selection in waterQualitySelections.slice(1,4)" :key="selection">
+              <input class="form-check-input" type="radio" id="key" :value="selection" v-model="waterQuality">
+              <label class="form-check-label" for="key" style="color: white"> {{selection}} </label>
+            </div>
           </div>
-        </div>
-        <div class="col-5">
-          <div class="form-check" v-for="selection in waterQualitySelections.slice(6,9)" :key="selection">
-            <input class="form-check-input" type="radio" id="key" :value="selection" v-model="waterQuality">
-            <label class="form-check-label" for="key" style="color: white"> {{selection}} </label>
+          <div class="col-3">
+            <div class="form-check" v-for="selection in waterQualitySelections.slice(4,7)" :key="selection">
+              <input class="form-check-input" type="radio" id="key" :value="selection" v-model="waterQuality">
+              <label class="form-check-label" for="key" style="color: white"> {{selection}} </label>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-check" v-for="selection in waterQualitySelections.slice(7,10)" :key="selection">
+              <input class="form-check-input" type="radio" id="key" :value="selection" v-model="waterQuality">
+              <label class="form-check-label" for="key" style="color: white"> {{selection}} </label>
+            </div>
           </div>
         </div>
       </div>
@@ -68,6 +73,9 @@ export default {
     },
     clicked(newHab) {
       this.$store.dispatch('switchHabitat', newHab);
+    },
+    setWaterQualityToAll() {
+      this.$store.dispatch('switchWaterQuality', 'all')
     }
  }
 }

@@ -5,7 +5,7 @@
           <!-- Problem here making image fit -->
           <img src="../assets/logos/ett_square_no_border.png" style="background-color: white; max-height: 80%; margin: auto; display: block">
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <app-header-habitat></app-header-habitat>
       </div>
       <div class="col-6" style="width=50%">

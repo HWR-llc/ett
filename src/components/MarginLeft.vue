@@ -5,8 +5,8 @@
         <div v-for="(item, key) in habitatImages" :key="key">
           <div v-if="habitat==key">
             <img :src="item.img" style="max-width: 100%">
-            <h2 class="overlay-text">{{ item.title }}</h2>
-            <img :src="item.pic" style="max-width: 20%" class="overlay-icon">
+            <h3 class="overlay-text">{{ item.title }}</h3>
+            <img :src="item.pic" style="max-width: 22%" class="overlay-icon">
           </div>
         </div>      
         <app-habitat-description></app-habitat-description>
@@ -15,7 +15,7 @@
       <div v-if="view=='water quality'">
         <div style="max-width: 100%; height: 95px; background-color: gray">
         </div>
-        <h2 class="overlay-text">{{ waterQuality }}</h2>
+        <h3 class="overlay-text">{{ waterQuality }}</h3>
         <app-water-quality-description v-if="view=='water quality'"></app-water-quality-description>
 
         <hr>
@@ -27,13 +27,13 @@
     <div class="row">
       <div id="outer">
         <div class="inner">
-          <b-button squared class="eelgrass-background" href="https://www.google.com/" target="_blank">About</b-button>
-          <b-button squared class="salt-marsh-background" href="https://www.google.com/" target="_blank">MassBays<br>Region</b-button>
+          <b-button squared class="salt-marsh-background" href="https://www.google.com/" target="_blank">About</b-button>
+          <b-button squared class="tidal-flats-background" href="https://www.google.com/" target="_blank">MassBays<br>Region</b-button>
         </div>
       </div>
       <div id="outer">
         <div class="inner">
-            <b-button squared class="tidal-flats-background" href="https://www.google.com/" target="_blank">References</b-button>
+            <b-button squared class="eelgrass-background" href="https://www.google.com/" target="_blank">References</b-button>
             <b-button squared class="diadromous-background" href="https://www.google.com/" target="_blank">Metadata</b-button>         
         </div>
       </div>      
@@ -106,7 +106,7 @@ export default {
 .overlay-icon {
   position: absolute;
   top: 20px;
-  right: 10px;
+  right: 5px;
 }
 
 </style>

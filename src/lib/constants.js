@@ -1,4 +1,4 @@
-export const waterQualitySelections = ['all', 'nitrogen', 'phosphorus', 'temperature', 'chlorophyll-a', 'salinity', 'pH', 'bacteria', 'dissolved oxygen'];
+export const waterQualitySelections = ['all', 'nitrogen', 'phosphorus', 'temperature', 'pH', 'clarity', 'salinity', 'dissolved oxygen', 'e. coli', 'enterococcus'];
 export const habitatSelections = ['salt marsh', 'tidal flats', 'eelgrass', 'anadromous fish'];
 export const habitatIndexSelections = ['index 1', 'index 2', 'index 3']
 export const imageLibraryHabitat = {
