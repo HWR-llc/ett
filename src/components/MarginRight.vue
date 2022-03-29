@@ -20,7 +20,6 @@
     <br>
     <div class="row">
       <u><h6>Watershed Embayment Metrics</h6></u>
-      {{ altHabitat }}
     </div>
     <div class="row">
           <app-metric-index-toggle></app-metric-index-toggle>

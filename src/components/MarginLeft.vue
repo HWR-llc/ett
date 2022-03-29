@@ -13,9 +13,16 @@
         <hr>
       </div>
       <div v-if="view=='water quality'">
-        <img src="../assets/imgs/gray_box.jpg" style="max-width: 100%">
-        <h3 class="overlay-text">{{ waterQuality }}</h3>
-        <app-water-quality-description v-if="view=='water quality'"></app-water-quality-description>
+        <div v-for="(item, key) in waterQualityImages" :key="key">
+          <div v-if="waterQuality==key">
+            <img :src="item.img" style="max-width: 100%">
+            <h3 class="overlay-text">{{ item.title }}</h3>
+            <img :src="item.pic" style="max-width: 22%" class="overlay-icon">
+          </div>
+        </div> 
+        <!-- <img src="../assets/imgs/gray_box.jpg" style="max-width: 100%">
+        <h3 class="overlay-text">{{ waterQuality }}</h3> -->
+        <app-water-quality-description></app-water-quality-description>
 
         <hr>
       </div>
@@ -51,13 +58,15 @@
 <script>
 import { habitatSelections } from '../lib/constants'
 import { imageLibraryHabitat } from '../lib/constants'
+import { imageLibraryWaterQuality } from '../lib/constants'
 import HabitatDescription from './subs/HabitatDescription.vue'
 import WaterQualityDescription from './subs/WaterQualityDescription.vue'
 export default {
   data () {
     return {
       habitatSelections: habitatSelections,
-      habitatImages: imageLibraryHabitat
+      habitatImages: imageLibraryHabitat,
+      waterQualityImages: imageLibraryWaterQuality
     }
   },
   computed: {

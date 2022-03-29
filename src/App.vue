@@ -7,7 +7,7 @@
         <app-margin-left></app-margin-left>
       </div>
       <div class="col-7">
-        Map
+        <app-map-view></app-map-view>
         <br>
         <br>
         <p><b>view:</b> {{ view }}</p>
@@ -29,6 +29,7 @@
 import HeaderContainer from './components/HeaderContainer.vue'
 import MarginLeft from './components/MarginLeft.vue'
 import MarginRight from './components/MarginRight.vue'
+import MapView from './components/MapView.vue'
 export default {
   name: 'App',
   computed: {
@@ -57,7 +58,8 @@ export default {
   components: {
     appHeaderContainer: HeaderContainer,
     appMarginLeft: MarginLeft,
-    appMarginRight: MarginRight    
+    appMarginRight: MarginRight,
+    appMapView: MapView   
   }
 }
 </script>

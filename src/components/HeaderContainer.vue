@@ -8,7 +8,7 @@
       <div class="col-10">
         <div class="row" style="padding-top: 10px">
           <div class="col-12">
-              <b-tabs pills vertical fill  :active-nav-item-class="classObject">
+              <b-tabs pills vertical fill>
                 <b-tab title="Habitat" active><app-header-habitat></app-header-habitat></b-tab>
                 <b-tab title="Water Quality"><app-header-water-quality></app-header-water-quality></b-tab>
               </b-tabs>

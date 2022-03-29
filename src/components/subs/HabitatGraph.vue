@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: gray; width: 100%; min-height: 300px; max-height:500px">
+  <div style="background-color: #ffcccb; width: 100%; min-height: 300px; max-height:500px">
     habitat graph
   </div>
 </template>
