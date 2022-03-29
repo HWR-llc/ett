@@ -13,9 +13,10 @@
         <p><b>view:</b> {{ view }}</p>
         <p><b>water quality:</b> {{ waterQuality }}</p>
         <p><b>habitat:</b> {{ habitat }}</p>
-        <p><b>show current base layer:</b> {{ currentBaseLayer }} </p>
-        <p><b>show historic base layer:</b> {{ historicBaseLayer }} </p>
-
+        <p><b>show base layer:</b> {{ baseLayer }} </p>
+        <p><b>show points layer:</b> {{ pointsLayer }} </p>
+        <p><b>show habitat metric layer:</b> {{ habitatMetricLayer }} </p>
+        <p><b>show habitat index layer:</b> {{ habitatIndexLayer }} </p>
       </div> 
       <div class="col-3">
         <app-margin-right></app-margin-right>
@@ -40,11 +41,17 @@ export default {
     habitat() {
       return this.$store.state.habitat;
     },
-    historicBaseLayer() {
-      return this.$store.state.historicBaseLayer;
+    baseLayer() {
+      return this.$store.state.baseLayer;
     },
-    currentBaseLayer() {
-      return this.$store.state.currentBaseLayer;
+    pointsLayer() {
+      return this.$store.state.pointsLayer;
+    },
+    habitatMetricLayer() {
+      return this.$store.state.habitatMetricLayer;
+    },
+    habitatIndexLayer() {
+      return this.$store.state.habitatIndexLayer;
     }
   },
   components: {

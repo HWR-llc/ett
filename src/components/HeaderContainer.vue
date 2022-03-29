@@ -5,21 +5,22 @@
           <!-- Problem here making image fit -->
           <img src="../assets/logos/ett_square_no_border.png" style="background-color: white; max-height: 80%; margin: auto; display: block">
       </div>
-      <div class="col-3" style="border-right: 2px solid white">
-        <app-header-habitat></app-header-habitat>
-      </div>
-      <div class="col-6" style="width=50%">
-        <app-header-water-quality></app-header-water-quality>
+      <div class="col-10">
+        <div class="row" style="padding-top: 10px">
+          <div class="col-12">
+              <b-tabs pills vertical fill  :active-nav-item-class="classObject">
+                <b-tab title="Habitat" active><app-header-habitat></app-header-habitat></b-tab>
+                <b-tab title="Water Quality"><app-header-water-quality></app-header-water-quality></b-tab>
+              </b-tabs>
+          </div>
+        </div>
       </div>
     </div>
     <div class="row" id="bottomRow">
       <div class="col-2" style="background-color: transparent">
       </div>
-      <div class="col-5">
-        Click on a <b>habitat type</b> to see maps and data
-      </div>
-      <div class="col-5">
-        Click on a <b>parameter</b> to view stations... <b>then click stations</b> to see data
+      <div class="col-10">
+        In Habitat, click on a <b>habitat type</b> to see maps and data...and in Water Quality, click on a <b>parameter</b> to view stations, <b>then click stations</b> to see data
       </div>
     </div>
   </div>
@@ -50,6 +51,9 @@ export default {
 }
 #logoBox {
   background-color: white;
+}
+.light-up {
+  background-color: gray !important;
 }
 
 </style>

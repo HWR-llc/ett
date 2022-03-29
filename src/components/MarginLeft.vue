@@ -13,8 +13,7 @@
         <hr>
       </div>
       <div v-if="view=='water quality'">
-        <div style="max-width: 100%; height: 95px; background-color: gray">
-        </div>
+        <img src="../assets/imgs/gray_box.jpg" style="max-width: 100%">
         <h3 class="overlay-text">{{ waterQuality }}</h3>
         <app-water-quality-description v-if="view=='water quality'"></app-water-quality-description>
 
