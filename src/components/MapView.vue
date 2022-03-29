@@ -3,7 +3,7 @@
     <l-map :style="mapStyleObj" :zoom="zoom" :center="center">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <l-marker :lat-lng="markerLatLng"></l-marker>
-      <l-geo-json :geojson="embayGeojson" v-if="view=='habitat'" :options="options" :options-style="embStyle" id="habitat"></l-geo-json>
+      <l-geo-json :geojson="embayGeojson" :options="options" :options-style="embStyle" id="habitat"></l-geo-json>
       <div v-if="baseLayer">
         <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.his" v-if="habitat=='tidal flats'" :options-style="tfStyleHis">></l-geo-json>	  		
         <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.his" v-if="habitat=='salt marsh'" :options-style="smStyleHis"></l-geo-json>	
@@ -18,7 +18,7 @@
             :lat-lng="[s.LATITUDE, s.LONGITUDE]"
             color="#292df2"
             @click="stationSelected(s.WQ_ID)"
-            v-if="waterQuality==s.TYPE || waterQuality=='all'"
+            v-if="pointsLayer==true && (waterQuality==s.TYPE || waterQuality=='all')"
           ></l-circle-marker>
         </div>
 
@@ -52,6 +52,9 @@ export default {
     },
     baseLayer() {
       return this.$store.state.baseLayer;
+    },
+    pointsLayer() {
+      return this.$store.state.pointsLayer;
     },
     habitat() {
       return this.$store.state.habitat;
