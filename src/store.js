@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    view: 'water quality',
+    view: 'habitat',
     habitat: 'salt marsh',
     waterQuality: 'all',
     habitatIndex: null,
