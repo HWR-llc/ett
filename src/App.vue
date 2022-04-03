@@ -6,13 +6,15 @@
       <div class="col-2">
         <app-margin-left></app-margin-left>
       </div>
-      <div class="col-7">
+      <div class="col-7" style="padding-right: 0px; padding-left: 0px">
         <app-map-view></app-map-view>
         <br>
         <br>
-        <p><b>view:</b> {{ view }}</p>
         <p><b>water quality:</b> {{ waterQuality }}</p>
         <p><b>habitat:</b> {{ habitat }}</p>
+        <p><b>station:</b> {{ station }}</p>
+        <p><b>embayment:</b> {{ embayment }}</p>        
+        <p><b>graph variable:</b> {{ graphVariable }}</p>
         <p><b>show base layer:</b> {{ baseLayer }} </p>
         <p><b>show points layer:</b> {{ pointsLayer }} </p>
         <p><b>show habitat metric layer:</b> {{ habitatMetricLayer }} </p>
@@ -33,14 +35,20 @@ import MapView from './components/MapView.vue'
 export default {
   name: 'App',
   computed: {
-    view() {
-      return this.$store.state.view;
-    },
     waterQuality() {
       return this.$store.state.waterQuality;
     },
     habitat() {
       return this.$store.state.habitat;
+    },
+    graphVariable() {
+      return this.$store.state.graphVariable;
+    },
+    station() {
+      return this.$store.state.station;
+    },
+    embayment() {
+      return this.$store.state.embayment;
     },
     baseLayer() {
       return this.$store.state.baseLayer;

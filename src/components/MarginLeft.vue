@@ -1,35 +1,21 @@
 <template>
   <div>
     <div class="row">
-      <div v-if="view=='habitat'">
-        <div v-for="(item, key) in habitatImages" :key="key">
-          <div v-if="habitat==key">
-            <img :src="item.img" style="max-width: 100%">
-            <h3 class="overlay-text">{{ item.title }}</h3>
-            <img :src="item.pic" style="max-width: 22%" class="overlay-icon">
+      <div class="col-12">
+        <div class="row" style="padding-top: 20px; padding-left: 50px; padding-right: 50px">
+          <i>Click on a watershed to zoom and center map or select from the list below <br><u>not active yet</u></i>
+        </div>
+        <br>
+        <br>
+        <div class="row">
+          <div class="col-12" style="text-align: center">
+            <b-form-select v-model="embayment" :options="embaymentList">select a watershed</b-form-select>
           </div>
-        </div>      
-        <app-habitat-description></app-habitat-description>
-        <hr>
+        </div>
       </div>
-      <div v-if="view=='water quality'">
-        <div v-for="(item, key) in waterQualityImages" :key="key">
-          <div v-if="waterQuality==key">
-            <img :src="item.img" style="max-width: 100%">
-            <h3 class="overlay-text">{{ item.title }}</h3>
-            <img :src="item.pic" style="max-width: 22%" class="overlay-icon">
-          </div>
-        </div> 
-        <!-- <img src="../assets/imgs/gray_box.jpg" style="max-width: 100%">
-        <h3 class="overlay-text">{{ waterQuality }}</h3> -->
-        <app-water-quality-description></app-water-quality-description>
-
-        <hr>
-      </div>
-
-        
-
     </div>
+    <br>
+    <br>
     <div class="row">
       <div id="outer">
         <div class="inner">
@@ -56,38 +42,42 @@
 </template>
 
 <script>
-import { habitatSelections } from '../lib/constants'
-import { imageLibraryHabitat } from '../lib/constants'
-import { imageLibraryWaterQuality } from '../lib/constants'
-import HabitatDescription from './subs/HabitatDescription.vue'
-import WaterQualityDescription from './subs/WaterQualityDescription.vue'
+
+
 export default {
   data () {
-    return {
-      habitatSelections: habitatSelections,
-      habitatImages: imageLibraryHabitat,
-      waterQualityImages: imageLibraryWaterQuality
+    return { 
+      embaymentList: [
+        {value: null, text: 'select a watershed'},
+        {value: 'embayment 1', text: 'embayment 1'},  
+        {value: 'embayment 2', text: 'embayment 2'},  
+        {value: 'embayment 3', text: 'embayment 3'},  
+        {value: 'embayment 4', text: 'embayment 4'},  
+        {value: 'embayment 5', text: 'embayment 5'},  
+        {value: 'embayment 6', text: 'embayment 6'},        
+      ]
     }
   },
   computed: {
     habitat() {
       return this.$store.state.habitat;
     },
-    view() {
-      return this.$store.state.view;
-    },
     waterQuality() {
       return this.$store.state.waterQuality;
-    }
-  },
-  components: {
-    appHabitatDescription: HabitatDescription,
-    appWaterQualityDescription: WaterQualityDescription
+    },
+    embayment: {
+      get () {
+        return this.$store.state.embayment;
+      },
+      set (newEmb) {
+        this.$store.dispatch('setEmbayment', newEmb);
+      }      
+    },
   }
 }
 </script>
 
-<style>
+<style scoped>
 .btn {
   font-size: 12px;
   border: 0px;
@@ -104,17 +94,4 @@ export default {
   width: 100%;
   display: inline-block;
 }
-
-.overlay-text {
-  position: absolute;
-  top: 28px;
-  left: 6px;
-  color: white;
-}
-.overlay-icon {
-  position: absolute;
-  top: 20px;
-  right: 5px;
-}
-
 </style>

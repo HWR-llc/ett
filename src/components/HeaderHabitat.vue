@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-1" style="min-width: 100px">    
+    <div class="row align-items-center" style="padding-left: 20px">
+      <div class="col-2" style="min-width: 100px">    
         <div class="row justify-content-center" style="padding-top: 20px">
           <h6 class="habitat-main">show on map</h6>
         </div>
@@ -9,26 +9,33 @@
           <toggle-button color="#76DF41" v-model="baseLayer" :sync="true"></toggle-button>
         </div>
       </div>
-      <div class="col-7" id="outer">
+      <div class="col-9">
         <div class="row">
-          <div class="col-3 inner" v-for="(item, key) in habitatImages" :key="key" style="min-width: 100px">
-            <figure  class="figure"   @click="clicked(key)">
-                <img :src="item.pic" class="figure-img" style="width: 60px">
-                <figcaption class="figure-caption">{{ item.title }}</figcaption>
-            </figure> 
+          <div class="col-5">
+            <div class="form-check" v-for="selection in habitatSelections.slice(0,2)" :key="selection">
+              <input class="form-check-input" type="radio" id="key" :value="selection" v-model="habitat">
+              <label class="form-check-label" for="key" style="color: white"> {{selection}} </label>
+            </div>
           </div>
+          <div class="col-7">
+            <div class="form-check" v-for="selection in habitatSelections.slice(2,4)" :key="selection">
+              <input class="form-check-input" type="radio" id="key" :value="selection" v-model="habitat">
+              <label class="form-check-label" for="key" style="color: white"> {{selection}} </label>
+            </div>
+          </div>          
         </div>
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { imageLibraryHabitat } from '../lib/constants'
+import { habitatSelections } from '../lib/constants'
 export default {
   data () {
     return {
-      habitatImages: imageLibraryHabitat
+      habitatSelections: habitatSelections,
     }
   },
   computed: {
@@ -40,23 +47,21 @@ export default {
         this.$store.dispatch('switchBaseLayer');
       }      
     },
-    habitat() {
-      return this.$store.state.habitat;
-    },
-    view() {
-      return this.$store.state.view;
+    habitat: {
+      get () {
+        return this.$store.state.habitat;
+      },
+      set (newHab) {
+        this.$store.dispatch('switchHabitat', newHab);
+        this.$store.dispatch('setGraphVariable', newHab);
+        this.$store.dispatch('onBaseLayer');
+      }      
     }
-  },
- methods: {
-    clicked(newHab) {
-      this.$store.dispatch('switchHabitat', newHab);
-      this.$store.dispatch('activateHabitat')
-    }
- }
+  }
 }
 </script>
 
-<style>
+<style scoped>
 #outer {
   width:100%;
   text-align: center;

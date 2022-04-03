@@ -12,17 +12,18 @@
         <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.cur" v-if="habitat=='salt marsh'" :options-style="smStyleCur"></l-geo-json>	
         <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.cur" v-if="habitat=='eelgrass'" :options-style="egStyleCur"></l-geo-json>
       </div>
-      <div v-if="view=='water quality'">
+      <div v-if="pointsLayer">
         <div v-for="s in stations" :key="s.WQ_ID">
           <l-circle-marker
             :lat-lng="[s.LATITUDE, s.LONGITUDE]"
             color="#292df2"
-            @click="stationSelected(s.WQ_ID)"
-            v-if="pointsLayer==true && (waterQuality==s.TYPE || waterQuality=='all')"
+            @click="stationSelected(s.WQ_ID, s.TYPE)"
+            v-if="(waterQuality==s.TYPE || waterQuality=='all')"
           ></l-circle-marker>
         </div>
+      </div>
 
-      </div>	
+
     </l-map>
 	</div>
 </template>
@@ -47,9 +48,6 @@ export default {
     LCircleMarker
   },
   computed: {
-    view() {
-      return this.$store.state.view;
-    },
     baseLayer() {
       return this.$store.state.baseLayer;
     },
@@ -200,13 +198,14 @@ export default {
       }, {});
       return el;			
       });
-
       // return the array
-      console.log(arr);
       return arr;
     },
-    stationSelected(wqId) {
-      alert('you clicked WQ Station: ' + wqId);
+    stationSelected(wqId, wqType) {
+      this.$store.dispatch('setStation', wqId);
+      this.$store.dispatch('switchWaterQuality', wqType);
+      this.$store.dispatch('setGraphVariable', wqType);      
+      // alert('you clicked WQ Station: ' + wqId);
     }
   },
   created() {

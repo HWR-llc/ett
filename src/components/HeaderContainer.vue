@@ -5,15 +5,11 @@
           <!-- Problem here making image fit -->
           <img src="../assets/logos/ett_square_no_border.png" style="background-color: white; max-height: 80%; margin: auto; display: block">
       </div>
-      <div class="col-10">
-        <div class="row" style="padding-top: 10px">
-          <div class="col-12">
-              <b-tabs pills vertical fill>
-                <b-tab title="Habitat" active><app-header-habitat></app-header-habitat></b-tab>
-                <b-tab title="Water Quality"><app-header-water-quality></app-header-water-quality></b-tab>
-              </b-tabs>
-          </div>
-        </div>
+      <div class="col-4" style="padding-top: 15px">
+        <app-header-habitat></app-header-habitat>
+      </div>
+      <div class="col-6" style="padding-top: 15px">
+        <app-header-water-quality></app-header-water-quality>
       </div>
     </div>
     <div class="row" id="bottomRow">
@@ -37,7 +33,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #topRow {
   height: 30%;
   max-height: 100px;

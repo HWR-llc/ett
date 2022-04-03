@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row">
+    <div class="row align-items-center">
       <div class="col-1" style="min-width: 100px"> 
         <div class="row justify-content-center" style="padding-top: 20px">
           <h6 class="water-quality-main">show on map</h6>
@@ -9,14 +9,14 @@
             <toggle-button color="#00B0F0" v-model="pointsLayer" :sync="true"></toggle-button>
         </div>
       </div>
-      <div class="col-8">
+      <div class="col-10">
         <div class="row">
           <div class="col-2">
-            <b-button squared @click="setWaterQualityToAll" style="background-color: black; border: 1px solid #00B0F0; height: 100%; width: 70px">See all stations</b-button>
+            <b-button squared @click="setWaterQualityToAll" style="background-color: black; border: 1px solid #00B0F0; height: 100%; width: 80px">See all stations</b-button>
           </div>
           <div class="col-3">
             <div class="form-check" v-for="selection in waterQualitySelections.slice(1,4)" :key="selection">
-              <input class="form-check-input" type="radio" id="key" :value="selection" v-model="waterQuality" @click="clicked">
+              <input class="form-check-input" type="radio" id="key" :value="selection" v-model="waterQuality">
               <label class="form-check-label" for="key" style="color: white"> {{selection}} </label>
             </div>
           </div>
@@ -62,22 +62,14 @@ export default {
       },
       set (newWq) {
         this.$store.dispatch('switchWaterQuality', newWq);
+        this.$store.dispatch('onPointsLayer');
       }      
-    },
-    view() {
-      return this.$store.state.view;
     }
   },
  methods: {
-    flipHabitat() {
-      this.$store.dispatch('switchView');
-    },
-    clicked() {
-      this.$store.dispatch('activateWaterQuality');
-    },
     setWaterQualityToAll() {
-      this.$store.dispatch('switchWaterQuality', 'all')
-      this.$store.dispatch('activateWaterQuality')
+      this.$store.dispatch('switchWaterQuality', 'all');
+      this.$store.dispatch('onPointsLayer');
     }
  }
 }
