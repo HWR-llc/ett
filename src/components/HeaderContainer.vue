@@ -3,20 +3,13 @@
     <div class="row" id="topRow">
       <div class="col-2" id="logoBox">
           <!-- Problem here making image fit -->
-          <img src="../assets/logos/ett_square_no_border.png" style="background-color: white; max-height: 80%; margin: auto; display: block">
+          <img src="../assets/logos/ett_square_no_border.svg" style="background-color: white; width: 90%; margin: auto; display: block">
       </div>
       <div class="col-4" style="padding-top: 15px">
         <app-header-habitat></app-header-habitat>
       </div>
       <div class="col-6" style="padding-top: 15px">
         <app-header-water-quality></app-header-water-quality>
-      </div>
-    </div>
-    <div class="row" id="bottomRow">
-      <div class="col-2" style="background-color: transparent">
-      </div>
-      <div class="col-10">
-        In Habitat, click on a <b>habitat type</b> to see maps and data...and in Water Quality, click on a <b>parameter</b> to view stations, <b>then click stations</b> to see data
       </div>
     </div>
   </div>
@@ -41,10 +34,6 @@ export default {
   padding: 0px;
 }
 
-#bottomRow {
-  min-height: 20px;
-  background-color: lightgreen;
-}
 #logoBox {
   background-color: white;
 }

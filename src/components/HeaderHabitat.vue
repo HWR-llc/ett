@@ -3,7 +3,7 @@
     <div class="row align-items-center" style="padding-left: 20px">
       <div class="col-2" style="min-width: 100px">    
         <div class="row justify-content-center" style="padding-top: 20px">
-          <h6 class="habitat-main">show on map</h6>
+          <h6 class="habitat-main">Habitats</h6>
         </div>
         <div class="row justify-content-center">
           <toggle-button color="#76DF41" v-model="baseLayer" :sync="true"></toggle-button>

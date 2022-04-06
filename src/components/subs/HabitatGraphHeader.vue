@@ -8,7 +8,7 @@
                :style="{ 'background-image': 'url(' + item.img + ')' }">
           </div>
           <h3 class="overlay-text">{{ item.title }}</h3>
-          <img :src="item.pic" style="max-height: 60px" class="overlay-icon">
+          <img :src="item.pic" style="max-height: 90%" class="overlay-icon">
         </div>
       </div>
 
@@ -56,8 +56,9 @@ export default {
 }
 .overlay-icon {
   position: absolute;
-  top: 17%;
+  top: 50%;
   right: 10%;
+  transform: translateY(-50%);
 }
 
 .center-cropped {

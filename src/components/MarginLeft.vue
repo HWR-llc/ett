@@ -1,6 +1,19 @@
 <template>
   <div>
-    <div class="row">
+    <br>
+    <br>
+    <div class="row" style="padding-top: 30px">
+      <div class="col">
+        <b-button squared class="habitat-background no-border full-width" href="https://www.google.com/" target="_blank"><b>Take a Tour</b></b-button>
+      </div>
+    </div>
+    <div class="row" style="padding-top: 10px">
+      <div class="col">
+        <b-button squared class="water-quality-background no-border full-width" href="https://www.google.com/" target="_blank"><b>Data Sources</b></b-button>
+      </div>
+    </div> 
+
+    <!-- <div class="row">
       <div class="col-12">
         <div class="row" style="padding-top: 20px; padding-left: 50px; padding-right: 50px">
           <i>Click on a watershed to zoom and center map or select from the list below <br><u>not active yet</u></i>
@@ -13,26 +26,49 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
+    <br>
     <br>
     <br>
     <div class="row">
-      <div id="outer">
-        <div class="inner">
-          <b-button squared class="salt-marsh-background" href="https://www.google.com/" target="_blank">About</b-button>
-          <b-button squared class="tidal-flats-background" href="https://www.google.com/" target="_blank">MassBays<br>Region</b-button>
-        </div>
+      <div class="col-12">
+        <b-button variant="outline-primary" v-b-modal.modal-habitat class="full-width">Learn about habitats</b-button>
+        <b-modal id="modal-habitat" title="Habitat Explanation">
+          <p class="my-4">Discussion of relevant habitat goes here</p>
+        </b-modal>        
       </div>
-      <div id="outer">
-        <div class="inner">
-            <b-button squared class="eelgrass-background" href="https://www.google.com/" target="_blank">References</b-button>
-            <b-button squared class="diadromous-background" href="https://www.google.com/" target="_blank">Metadata</b-button>         
-        </div>
-      </div>      
-
     </div>
+    <br>
     <div class="row">
-      <img src="../assets/logos/mass_bays_rect.png" style="max-width: 100%">
+      <div class="col-12">
+        <b-button variant="outline-primary" v-b-modal.modal-habitatTargets class="full-width">Learn about habitat targets</b-button>
+        <b-modal id="modal-habitatTargets" title="Habitat Targets Explanation">
+          <p class="my-4">Discussion of relevant habitat targets goes here</p>
+        </b-modal>  
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-12">
+        <b-button variant="outline-primary" v-b-modal.modal-waterQuality class="full-width">Learn about water quality </b-button>
+        <b-modal id="modal-waterQuality" title="Water Quality Explanation">
+          <p class="my-4">Discussion of relevant water quality goes here</p>
+        </b-modal> 
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-12">
+        <b-button variant="outline-primary" v-b-modal.modal-habitatIndices class="full-width">Learn about habitat indices</b-button>
+        <b-modal id="modal-habitatIndices" title="Habitat Index Explanation">
+          <p class="my-4">Discussion of relevant habitat indices goes here</p>
+        </b-modal> 
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="row justify-content-center">
+      <img src="../assets/logos/mass_bays_rect.svg" style="max-width: 90%">
 
     </div>    
 
@@ -78,12 +114,12 @@ export default {
 </script>
 
 <style scoped>
-.btn {
-  font-size: 12px;
+.no-border {
   border: 0px;
-  margin: 1px;
-  height: 40px;
-  width: 45%;
+}
+
+.full-width {
+  width: 100%;
 }
 
 #outer {

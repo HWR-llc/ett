@@ -5,7 +5,7 @@ export const imageLibraryHabitat = {
   'eelgrass': {
     title: 'Eelgrass',
     img: require('@/assets/imgs/eelgrass_img.jpg'),
-    pic: require('@/assets/icons/eelgrass_pic.png'),
+    pic: require('@/assets/icons/eelgrass.svg'),
     currentYear: '**2017',
     historicYear: '**1992',
     source: 'MassDEP'
@@ -13,7 +13,7 @@ export const imageLibraryHabitat = {
   'salt marsh': {
     title: 'Salt Marsh',
     img: require('@/assets/imgs/salt_marsh_img.jpg'),
-    pic: require('@/assets/icons/salt_marsh_pic.png'),
+    pic: require('@/assets/icons/salt_marsh.svg'),
     currentYear: '**2005',
     historicYear: '**1995',
     source: 'MassDEP'
@@ -21,7 +21,7 @@ export const imageLibraryHabitat = {
   'tidal flats': {
     title: 'Tidal Flats',
     img: require('@/assets/imgs/tidal_flats_img.jpg'),
-    pic: require('@/assets/icons/tidal_flats_pic.png'),
+    pic: require('@/assets/icons/tidal_flats.svg'),
     currentYear: '**2005',
     historicYear: '**1995',
     source: 'MassDEP'
@@ -29,7 +29,7 @@ export const imageLibraryHabitat = {
   'diadromous fish': {
     title: 'Diadromous Fish',
     img: require('@/assets/imgs/diadromous_img.jpg'),
-    pic: require('@/assets/icons/diadromous_pic.png'),
+    pic: require('@/assets/icons/diadromous.svg'),
     currentYear: '**2012',
     historicYear: '**2012',
     source: 'MassBays'

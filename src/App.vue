@@ -8,7 +8,7 @@
       </div>
       <div class="col-7" style="padding-right: 0px; padding-left: 0px">
         <app-map-view></app-map-view>
-        <br>
+        <!-- <br>
         <br>
         <p><b>water quality:</b> {{ waterQuality }}</p>
         <p><b>habitat:</b> {{ habitat }}</p>
@@ -18,7 +18,7 @@
         <p><b>show base layer:</b> {{ baseLayer }} </p>
         <p><b>show points layer:</b> {{ pointsLayer }} </p>
         <p><b>show habitat metric layer:</b> {{ habitatMetricLayer }} </p>
-        <p><b>show habitat index layer:</b> {{ habitatIndexLayer }} </p>
+        <p><b>show habitat index layer:</b> {{ habitatIndexLayer }} </p> -->
       </div> 
       <div class="col-3">
         <app-margin-right></app-margin-right>

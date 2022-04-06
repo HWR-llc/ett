@@ -10,43 +10,11 @@
       <app-habitat-graph></app-habitat-graph>
     </div>
     <br>
-    <div class="row">
+    <div class="row" style="padding-left: 15px">
       <u><h6>Watershed Embayment Metrics</h6></u>
     </div>
-    <div class="row">
+    <div class="row" style="padding-left: 15px">
       <app-metric-index-toggle></app-metric-index-toggle>
-    </div>
-    <div class="row">
-      <u><h6>More Information...</h6></u>
-    </div>
-    <div class="row" v-if="habitat != null">
-      <div class="col-6">
-        <b-button variant="outline-primary" v-b-modal.modal-habitat>Learn about <b>{{ habitat }}</b></b-button>
-        <b-modal id="modal-habitat" title="Habitat Explanation">
-          <p class="my-4">Discussion of relevant habitat goes here</p>
-        </b-modal>        
-      </div>
-      <div class="col-6">
-        <b-button variant="outline-primary" v-b-modal.modal-habitatTargets>Learn about habitat targets</b-button>
-        <b-modal id="modal-habitatTargets" title="Habitat Targets Explanation">
-          <p class="my-4">Discussion of relevant habitat targets goes here</p>
-        </b-modal>  
-      </div>
-    </div>
-    <br>
-    <div class="row">
-      <div class="col-6"  v-if="waterQuality != null">
-        <b-button variant="outline-primary" v-b-modal.modal-waterQuality>Learn about <b>{{ waterQuality }}</b></b-button>
-        <b-modal id="modal-waterQuality" title="Water Quality Explanation">
-          <p class="my-4">Discussion of relevant water quality goes here</p>
-        </b-modal> 
-      </div>
-      <div class="col-6"  v-if="habitatIndexLayer == true">
-        <b-button variant="outline-primary" v-b-modal.modal-habitatIndices>Learn about habitat indices</b-button>
-        <b-modal id="modal-habitatIndices" title="Habitat Index Explanation">
-          <p class="my-4">Discussion of relevant habitat indices goes here</p>
-        </b-modal> 
-      </div>
     </div>
   </div>
 </template>
