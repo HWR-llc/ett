@@ -16,9 +16,10 @@
         <div v-for="s in stations" :key="s.WQ_ID">
           <l-circle-marker
             :lat-lng="[s.LATITUDE, s.LONGITUDE]"
-            color="#292df2"
+            :fillColor=circleColor
+            fillOpacity=1 
+            :color=circleColor
             @click="stationSelected(s.WQ_ID, s.TYPE)"
-            v-if="(waterQuality==s.TYPE || waterQuality=='all')"
           ></l-circle-marker>
         </div>
       </div>
@@ -59,6 +60,13 @@ export default {
     },
     waterQuality() {
       return this.$store.state.waterQuality;
+    },
+    circleColor() {
+      if (this.waterQuality == 'nitrogen') {
+        return 'red'
+      } else {
+        return 'green'
+      }
     },
     embStyle() {
       return () => {
@@ -144,13 +152,11 @@ export default {
 },
   data () {
     return {
-      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}',
+      attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
       zoom: 12,
       center: [41.89354, -70.03781],
       markerLatLng: [42.306, -72.0],
-      // geojson: null,
-      fillColor: '#a88132',
       bkgrdGeojson: {
         tidalFlats: {
           name: 'tidal flats',
@@ -177,7 +183,7 @@ export default {
       embayGeojson: null,
       station: [],
       mapStyleObj: {
-        height: Math.floor(window.innerHeight * 0.85) + 'px',
+        height: Math.floor(window.innerHeight - 100) + 'px',
         width: '100%',
       }
     };
@@ -203,7 +209,7 @@ export default {
     },
     stationSelected(wqId, wqType) {
       this.$store.dispatch('setStation', wqId);
-      this.$store.dispatch('switchWaterQuality', wqType);
+      this.$store.dispatch('setWaterQuality', wqType);
       this.$store.dispatch('setGraphVariable', wqType);      
       // alert('you clicked WQ Station: ' + wqId);
     }

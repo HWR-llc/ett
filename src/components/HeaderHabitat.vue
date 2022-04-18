@@ -52,7 +52,7 @@ export default {
         return this.$store.state.habitat;
       },
       set (newHab) {
-        this.$store.dispatch('switchHabitat', newHab);
+        this.$store.dispatch('setHabitat', newHab);
         this.$store.dispatch('setGraphVariable', newHab);
         this.$store.dispatch('onBaseLayer');
       }      

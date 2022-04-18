@@ -11,6 +11,8 @@ import { store } from './store'
 
 import App from './App.vue'
 
+import router from './router'
+
 import './assets/styles.css'
 
 import "leaflet/dist/leaflet.css";
@@ -22,6 +24,7 @@ Vue.use(IconsPlugin)
 Vue.use(ToggleButton)
 
 new Vue({
+  router,
   store,
   render: h => h(App),
 }).$mount('#app')

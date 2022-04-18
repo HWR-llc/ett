@@ -52,10 +52,10 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
-    switchHabitat: ({commit}, payload) => {
+    setHabitat: ({commit}, payload) => {
       commit('SET_HABITAT', payload);
     },
-    switchWaterQuality: ({commit}, payload) => {
+    setWaterQuality: ({commit}, payload) => {
       commit('SET_WATER_QUALITY', payload);
     },
     setGraphVariable: ({commit}, payload) => {

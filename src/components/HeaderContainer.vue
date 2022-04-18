@@ -28,8 +28,9 @@ export default {
 
 <style scoped>
 #topRow {
-  height: 30%;
-  max-height: 100px;
+  height: 100px;
+  /* height: 30%; */
+  /* max-height: 100px; */
   background-color: black;
   padding: 0px;
 }

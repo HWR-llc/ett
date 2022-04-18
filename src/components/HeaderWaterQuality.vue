@@ -61,14 +61,14 @@ export default {
         return this.$store.state.waterQuality;
       },
       set (newWq) {
-        this.$store.dispatch('switchWaterQuality', newWq);
+        this.$store.dispatch('setWaterQuality', newWq);
         this.$store.dispatch('onPointsLayer');
       }      
     }
   },
  methods: {
     setWaterQualityToAll() {
-      this.$store.dispatch('switchWaterQuality', 'all');
+      this.$store.dispatch('setWaterQuality', 'all');
       this.$store.dispatch('onPointsLayer');
     }
  }

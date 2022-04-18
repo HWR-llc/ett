@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <br>
     <br>
     <div class="row" style="padding-top: 30px">
       <div class="col">
-        <b-button squared class="habitat-background no-border full-width" href="https://www.google.com/" target="_blank"><b>Take a Tour</b></b-button>
+        <b-button squared class="habitat-background no-border full-width" @click="takeTour"><b>Take a Tour</b></b-button>
       </div>
     </div>
     <div class="row" style="padding-top: 10px">
@@ -32,7 +32,7 @@
     <br>
     <div class="row">
       <div class="col-12">
-        <b-button variant="outline-primary" v-b-modal.modal-habitat class="full-width">Learn about habitats</b-button>
+        <b-button variant="outline-primary" v-b-modal.modal-habitat class="full-width">Learn about <b>habitats</b></b-button>
         <b-modal id="modal-habitat" title="Habitat Explanation">
           <p class="my-4">Discussion of relevant habitat goes here</p>
         </b-modal>        
@@ -41,7 +41,7 @@
     <br>
     <div class="row">
       <div class="col-12">
-        <b-button variant="outline-primary" v-b-modal.modal-habitatTargets class="full-width">Learn about habitat targets</b-button>
+        <b-button variant="outline-primary" v-b-modal.modal-habitatTargets class="full-width">Learn about <b>habitat targets</b></b-button>
         <b-modal id="modal-habitatTargets" title="Habitat Targets Explanation">
           <p class="my-4">Discussion of relevant habitat targets goes here</p>
         </b-modal>  
@@ -50,31 +50,18 @@
     <br>
     <div class="row">
       <div class="col-12">
-        <b-button variant="outline-primary" v-b-modal.modal-waterQuality class="full-width">Learn about water quality </b-button>
+        <b-button variant="outline-primary" v-b-modal.modal-waterQuality class="full-width">Learn about <b>water quality parameters</b> </b-button>
         <b-modal id="modal-waterQuality" title="Water Quality Explanation">
           <p class="my-4">Discussion of relevant water quality goes here</p>
         </b-modal> 
       </div>
     </div>
     <br>
-    <!-- <div class="row">
-      <div class="col-12">
-        <b-button variant="outline-primary" v-b-modal.modal-habitatIndices class="full-width">Learn about habitat indices</b-button>
-        <b-modal id="modal-habitatIndices" title="Habitat Index Explanation">
-          <p class="my-4">Discussion of relevant habitat indices goes here</p>
-        </b-modal> 
-      </div>
-    </div>
-    <br>
-    <br> -->
-    <div class="row justify-content-center">
-      <div class="col-12">
-        <a href="https://www.mass.gov/orgs/massachusetts-bays-national-estuary-partnership"  target="_blank">
-          <img src="../assets/logos/mass_bays_rect.svg" style="max-width: 100%">
-        </a>
-      </div>
-
-    </div>    
+    <div class="bottom-spot">
+      <a href="https://www.mass.gov/orgs/massachusetts-bays-national-estuary-partnership"  target="_blank">
+        <img src="../assets/logos/mass_bays_rect.svg" style="max-width: 85%">
+      </a>
+    </div>     
   </div>
 </template>
 
@@ -110,6 +97,12 @@ export default {
         this.$store.dispatch('setEmbayment', newEmb);
       }      
     },
+  },
+  methods: {
+    takeTour() {
+      this.$store.dispatch('setWaterQuality', null);
+      this.$store.dispatch('setHabitat', null);
+    }    
   }
 }
 </script>
@@ -126,5 +119,10 @@ export default {
 .inner {
   width: 100%;
   display: inline-block;
+}
+.bottom-spot {
+  position: absolute;
+  bottom: 1%;
+  left: 7.5%;
 }
 </style>
