@@ -1,4 +1,4 @@
-export const waterQualitySelections = ['all', 'nitrogen', 'phosphorus', 'temperature', 'pH', 'clarity', 'salinity', 'dissolved oxygen', 'e. coli', 'enterococcus'];
+export const waterQualitySelections = ['nitrogen', 'phosphorus', 'temperature', 'pH', 'clarity', 'salinity', 'dissolved oxygen', 'e. coli', 'enterococcus'];
 export const habitatSelections = ['salt marsh', 'tidal flats', 'eelgrass', 'diadromous fish'];
 export const habitatIndexSelections = ['index 1', 'index 2', 'index 3']
 export const imageLibraryHabitat = {
@@ -36,11 +36,6 @@ export const imageLibraryHabitat = {
   }
 }
 export const imageLibraryWaterQuality = {
-  'all': {
-    title: 'all',
-    img: require('@/assets/imgs/white_box.jpg'),
-    pic: require('@/assets/icons/all.png')
-  },
   'nitrogen': {
     title: 'nitrogen',
     img: require('@/assets/imgs/white_box.jpg'),

@@ -65,7 +65,7 @@ export default {
       if (this.waterQuality == 'nitrogen') {
         return 'red'
       } else {
-        return 'green'
+        return '#808080'
       }
     },
     embStyle() {

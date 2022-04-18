@@ -11,23 +11,20 @@
       </div>
       <div class="col-10">
         <div class="row">
-          <div class="col-2">
-            <b-button squared @click="setWaterQualityToAll" style="background-color: black; border: 1px solid #00B0F0; height: 100%; width: 80px">See all stations</b-button>
+          <div class="col-4">
+            <div class="form-check" v-for="selection in waterQualitySelections.slice(0,3)" :key="selection">
+              <input class="form-check-input" type="radio" id="key" :value="selection" v-model="waterQuality">
+              <label class="form-check-label" for="key" style="color: white"> {{selection}} </label>
+            </div>
           </div>
           <div class="col-3">
-            <div class="form-check" v-for="selection in waterQualitySelections.slice(1,4)" :key="selection">
+            <div class="form-check" v-for="selection in waterQualitySelections.slice(3,6)" :key="selection">
               <input class="form-check-input" type="radio" id="key" :value="selection" v-model="waterQuality">
               <label class="form-check-label" for="key" style="color: white"> {{selection}} </label>
             </div>
           </div>
-          <div class="col-2">
-            <div class="form-check" v-for="selection in waterQualitySelections.slice(4,7)" :key="selection">
-              <input class="form-check-input" type="radio" id="key" :value="selection" v-model="waterQuality">
-              <label class="form-check-label" for="key" style="color: white"> {{selection}} </label>
-            </div>
-          </div>
-          <div class="col-4">
-            <div class="form-check" v-for="selection in waterQualitySelections.slice(7,10)" :key="selection">
+          <div class="col-5">
+            <div class="form-check" v-for="selection in waterQualitySelections.slice(6,9)" :key="selection">
               <input class="form-check-input" type="radio" id="key" :value="selection" v-model="waterQuality">
               <label class="form-check-label" for="key" style="color: white"> {{selection}} </label>
             </div>
@@ -65,13 +62,7 @@ export default {
         this.$store.dispatch('onPointsLayer');
       }      
     }
-  },
- methods: {
-    setWaterQualityToAll() {
-      this.$store.dispatch('setWaterQuality', 'all');
-      this.$store.dispatch('onPointsLayer');
-    }
- }
+  }
 }
 </script>
 
