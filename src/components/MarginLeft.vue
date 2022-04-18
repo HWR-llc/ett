@@ -57,7 +57,7 @@
       </div>
     </div>
     <br>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-12">
         <b-button variant="outline-primary" v-b-modal.modal-habitatIndices class="full-width">Learn about habitat indices</b-button>
         <b-modal id="modal-habitatIndices" title="Habitat Index Explanation">
@@ -66,14 +66,15 @@
       </div>
     </div>
     <br>
-    <br>
+    <br> -->
     <div class="row justify-content-center">
-      <img src="../assets/logos/mass_bays_rect.svg" style="max-width: 90%">
+      <div class="col-12">
+        <a href="https://www.mass.gov/orgs/massachusetts-bays-national-estuary-partnership"  target="_blank">
+          <img src="../assets/logos/mass_bays_rect.svg" style="max-width: 100%">
+        </a>
+      </div>
 
     </div>    
-
-
-
   </div>
 </template>
 
@@ -114,10 +115,6 @@ export default {
 </script>
 
 <style scoped>
-.no-border {
-  border: 0px;
-}
-
 .full-width {
   width: 100%;
 }

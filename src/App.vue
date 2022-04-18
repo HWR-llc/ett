@@ -24,6 +24,7 @@
         <app-margin-right></app-margin-right>
       </div>      
     </div>
+    <app-landing-page></app-landing-page>
   </div>
 </template>
 
@@ -32,6 +33,7 @@ import HeaderContainer from './components/HeaderContainer.vue'
 import MarginLeft from './components/MarginLeft.vue'
 import MarginRight from './components/MarginRight.vue'
 import MapView from './components/MapView.vue'
+import LandingPage from './components/LandingPage.vue'
 export default {
   name: 'App',
   computed: {
@@ -67,7 +69,8 @@ export default {
     appHeaderContainer: HeaderContainer,
     appMarginLeft: MarginLeft,
     appMarginRight: MarginRight,
-    appMapView: MapView   
+    appMapView: MapView,
+    appLandingPage: LandingPage
   }
 }
 </script>

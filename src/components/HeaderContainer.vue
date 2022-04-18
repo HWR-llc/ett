@@ -3,7 +3,7 @@
     <div class="row" id="topRow">
       <div class="col-2" id="logoBox">
           <!-- Problem here making image fit -->
-          <img src="../assets/logos/ett_square_no_border.svg" style="background-color: white; width: 90%; margin: auto; display: block">
+          <img src="../assets/logos/ett_square_no_border.svg" style="background-color: white; width: 90%; max-height: 150px; margin: auto; display: block">
       </div>
       <div class="col-4" style="padding-top: 15px">
         <app-header-habitat></app-header-habitat>

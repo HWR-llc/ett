@@ -66,3 +66,7 @@
 .water-quality-main {
   color: #00B0F0;
 }
+
+.no-border {
+  border: 0px;
+}
