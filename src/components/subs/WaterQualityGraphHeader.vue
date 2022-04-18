@@ -1,11 +1,11 @@
 <template>
-  <div :style="parentWidthStyle">
+  <div style="width: 100%">
     <div class="top-row">
       <h5>Embayment Name</h5>
     </div>
     <div class="bottom-row">
       <div v-for="(item, key) in imageLibrary" :key="key">
-        <div v-if="key == waterQuality">
+        <div v-if="key == waterQualityGraphVariable">
           <img :src="item.pic" style="max-height: 60px" class="overlay-icon">
         </div>
       </div>
@@ -36,13 +36,12 @@ import { imageLibraryWaterQuality } from '../../lib/constants'
 export default {
   data () {
     return {
-        imageLibrary: imageLibraryWaterQuality,
-        parentWidthStyle: null
+        imageLibrary: imageLibraryWaterQuality
     }
   },
   computed: {
-    graphVariable() {
-      return this.$store.state.graphVariable;
+    waterQualityGraphVariable() {
+      return this.$store.state.waterQualityGraphVariable;
     },
     station() {
       return this.$store.state.station;
@@ -57,9 +56,6 @@ export default {
     waterQuality() {
       return this.$store.state.waterQuality;
     }
-  },
-  mounted() {
-    this.parentWidthStyle = 'width: ' + this.$el.parentElement.clientWidth + 'px';
   }
 }
 </script>

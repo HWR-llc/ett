@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row">
+    <!-- <div class="row">
       <app-water-quality-graph-header v-if="waterQualitySelections.includes(graphVariable)"></app-water-quality-graph-header>
       <app-habitat-graph-header v-if="habitatSelections.includes(graphVariable)"></app-habitat-graph-header>
       <div v-if="habitat == null && waterQuality == null" style="width: 100%; height: 90px; background-color: white">
@@ -8,6 +8,18 @@
     </div>
     <div class="row">
       <app-habitat-graph></app-habitat-graph>
+    </div> -->
+    <div class="row">
+      <b-tabs pills end justified v-model="activeTab" style="width: 100%">
+        <b-tab title="Habitat">
+          <app-habitat-graph-header></app-habitat-graph-header>
+          <app-habitat-graph></app-habitat-graph>
+        </b-tab>
+        <b-tab title="Water Quality" :disabled="disableWaterQualityTab">
+          <app-water-quality-graph-header></app-water-quality-graph-header>
+          <app-water-quality-graph></app-water-quality-graph>
+        </b-tab>  
+      </b-tabs>      
     </div>
     <br>
     <div class="row" style="padding-left: 15px">
@@ -21,7 +33,7 @@
 
 <script>
 import HabitatGraph from './subs/HabitatGraph.vue'
-// import WaterQualityGraph from './subs/WaterQualityGraph.vue'
+import WaterQualityGraph from './subs/WaterQualityGraph.vue'
 import MetricIndexToggle from './subs/MetricIndexToggle.vue'
 import HabitatGraphHeader from './subs/HabitatGraphHeader.vue'
 import WaterQualityGraphHeader from './subs/WaterQualityGraphHeader.vue'
@@ -31,7 +43,8 @@ export default {
   data () {
     return {
         habitatSelections: habitatSelections,
-        waterQualitySelections: waterQualitySelections
+        waterQualitySelections: waterQualitySelections,
+        disableWaterQualityTab: true
     }
   },
   computed: {
@@ -40,6 +53,9 @@ export default {
     },
     graphVariable() {
       return this.$store.state.graphVariable;
+    },
+    activeTab() {
+      return this.$store.state.activeTab;
     },
     habitatCapital() {
       const titles = this.$store.state.habitat.split(" ");
@@ -57,7 +73,7 @@ export default {
   },
   components: {
     appHabitatGraph: HabitatGraph,
-    // appWaterQualityGraph: WaterQualityGraph,
+    appWaterQualityGraph: WaterQualityGraph,
     appMetricIndexToggle: MetricIndexToggle,
     appHabitatGraphHeader: HabitatGraphHeader,
     appWaterQualityGraphHeader: WaterQualityGraphHeader

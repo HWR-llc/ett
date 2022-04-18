@@ -17,7 +17,6 @@
           <l-circle-marker
             :lat-lng="[s.LATITUDE, s.LONGITUDE]"
             :fillColor=circleColor
-            fillOpacity=1 
             :color=circleColor
             @click="stationSelected(s.WQ_ID, s.TYPE)"
           ></l-circle-marker>
@@ -210,7 +209,8 @@ export default {
     stationSelected(wqId, wqType) {
       this.$store.dispatch('setStation', wqId);
       this.$store.dispatch('setWaterQuality', wqType);
-      this.$store.dispatch('setGraphVariable', wqType);      
+      this.$store.dispatch('setWaterQualityGraphVariable', wqType);  
+      this.$store.dispatch('setActiveTab', 1);
       // alert('you clicked WQ Station: ' + wqId);
     }
   },

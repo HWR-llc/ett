@@ -4,7 +4,7 @@
     <br>
     <br>
     <div class="row justify-content-center">
-      <h5>graph placeholder</h5>
+      <h5>habitat graph placeholder</h5>
     </div>
     
 

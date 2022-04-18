@@ -7,14 +7,16 @@ export const store = new Vuex.Store({
   state: {
     habitat: null,
     waterQuality: null,
-    graphVariable: null,
+    habitatGraphVariable: null,
+    waterQualityGraphVariable: null,
     habitatIndex: null,
     baseLayer: false,
     pointsLayer: false,
     habitatMetricLayer: false,
     habitatIndexLayer: false,
     embayment: null,
-    station: null
+    station: null,
+    activeTab: 1
   },
   mutations: {
     SET_HABITAT: (state, payload) => {
@@ -23,9 +25,12 @@ export const store = new Vuex.Store({
     SET_WATER_QUALITY: (state, payload) => {
       state.waterQuality = payload;
     },
-    SET_GRAPH_VARIABLE: (state, payload) => {
-      state.graphVariable = payload;
+    SET_HABITAT_GRAPH_VARIABLE: (state, payload) => {
+      state.habitatGraphVariable = payload;
     },
+    SET_WATER_QUALITY_GRAPH_VARIABLE: (state, payload) => {
+      state.waterQualityGraphVariable = payload;
+    },    
     SET_STATION: (state, payload) => {
       state.station = payload;
     },
@@ -49,6 +54,9 @@ export const store = new Vuex.Store({
     },
     SWITCH_HABITAT_INDEX_LAYER: state => {
       state.habitatIndexLayer = !state.habitatIndexLayer;
+    },
+    SET_ACTIVE_TAB: (state, payload) => {
+      state.activeTab = payload;
     }
   },
   actions: {
@@ -58,8 +66,11 @@ export const store = new Vuex.Store({
     setWaterQuality: ({commit}, payload) => {
       commit('SET_WATER_QUALITY', payload);
     },
-    setGraphVariable: ({commit}, payload) => {
-      commit('SET_GRAPH_VARIABLE', payload);
+    setHabitatGraphVariable: ({commit}, payload) => {
+      commit('SET_HABITAT_GRAPH_VARIABLE', payload);
+    },
+    setWaterQualityGraphVariable: ({commit}, payload) => {
+      commit('SET_WATER_QUALITY_GRAPH_VARIABLE', payload);
     },
     setStation: ({commit}, payload) => {
       commit('SET_STATION', payload);
@@ -94,6 +105,9 @@ export const store = new Vuex.Store({
       if (state.habitatIndexLayer == true && state.habitatMetricLayer == true) {
         commit('SWITCH_HABITAT_METRIC_LAYER');
       }
-    }
+    },
+    setActiveTab: ({commit}, payload) => {
+      commit('SET_ACTIVE_TAB', payload);
+    },
   }
 });

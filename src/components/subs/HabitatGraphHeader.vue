@@ -3,7 +3,7 @@
    <div class="row">
     <div class="col-12">
       <div v-for="(item, key) in imageLibrary" :key="key">
-        <div v-if="graphVariable==key" :style="parentWidthStyle">
+        <div v-if="habitat==key"   style="width: 100%">
           <div class="center-cropped"
                :style="{ 'background-image': 'url(' + item.img + ')' }">
           </div>
@@ -22,13 +22,12 @@ import { imageLibraryHabitat } from '../../lib/constants'
 export default {
   data () {
     return {
-        imageLibrary: imageLibraryHabitat,
-        parentWidthStyle: null
+        imageLibrary: imageLibraryHabitat
     }
   },
   computed: {
-    graphVariable() {
-      return this.$store.state.graphVariable;
+    habitatGraphVariable() {
+      return this.$store.state.habitatGraphVariable;
     },
     habitat() {
       return this.$store.state.habitat;
@@ -40,9 +39,6 @@ export default {
       }).join(" ");
       return capitalTitle;
     }
-  },
-  mounted() {
-    this.parentWidthStyle = 'width: ' + this.$el.parentElement.clientWidth + 'px';
   }
 }
 </script>
