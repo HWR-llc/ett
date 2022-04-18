@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: lightblue; width: 100%; min-height: 200px">
+  <div style="background-color: lightgray; width: 100%; min-height: 300px; max-height:500px">
     water quality graph
   </div>
 </template>

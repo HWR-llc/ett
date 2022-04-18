@@ -1,58 +1,45 @@
 <template>
   <div>
-    <div class="row" style="padding-top: 25px">
-      <div class="col-3">
-        <div v-for="(item, key) in habitatImages" :key="key">
-          <div v-if="habitat==key">
-            <img :src="item.pic" style="max-width: 100%">
-          </div>
-        </div>      
-      </div>
-      <div class="col-9 align-bottom">
-        <h2 v-if="view=='habitat'">{{ habitat }}</h2>
-        <h2 v-else>{{ waterQuality }}</h2>
+    <div class="row">
+      <app-water-quality-graph-header v-if="waterQualitySelections.includes(graphVariable)"></app-water-quality-graph-header>
+      <app-habitat-graph-header v-if="habitatSelections.includes(graphVariable)"></app-habitat-graph-header>
+      <div v-if="habitat == null && waterQuality == null" style="width: 100%; height: 90px; background-color: white">
       </div>
     </div>
     <div class="row">
-      <app-habitat-graph v-if="view=='habitat'"></app-habitat-graph>
-      <app-water-quality-graph v-if="view=='water quality'"></app-water-quality-graph>
+      <app-habitat-graph></app-habitat-graph>
     </div>
-    <div v-if="view=='habitat'">
-      <div class="row">
-        <div class="col-12">
-          <h6><u>{{ habitatCapital }} Extent</u></h6>
-        </div>
-      </div>
-      <div class="row">
-          <app-base-layer :time="'current'"></app-base-layer>
-      </div>
-      <br>
-      <div class="row">
-        <app-base-layer :time="'historic'"></app-base-layer>
-      </div>        
-      <div class="row">
-        <u><h6>{{ habitatCapital }} Metrics</h6></u>
-        {{ altHabitat }}
-      </div>
-      
+    <br>
+    <div class="row" style="padding-left: 15px">
+      <u><h6>Watershed Embayment Metrics</h6></u>
+    </div>
+    <div class="row" style="padding-left: 15px">
+      <app-metric-index-toggle></app-metric-index-toggle>
     </div>
   </div>
 </template>
 
 <script>
-import { imageLibraryHabitat } from '../lib/constants'
 import HabitatGraph from './subs/HabitatGraph.vue'
-import WaterQualityGraph from './subs/WaterQualityGraph.vue'
-import BaseLayer from './subs/BaseLayer.vue'
+// import WaterQualityGraph from './subs/WaterQualityGraph.vue'
+import MetricIndexToggle from './subs/MetricIndexToggle.vue'
+import HabitatGraphHeader from './subs/HabitatGraphHeader.vue'
+import WaterQualityGraphHeader from './subs/WaterQualityGraphHeader.vue'
+import { habitatSelections } from '../lib/constants'
+import { waterQualitySelections } from '../lib/constants'
 export default {
   data () {
     return {
-        habitatImages: imageLibraryHabitat
+        habitatSelections: habitatSelections,
+        waterQualitySelections: waterQualitySelections
     }
   },
   computed: {
     habitat() {
       return this.$store.state.habitat;
+    },
+    graphVariable() {
+      return this.$store.state.graphVariable;
     },
     habitatCapital() {
       const titles = this.$store.state.habitat.split(" ");
@@ -61,21 +48,29 @@ export default {
       }).join(" ");
       return capitalTitle;
     },
-    view() {
-      return this.$store.state.view;
-    },
     waterQuality() {
       return this.$store.state.waterQuality;
+    },
+    habitatIndexLayer() {
+      return this.$store.state.habitatIndexLayer;
     }
   },
   components: {
     appHabitatGraph: HabitatGraph,
-    appWaterQualityGraph: WaterQualityGraph,
-    appBaseLayer: BaseLayer
+    // appWaterQualityGraph: WaterQualityGraph,
+    appMetricIndexToggle: MetricIndexToggle,
+    appHabitatGraphHeader: HabitatGraphHeader,
+    appWaterQualityGraphHeader: WaterQualityGraphHeader
   }
 }
 </script>
 
-<style>
+<style scoped>
+.btn {
+  border: 2px solid;
+  border-radius: 10px;
+  height: 100%;
+  width: 100%;
+}
 
 </style>

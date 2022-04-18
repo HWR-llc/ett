@@ -5,56 +5,95 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    view: 'habitat',
-    habitat: 'salt marsh',
-    waterQuality: 'all',
+    habitat: null,
+    waterQuality: null,
+    graphVariable: null,
     habitatIndex: null,
-    currentBaseLayer: true,
-    historicBaseLayer: true,
+    baseLayer: false,
+    pointsLayer: false,
     habitatMetricLayer: false,
     habitatIndexLayer: false,
     embayment: null,
     station: null
   },
   mutations: {
-    VIEW_HABITAT: state => {
-      state.view = 'habitat';
-    },
-    VIEW_WATER_QUALITY: state => {
-      state.view = 'water quality';
-    },
     SET_HABITAT: (state, payload) => {
       state.habitat = payload;
     },
     SET_WATER_QUALITY: (state, payload) => {
       state.waterQuality = payload;
     },
-    SWITCH_CURRENT: state => {
-      state.currentBaseLayer = !state.currentBaseLayer;
+    SET_GRAPH_VARIABLE: (state, payload) => {
+      state.graphVariable = payload;
     },
-    SWITCH_HISTORIC: state => {
-      state.historicBaseLayer = !state.historicBaseLayer;
+    SET_STATION: (state, payload) => {
+      state.station = payload;
+    },
+    SET_EMBAYMENT: (state, payload) => {
+      state.embayment = payload;
+    },   
+    SWITCH_BASE_LAYER: state => {
+      state.baseLayer = !state.baseLayer;
+    },
+    SWITCH_POINTS_LAYER: state => {
+      state.pointsLayer = !state.pointsLayer;
+    },
+    ON_POINTS_LAYER: state => {
+      state.pointsLayer = true;
+    },
+    ON_BASE_LAYER: state => {
+      state.baseLayer = true;
+    },
+    SWITCH_HABITAT_METRIC_LAYER: state => {
+      state.habitatMetricLayer = !state.habitatMetricLayer;
+    },
+    SWITCH_HABITAT_INDEX_LAYER: state => {
+      state.habitatIndexLayer = !state.habitatIndexLayer;
     }
   },
   actions: {
-    switchView: ({commit, state}) => {
-      if (state.view == 'habitat') {
-        commit('VIEW_WATER_QUALITY');
-      } else {
-        commit('VIEW_HABITAT');
-      }
-    },
     switchHabitat: ({commit}, payload) => {
       commit('SET_HABITAT', payload);
     },
     switchWaterQuality: ({commit}, payload) => {
       commit('SET_WATER_QUALITY', payload);
     },
-    switchCurrent: ({commit}) => {
-      commit('SWITCH_CURRENT');
+    setGraphVariable: ({commit}, payload) => {
+      commit('SET_GRAPH_VARIABLE', payload);
     },
-    switchHistoric: ({commit}) => {
-      commit('SWITCH_HISTORIC');
+    setStation: ({commit}, payload) => {
+      commit('SET_STATION', payload);
+    },
+    setEmbayment: ({commit}, payload) => {
+      commit('SET_EMBAYMENT', payload);
+    },
+    switchBaseLayer: ({commit}) => {
+      commit('SWITCH_BASE_LAYER');
+    },
+    switchPointsLayer: ({commit}) => {
+      commit('SWITCH_POINTS_LAYER');
+    },
+    onPointsLayer: ({commit, state}) => {
+      if (state.pointsLayer == false) {
+        commit('ON_POINTS_LAYER');
+      }
+    },
+    onBaseLayer: ({commit, state}) => {
+      if (state.baseLayer == false) {
+        commit('ON_BASE_LAYER');
+      }
+    },
+    switchHabitatMetricLayer: ({commit, state}) => {
+      commit('SWITCH_HABITAT_METRIC_LAYER');
+      if (state.habitatIndexLayer == true && state.habitatMetricLayer == true) {
+        commit('SWITCH_HABITAT_INDEX_LAYER');
+      }
+    },
+    switchHabitatIndexLayer: ({commit, state}) => {
+      commit('SWITCH_HABITAT_INDEX_LAYER');
+      if (state.habitatIndexLayer == true && state.habitatMetricLayer == true) {
+        commit('SWITCH_HABITAT_METRIC_LAYER');
+      }
     }
   }
 });

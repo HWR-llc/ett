@@ -3,23 +3,13 @@
     <div class="row" id="topRow">
       <div class="col-2" id="logoBox">
           <!-- Problem here making image fit -->
-          <img src="../assets/logos/ett_square_no_border.png" style="background-color: white; max-height: 80%; margin: auto; display: block">
+          <img src="../assets/logos/ett_square_no_border.svg" style="background-color: white; width: 90%; max-height: 150px; margin: auto; display: block">
       </div>
-      <div class="col-3" style="border-right: 2px solid white">
+      <div class="col-4" style="padding-top: 15px">
         <app-header-habitat></app-header-habitat>
       </div>
-      <div class="col-6" style="width=50%">
+      <div class="col-6" style="padding-top: 15px">
         <app-header-water-quality></app-header-water-quality>
-      </div>
-    </div>
-    <div class="row" id="bottomRow">
-      <div class="col-2" style="background-color: transparent">
-      </div>
-      <div class="col-5">
-        Click on a <b>habitat type</b> to see maps and data
-      </div>
-      <div class="col-5">
-        Click on a <b>parameter</b> to view stations... <b>then click stations</b> to see data
       </div>
     </div>
   </div>
@@ -36,7 +26,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #topRow {
   height: 30%;
   max-height: 100px;
@@ -44,12 +34,11 @@ export default {
   padding: 0px;
 }
 
-#bottomRow {
-  min-height: 20px;
-  background-color: lightgreen;
-}
 #logoBox {
   background-color: white;
+}
+.light-up {
+  background-color: gray !important;
 }
 
 </style>
