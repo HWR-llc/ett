@@ -53,9 +53,7 @@ export default {
       },
       set (newHab) {
         this.$store.dispatch('setHabitat', newHab);
-        this.$store.dispatch('setHabitatGraphVariable', newHab);
         this.$store.dispatch('onBaseLayer');
-        this.$store.dispatch('setActiveTab', 0)
       }      
     }
   }
@@ -73,9 +71,6 @@ export default {
 }
 .figure-caption {
   color: white;
-}
-.v-switch-core {
-  /* background-color: red !important; */
 }
 .figure {
   cursor: pointer;

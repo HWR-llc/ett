@@ -1,17 +1,8 @@
 <template>
   <div>
-    <!-- <div class="row">
-      <app-water-quality-graph-header v-if="waterQualitySelections.includes(graphVariable)"></app-water-quality-graph-header>
-      <app-habitat-graph-header v-if="habitatSelections.includes(graphVariable)"></app-habitat-graph-header>
-      <div v-if="habitat == null && waterQuality == null" style="width: 100%; height: 90px; background-color: white">
-      </div>
-    </div>
-    <div class="row">
-      <app-habitat-graph></app-habitat-graph>
-    </div> -->
     <div class="row">
       <b-tabs pills end justified v-model="activeTab" style="width: 100%">
-        <b-tab title="Habitat">
+        <b-tab title="Habitat" :disabled="disableHabitatTab">
           <app-habitat-graph-header></app-habitat-graph-header>
           <app-habitat-graph></app-habitat-graph>
         </b-tab>
@@ -44,19 +35,12 @@ export default {
     return {
         habitatSelections: habitatSelections,
         waterQualitySelections: waterQualitySelections,
+        activeTab: 0,
+        disableHabitatTab: true,
         disableWaterQualityTab: true
     }
   },
   computed: {
-    habitat() {
-      return this.$store.state.habitat;
-    },
-    graphVariable() {
-      return this.$store.state.graphVariable;
-    },
-    activeTab() {
-      return this.$store.state.activeTab;
-    },
     habitatCapital() {
       const titles = this.$store.state.habitat.split(" ");
       const capitalTitle = titles.map((word) => {
@@ -71,13 +55,37 @@ export default {
       return this.$store.state.habitatIndexLayer;
     }
   },
+  watch: {
+    "$store.state.habitat"() {
+      if (this.$store.state.habitat == null) {
+        this.disableHabitatTab = true;
+      } else {
+        this.disableHabitatTab = false;
+        this.activeTab = 0;
+      }
+    },
+    "$store.state.waterQualityGraphVariable"() {
+      if (this.$store.state.waterQualityGraphVariable == null) {
+        this.disableWaterQualityTab = true;
+      } else {
+        this.disableWaterQualityTab = false;
+        this.activeTab = 1;
+      }
+    }
+  },
   components: {
     appHabitatGraph: HabitatGraph,
     appWaterQualityGraph: WaterQualityGraph,
     appMetricIndexToggle: MetricIndexToggle,
     appHabitatGraphHeader: HabitatGraphHeader,
     appWaterQualityGraphHeader: WaterQualityGraphHeader
-  }
+  },
+  mounted() {
+    if (this.$store.state.habitat != null) {
+      this.activeTab = 0;
+      this.disableHabitatTab = false;
+    }
+  } 
 }
 </script>
 

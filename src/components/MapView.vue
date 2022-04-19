@@ -153,9 +153,8 @@ export default {
     return {
       url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}',
       attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
-      zoom: 12,
-      center: [41.89354, -70.03781],
-      markerLatLng: [42.306, -72.0],
+      zoom: 9,
+      center: [42.23673, -70.65864],
       bkgrdGeojson: {
         tidalFlats: {
           name: 'tidal flats',
@@ -188,9 +187,6 @@ export default {
     };
   },
   methods: {
-    getEmbayment(e) {
-      console.log(e);
-    },
     csvToArray(str, delimiter=",") {
       //https://github.com/nsebhastian/javascript-csv-array-example/blob/master/index.html
       const headers = str.slice(0, str.indexOf("\r\n")).split(delimiter);
@@ -210,7 +206,6 @@ export default {
       this.$store.dispatch('setStation', wqId);
       this.$store.dispatch('setWaterQuality', wqType);
       this.$store.dispatch('setWaterQualityGraphVariable', wqType);  
-      this.$store.dispatch('setActiveTab', 1);
       // alert('you clicked WQ Station: ' + wqId);
     }
   },
