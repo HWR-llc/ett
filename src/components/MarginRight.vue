@@ -1,8 +1,9 @@
 <template>
   <div>
+    {{ activeTab }}
     <div class="row">
       <b-tabs pills end justified v-model="activeTab" style="width: 100%">
-        <b-tab title="Habitat" :disabled="disableHabitatTab">
+        <b-tab title="Habitat" :disabled="disableHabitatTab" active>
           <app-habitat-graph-header></app-habitat-graph-header>
           <app-habitat-graph></app-habitat-graph>
         </b-tab>
@@ -35,9 +36,9 @@ export default {
     return {
         habitatSelections: habitatSelections,
         waterQualitySelections: waterQualitySelections,
-        activeTab: 0,
-        disableHabitatTab: true,
-        disableWaterQualityTab: true
+        activeTab: null,
+        disableHabitatTab: null,
+        disableWaterQualityTab: null
     }
   },
   computed: {
@@ -47,9 +48,6 @@ export default {
         return word[0].toUpperCase() + word.substring(1);
       }).join(" ");
       return capitalTitle;
-    },
-    waterQuality() {
-      return this.$store.state.waterQuality;
     },
     habitatIndexLayer() {
       return this.$store.state.habitatIndexLayer;
@@ -62,14 +60,16 @@ export default {
       } else {
         this.disableHabitatTab = false;
         this.activeTab = 0;
+        console.log(this.activeTab);
       }
     },
-    "$store.state.waterQualityGraphVariable"() {
-      if (this.$store.state.waterQualityGraphVariable == null) {
+    "$store.state.waterQuality"() {
+      if (this.$store.state.waterQuality == null) {
         this.disableWaterQualityTab = true;
       } else {
         this.disableWaterQualityTab = false;
         this.activeTab = 1;
+        console.log(this.activeTab);
       }
     }
   },
@@ -81,9 +81,14 @@ export default {
     appWaterQualityGraphHeader: WaterQualityGraphHeader
   },
   mounted() {
-    if (this.$store.state.habitat != null) {
-      this.activeTab = 0;
+    if ((this.$store.state.habitat != null) && (this.$store.state.waterQuality == null)) {
       this.disableHabitatTab = false;
+      this.disableWaterQualityTab = true;
+      this.activeTab = 0;
+      } else if ((this.$store.state.habitat == null) && (this.$store.state.waterQuality != null)) {
+      this.disableHabitatTab = true;
+      this.disableWaterQualityTab = false;
+      this.activeTab = 1;
     }
   } 
 }

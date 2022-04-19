@@ -9,25 +9,9 @@
           <img :src="item.pic" style="max-height: 60px" class="overlay-icon">
         </div>
       </div>
-      <h6> station: WQ-{{ station }}</h6>
-      <h6>{{ waterQuality }}, 19XX-20XX</h6>
-    </div>
-    
-
-        
-
-
- 
-    <!-- <div class="row justify-content-center bottom-row">
-      <div class="col-4">
-        <div v-for="(item, key) in imageLibrary" :key="key">
-          <img :src="item.pic" style="max-height: 60px" class="overlay-icon">
-        </div>
-      </div>
-      <div class="col-8">
-        
-      </div>
-    </div> -->
+      <h6>{{ station }}</h6>
+      <h6>{{ waterQualityGraphVariable }}</h6>
+    </div>  
   </div>
 </template>
 

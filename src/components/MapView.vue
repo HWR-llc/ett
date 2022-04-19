@@ -2,8 +2,7 @@
 	<div>
     <l-map :style="mapStyleObj" :zoom="zoom" :center="center">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-      <l-marker :lat-lng="markerLatLng"></l-marker>
-      <l-geo-json :geojson="embayGeojson" :options="options" :options-style="embStyle" id="habitat"></l-geo-json>
+      <l-geo-json :geojson="embayGeojson" :options="optionsEmbayment" :options-style="embStyle" id="habitat"></l-geo-json>
       <div v-if="baseLayer">
         <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.his" v-if="habitat=='tidal flats'" :options-style="tfStyleHis">></l-geo-json>	  		
         <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.his" v-if="habitat=='salt marsh'" :options-style="smStyleHis"></l-geo-json>	
@@ -13,13 +12,16 @@
         <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.cur" v-if="habitat=='eelgrass'" :options-style="egStyleCur"></l-geo-json>
       </div>
       <div v-if="pointsLayer">
-        <div v-for="s in stations" :key="s.WQ_ID">
+        <div v-for="s in stations" :key="s.id">
           <l-circle-marker
-            :lat-lng="[s.LATITUDE, s.LONGITUDE]"
+            :lat-lng="[s.geometry.coordinates[1], s.geometry.coordinates[0]]"
             :fillColor=circleColor
             :color=circleColor
-            @click="stationSelected(s.WQ_ID, s.TYPE)"
-          ></l-circle-marker>
+          >
+            <l-popup>
+              <app-station-popup :stationId="s.id"></app-station-popup>
+            </l-popup>
+          </l-circle-marker>
         </div>
       </div>
 
@@ -38,14 +40,16 @@ Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
-import {LMap, LTileLayer, LMarker, LGeoJson, LCircleMarker} from 'vue2-leaflet';
+import {LMap, LTileLayer, LGeoJson, LCircleMarker, LPopup} from 'vue2-leaflet';
+import StationPopup from './subs/StationPopup.vue'
 export default {
   components: {
     LMap,
     LTileLayer,
     LGeoJson,
-    LMarker,
-    LCircleMarker
+    LCircleMarker,
+    LPopup,
+    appStationPopup: StationPopup
   },
   computed: {
     baseLayer() {
@@ -138,17 +142,17 @@ export default {
         };
       };
     },
-    options() {
+    optionsEmbayment() {
       return {
-        onEachFeature: this.onEachFeatureFunction
+        onEachFeature: this.onEachEmbaymentFunction
       };
     },
-    onEachFeatureFunction() {
+    onEachEmbaymentFunction() {
       return (feature, layer) => {
         layer.bindPopup(feature.properties.NAME);
       };
     }
-},
+  },
   data () {
     return {
       url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}',
@@ -179,83 +183,53 @@ export default {
         }
       },
       embayGeojson: null,
-      station: [],
+      stations: null,
       mapStyleObj: {
         height: Math.floor(window.innerHeight - 100) + 'px',
         width: '100%',
       }
     };
   },
-  methods: {
-    csvToArray(str, delimiter=",") {
-      //https://github.com/nsebhastian/javascript-csv-array-example/blob/master/index.html
-      const headers = str.slice(0, str.indexOf("\r\n")).split(delimiter);
-      const rows = str.replace(/\n/g,'').slice(str.indexOf("\r") + 1).split("\r");
-      const arr = rows.map(function (row) {
-      const values = row.split(delimiter);
-      const el = headers.reduce(function (object, header, index) {
-        object[header] = values[index];
-        return object;
-      }, {});
-      return el;			
-      });
-      // return the array
-      return arr;
-    },
-    stationSelected(wqId, wqType) {
-      this.$store.dispatch('setStation', wqId);
-      this.$store.dispatch('setWaterQuality', wqType);
-      this.$store.dispatch('setWaterQualityGraphVariable', wqType);  
-      // alert('you clicked WQ Station: ' + wqId);
-    }
-  },
   created() {
-    // fetch embayments
-    fetch("./data/embayments_wgs.geojson")
-      .then(response => {
-        return response.json()
-      }).then(json => {
-        this.embayGeojson = json;
+  // fetch embayments
+  fetch("./data/embayments_wgs.geojson")
+    .then(response => {
+      return response.json()
+    }).then(json => {
+      this.embayGeojson = json;
+  })
+  // fetch habitats
+  const fileArray = {
+    tidalFlats: {
+      cur: "./data/tidal_flats_current_wgs.geojson",
+      his: "./data/tidal_flats_historic_wgs.geojson"
+    },
+    saltMarsh: {
+      cur: "./data/salt_marsh_current_wgs.geojson",
+      his: "./data/salt_marsh_historic_wgs.geojson"
+    },
+    eelGrass: {
+      cur: "./data/eelgrass_current_wgs.geojson",
+      his: "./data/eelgrass_historic_wgs.geojson"
+    },
+  }
+  Object.entries(this.bkgrdGeojson).forEach(([key, value]) => {
+    Object.entries(value.data).forEach(([alt]) => {
+      fetch(fileArray[key][alt])
+        .then(response => {
+          return response.json()
+        }).then(json => {
+          this.bkgrdGeojson[key].data[alt] = json;
+      })					
     })
-    // fetch habitats
-    const fileArray = {
-      tidalFlats: {
-        cur: "./data/tidal_flats_current_wgs.geojson",
-        his: "./data/tidal_flats_historic_wgs.geojson"
-      },
-      saltMarsh: {
-        cur: "./data/salt_marsh_current_wgs.geojson",
-        his: "./data/salt_marsh_historic_wgs.geojson"
-      },
-      eelGrass: {
-        cur: "./data/eelgrass_current_wgs.geojson",
-        his: "./data/eelgrass_historic_wgs.geojson"
-      },
-    }
-    Object.entries(this.bkgrdGeojson).forEach(([key, value]) => {
-      Object.entries(value.data).forEach(([alt]) => {
-        fetch(fileArray[key][alt])
-          .then(response => {
-            return response.json()
-          }).then(json => {
-            this.bkgrdGeojson[key].data[alt] = json;
-        })					
-      })
+  })
+  // fetch water quality stations
+  fetch('./data/stations.json')
+    .then(response => {
+      return response.json()
+    }).then(json => {
+      this.stations = json.features;
     })
-    // fetch water quality
-    fetch("./data/wq_points.csv")
-      .then(response => {
-        return response.text()
-      }).then(data => {
-        const strData = this.csvToArray(data);
-        strData.forEach(elem => {
-          elem.WQ_ID = parseInt(elem.WQ_ID);
-          elem.LONGITUDE = parseFloat(elem.LONGITUDE);
-          elem.LATITUDE = parseFloat(elem.LATITUDE);						
-        })
-        this.stations = strData;
-        // console.log(this.stations);
-      })
   }
 }
 </script>
