@@ -60,6 +60,7 @@ export default {
       set (newWq) {
         this.$store.dispatch('setWaterQuality', newWq);
         this.$store.dispatch('onPointsLayer');
+        this.$store.dispatch('setActiveTab', 'water quality');
       }      
     }
   }

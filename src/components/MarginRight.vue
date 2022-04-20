@@ -1,17 +1,16 @@
 <template>
   <div>
-    {{ activeTab }}
     <div class="row">
       <b-tabs pills end justified v-model="activeTab" style="width: 100%">
-        <b-tab title="Habitat" :disabled="disableHabitatTab" active>
+        <b-tab title="Habitat" :disabled="disableHabitatTab">
           <app-habitat-graph-header></app-habitat-graph-header>
           <app-habitat-graph></app-habitat-graph>
         </b-tab>
         <b-tab title="Water Quality" :disabled="disableWaterQualityTab">
           <app-water-quality-graph-header></app-water-quality-graph-header>
           <app-water-quality-graph></app-water-quality-graph>
-        </b-tab>  
-      </b-tabs>      
+        </b-tab> 
+      </b-tabs>    
     </div>
     <br>
     <div class="row" style="padding-left: 15px">
@@ -54,24 +53,25 @@ export default {
     }
   },
   watch: {
-    "$store.state.habitat"() {
-      if (this.$store.state.habitat == null) {
+    "$store.state.activeTab"(newActive) {
+      console.log(newActive);
+      if (newActive == null) {
         this.disableHabitatTab = true;
-      } else {
-        this.disableHabitatTab = false;
-        this.activeTab = 0;
-        console.log(this.activeTab);
-      }
-    },
-    "$store.state.waterQuality"() {
-      if (this.$store.state.waterQuality == null) {
         this.disableWaterQualityTab = true;
-      } else {
+      } else if (newActive == 'habitat') {
+        this.disableHabitatTab = false;
+      } else if (newActive == 'water quality') {
         this.disableWaterQualityTab = false;
-        this.activeTab = 1;
-        console.log(this.activeTab);
       }
-    }
+      this.$nextTick(() => {
+        if (newActive == 'habitat') {
+          this.activeTab = 0;
+        } else if (newActive == 'water quality') {
+          this.activeTab = 1;
+        }
+        console.log('now update active tab');
+      })
+    }, immediate: true
   },
   components: {
     appHabitatGraph: HabitatGraph,
@@ -80,7 +80,7 @@ export default {
     appHabitatGraphHeader: HabitatGraphHeader,
     appWaterQualityGraphHeader: WaterQualityGraphHeader
   },
-  mounted() {
+  created() {
     if ((this.$store.state.habitat != null) && (this.$store.state.waterQuality == null)) {
       this.disableHabitatTab = false;
       this.disableWaterQualityTab = true;

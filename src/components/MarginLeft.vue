@@ -102,6 +102,7 @@ export default {
     takeTour() {
       this.$store.dispatch('setWaterQuality', null);
       this.$store.dispatch('setHabitat', null);
+      this.$store.dispatch('setActiveTab', null);
     }    
   }
 }

@@ -1,22 +1,34 @@
 <template>
   <div>
-    <b>Station:</b>
+    <div class="row">
+      <b>Station:</b>
+      {{ stationId }}
+    </div>
+    <div class="row">
+      <div v-if="!parameterList.includes(waterQuality)">
+        <b>Available Parameters:</b>
+        <ul class="no-bullets">
+          <li v-for="parameter in parameterList" :key="parameter"> 
+            {{ parameter}}
+          </li>
+        </ul>
+      </div>
+      <div v-else>
+        <b> Parameter:</b><br>
+        {{ waterQuality}}
+      </div>
+    </div>
     <br>
-    {{ stationId }}
-    <br>
-    <b>Parameter:</b>
-    <br>
-    {{ waterQuality }}
-    <br><br>
-    <b-button variant="primary" @click="plotData">Plot</b-button>    
-
+    <div class="row">
+      <b-button variant="primary" class="mod-button" @click="plotData" :disabled="!parameterList.includes(waterQuality)">Plot Data</b-button>   
+    </div>
   </div>
 </template>
 
 <script>
 
 export default {
-  props: ['stationId'],
+  props: ['stationId', 'parameterList'],
   computed: {
     waterQuality() {
       return this.$store.state.waterQuality;
@@ -26,12 +38,29 @@ export default {
     plotData() {
       this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
       this.$store.dispatch('setStation', this.stationId);
+      console.log(this.wqCounts);
     }
   }  
 
 }
 </script>
 
-<style>
+<style scoped>
+.mod-button {
+  padding: 2px;
+  font-size: 12px;
+  width: 100%;
+}
+
+button:disabled {
+  background-color: gray;
+  border: gray;
+}
+
+ul.no-bullets{
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
 
 </style>

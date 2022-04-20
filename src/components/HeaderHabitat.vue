@@ -54,6 +54,7 @@ export default {
       set (newHab) {
         this.$store.dispatch('setHabitat', newHab);
         this.$store.dispatch('onBaseLayer');
+        this.$store.dispatch('setActiveTab', 'habitat')
       }      
     }
   }

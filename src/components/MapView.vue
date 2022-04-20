@@ -15,11 +15,13 @@
         <div v-for="s in stations" :key="s.id">
           <l-circle-marker
             :lat-lng="[s.geometry.coordinates[1], s.geometry.coordinates[0]]"
-            :fillColor=circleColor
-            :color=circleColor
+            :fillColor=circleColorer(s.properties.parameter_list)
+            fillOpacity=1
+            :color=circleColorer(s.properties.parameter_list)
+            radius=5
           >
-            <l-popup>
-              <app-station-popup :stationId="s.id"></app-station-popup>
+            <l-popup ref="popup">
+              <app-station-popup :stationId="s.id" :parameterList="s.properties.parameter_list"></app-station-popup>
             </l-popup>
           </l-circle-marker>
         </div>
@@ -190,45 +192,80 @@ export default {
       }
     };
   },
+  methods: {
+    circleColorer(parameterList) {
+      if (parameterList.includes(this.waterQuality)) {
+        return '#00B0F0';
+      } else {
+        return '#808080';
+      }
+      // console.log(parameterList);
+      // return 'red';
+    },
+    parameterMapper(wqCounts) {
+      const waterQualityMap = new Map();
+      waterQualityMap.set('CHLA', 'chlorophyl-a');
+      waterQualityMap.set('DO', 'dissolved oxygen');
+      waterQualityMap.set('ECOL', 'e. coli');
+      waterQualityMap.set('ENT', 'enterococcus');
+      waterQualityMap.set('PH', 'pH');
+      waterQualityMap.set('SAL', 'salinity');
+      waterQualityMap.set('TEMP', 'temperature');
+      waterQualityMap.set('TN', 'nitrogen');
+      waterQualityMap.set('TP', 'phosphorus');
+      waterQualityMap.set('TURB', 'clarity');    
+      let activeParameters = [];
+      Object.entries(wqCounts).forEach(([key, value]) => {
+        if (value > 0) {
+          activeParameters.push(waterQualityMap.get(key));
+        } 
+      });
+      return activeParameters;
+      // wqCounts.forEach((key, value) => console.log(key + '-' + value));
+    }
+  },
   created() {
-  // fetch embayments
-  fetch("./data/embayments_wgs.geojson")
-    .then(response => {
-      return response.json()
-    }).then(json => {
-      this.embayGeojson = json;
-  })
-  // fetch habitats
-  const fileArray = {
-    tidalFlats: {
-      cur: "./data/tidal_flats_current_wgs.geojson",
-      his: "./data/tidal_flats_historic_wgs.geojson"
-    },
-    saltMarsh: {
-      cur: "./data/salt_marsh_current_wgs.geojson",
-      his: "./data/salt_marsh_historic_wgs.geojson"
-    },
-    eelGrass: {
-      cur: "./data/eelgrass_current_wgs.geojson",
-      his: "./data/eelgrass_historic_wgs.geojson"
-    },
-  }
-  Object.entries(this.bkgrdGeojson).forEach(([key, value]) => {
-    Object.entries(value.data).forEach(([alt]) => {
-      fetch(fileArray[key][alt])
-        .then(response => {
-          return response.json()
-        }).then(json => {
-          this.bkgrdGeojson[key].data[alt] = json;
-      })					
+    // fetch embayments
+    fetch("./data/embayments_wgs.geojson")
+      .then(response => {
+        return response.json()
+      }).then(json => {
+        this.embayGeojson = json;
     })
-  })
-  // fetch water quality stations
-  fetch('./data/stations.json')
+    // fetch habitats
+    const fileArray = {
+      tidalFlats: {
+        cur: "./data/tidal_flats_current_wgs.geojson",
+        his: "./data/tidal_flats_historic_wgs.geojson"
+      },
+      saltMarsh: {
+        cur: "./data/salt_marsh_current_wgs.geojson",
+        his: "./data/salt_marsh_historic_wgs.geojson"
+      },
+      eelGrass: {
+        cur: "./data/eelgrass_current_wgs.geojson",
+        his: "./data/eelgrass_historic_wgs.geojson"
+      },
+    }
+    Object.entries(this.bkgrdGeojson).forEach(([key, value]) => {
+      Object.entries(value.data).forEach(([alt]) => {
+        fetch(fileArray[key][alt])
+          .then(response => {
+            return response.json()
+          }).then(json => {
+            this.bkgrdGeojson[key].data[alt] = json;
+        })					
+      })
+    })
+    // fetch water quality stations
+    fetch('./data/stations.json')
     .then(response => {
       return response.json()
     }).then(json => {
       this.stations = json.features;
+      this.stations.forEach(station => {
+        station.properties['parameter_list'] = this.parameterMapper(station.properties.wq_counts);
+      });
     })
   }
 }

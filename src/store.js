@@ -15,7 +15,8 @@ export const store = new Vuex.Store({
     habitatMetricLayer: false,
     habitatIndexLayer: false,
     embayment: null,
-    station: null
+    station: null,
+    activeTab: null
   },
   mutations: {
     SET_HABITAT: (state, payload) => {
@@ -53,6 +54,9 @@ export const store = new Vuex.Store({
     },
     SWITCH_HABITAT_INDEX_LAYER: state => {
       state.habitatIndexLayer = !state.habitatIndexLayer;
+    },
+    SET_ACTIVE_TAB: (state, payload) => {
+      state.activeTab = payload;
     }
   },
   actions: {
@@ -101,6 +105,9 @@ export const store = new Vuex.Store({
       if (state.habitatIndexLayer == true && state.habitatMetricLayer == true) {
         commit('SWITCH_HABITAT_METRIC_LAYER');
       }
-    }
+    },
+    setActiveTab: ({commit}, payload) => {
+      commit('SET_ACTIVE_TAB', payload);
+    } 
   }
 });

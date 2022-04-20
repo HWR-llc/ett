@@ -23,8 +23,10 @@
 
       </div> 
       <div class="col-3" :style="scrollBoxHeightStyle">
-        <app-margin-tour v-if="waterQuality == null && habitat == null"></app-margin-tour>
-        <app-margin-right v-else></app-margin-right>
+        <transition name="fade" mode="out-in">
+          <app-margin-tour v-if="waterQuality == null && habitat == null"></app-margin-tour>
+          <app-margin-right v-else></app-margin-right>
+        </transition>
       </div>      
     </div>
   </div>
@@ -92,9 +94,20 @@ export default {
 </script>
 
 <style>
-/* .overflow {
-  height: this.rowTwoHeight;
-  overflow-y: scroll;
-  overflow-x: hidden;
-} */
+    .fade-enter {
+        opacity: 0;
+    }
+
+    .fade-enter-active {
+        transition: opacity 500ms;
+    }
+
+    .fade-leave {
+        /*opacity: 1;*/
+    }
+
+    .fade-leave-active {
+        transition: opacity 500ms;
+        opacity: 0;
+    }
 </style>

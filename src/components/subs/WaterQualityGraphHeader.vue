@@ -9,8 +9,8 @@
           <img :src="item.pic" style="max-height: 60px" class="overlay-icon">
         </div>
       </div>
-      <h6>{{ station }}</h6>
-      <h6>{{ waterQualityGraphVariable }}</h6>
+      <h6>Station: {{ station }}</h6>
+      <h6>Variable: {{ waterQualityGraphVariable }}</h6>
     </div>  
   </div>
 </template>
