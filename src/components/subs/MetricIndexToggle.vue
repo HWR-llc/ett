@@ -12,11 +12,11 @@
         <div class="row" style="padding-top: 5px">
           <div class="col-12">
             <svg height="30">
-              <rect id="patch" x="0" y="0" width="35" height="25" style="fill: #d7191c"/>
-              <rect id="patch" x="35" y="0" width="35" height="25" style="fill: #fdae61"/>
-              <rect id="patch" x="70" y="0" width="35" height="25" style="fill: #ffffbf"/>
-              <rect id="patch" x="105" y="0" width="35" height="25" style="fill: #abdda4"/>
-              <rect id="patch" x="105" y="0" width="35" height="25" style="fill: #2b83ba"/>
+              <rect id="patch" x="0" y="0" width="35" height="25" style="fill: #86EEC6"/>
+              <rect id="patch" x="35" y="0" width="35" height="25" style="fill: #6AC6C0"/>
+              <rect id="patch" x="70" y="0" width="35" height="25" style="fill: #50A0BA"/>
+              <rect id="patch" x="105" y="0" width="35" height="25" style="fill: #3174B3"/>
+              <rect id="patch" x="140" y="0" width="35" height="25" style="fill: #1850AD"/>
             </svg>
           </div>
         </div>     
@@ -34,11 +34,11 @@
         <div class="row" style="padding-top: 5px">
           <div class="col-12">
             <svg height="30">
-              <rect id="patch" x="0" y="0" width="35" height="25" style="fill: #a6611a"/>
-              <rect id="patch" x="35" y="0" width="35" height="25" style="fill: #dfc27d"/>
-              <rect id="patch" x="70" y="0" width="35" height="25" style="fill: #f5f5f5"/>
-              <rect id="patch" x="105" y="0" width="35" height="25" style="fill: #80cdc1"/>
-              <rect id="patch" x="105" y="0" width="35" height="25" style="fill: #018571"/>
+              <rect id="patch" x="0" y="0" width="35" height="25" style="fill: #86EEC6"/>
+              <rect id="patch" x="35" y="0" width="35" height="25" style="fill: #6AC6C0"/>
+              <rect id="patch" x="70" y="0" width="35" height="25" style="fill: #50A0BA"/>
+              <rect id="patch" x="105" y="0" width="35" height="25" style="fill: #3174B3"/>
+              <rect id="patch" x="140" y="0" width="35" height="25" style="fill: #1850AD"/>
             </svg>
           </div>
         </div>     
