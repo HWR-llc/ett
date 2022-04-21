@@ -1,5 +1,6 @@
 <template>
 	<div>
+    <app-map-legend class="legend"></app-map-legend>
     <l-map :style="mapStyleObj" :zoom="zoom" :center="center">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <l-geo-json :geojson="embayGeojson" :options="optionsEmbayment" :options-style="embStyle" id="habitat"></l-geo-json>
@@ -44,6 +45,7 @@ Icon.Default.mergeOptions({
 
 import {LMap, LTileLayer, LGeoJson, LCircleMarker, LPopup} from 'vue2-leaflet';
 import StationPopup from './subs/StationPopup.vue'
+import MapLegend from './subs/MapLegend.vue'
 export default {
   components: {
     LMap,
@@ -51,7 +53,8 @@ export default {
     LGeoJson,
     LCircleMarker,
     LPopup,
-    appStationPopup: StationPopup
+    appStationPopup: StationPopup,
+    appMapLegend: MapLegend
   },
   computed: {
     baseLayer() {
@@ -270,6 +273,12 @@ export default {
   }
 }
 </script>
-<style>
-
+<style scoped>
+.legend {
+  width: 200px;
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  z-index: 1000;
+}
 </style>

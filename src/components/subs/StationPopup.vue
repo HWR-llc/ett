@@ -38,7 +38,6 @@ export default {
     plotData() {
       this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
       this.$store.dispatch('setStation', this.stationId);
-      console.log(this.wqCounts);
     }
   }  
 
