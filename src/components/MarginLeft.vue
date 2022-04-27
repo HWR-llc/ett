@@ -4,7 +4,10 @@
     <br>
     <div class="row" style="padding-top: 30px">
       <div class="col">
-        <b-button squared class="habitat-background no-border full-width" @click="takeTour"><b>Take a Tour</b></b-button>
+        <b-button squared class="habitat-background no-border full-width" v-b-modal.modal-tour><b>Take a Tour</b></b-button>
+        <b-modal id="modal-tour" title="Tour to be completed in Phase 2?">
+          <p class="my-4">This button will eventually lead to a tour</p>
+        </b-modal> 
       </div>
     </div>
     <div class="row" style="padding-top: 10px">
@@ -97,13 +100,6 @@ export default {
         this.$store.dispatch('setEmbayment', newEmb);
       }      
     },
-  },
-  methods: {
-    takeTour() {
-      this.$store.dispatch('setWaterQuality', null);
-      this.$store.dispatch('setHabitat', null);
-      this.$store.dispatch('setActiveTab', null);
-    }    
   }
 }
 </script>

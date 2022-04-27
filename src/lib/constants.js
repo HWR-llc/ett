@@ -6,33 +6,41 @@ export const imageLibraryHabitat = {
     title: 'Eelgrass',
     img: require('@/assets/imgs/eelgrass_img.jpg'),
     pic: require('@/assets/icons/eelgrass.svg'),
-    currentYear: '**2017',
-    historicYear: '**1992',
-    source: 'MassDEP'
+    currentYear: 'TBD',
+    historicYear: '1995',
+    source: 'MassDEP',
+    currentColor: '#e319a6',
+    historicColor: '#eba4d5'
   },
   'salt marsh': {
     title: 'Salt Marsh',
     img: require('@/assets/imgs/salt_marsh_img.jpg'),
     pic: require('@/assets/icons/salt_marsh.svg'),
-    currentYear: '**2005',
-    historicYear: '**1995',
-    source: 'MassDEP'
+    currentYear: '2005',
+    historicYear: '1990-2000',
+    source: 'MassDEP',
+    currentColor: '#255c33',
+    historicColor: '#68f28d'
   },
   'tidal flats': {
     title: 'Tidal Flats',
     img: require('@/assets/imgs/tidal_flats_img.jpg'),
     pic: require('@/assets/icons/tidal_flats.svg'),
-    currentYear: '**2005',
-    historicYear: '**1995',
-    source: 'MassDEP'
+    currentYear: '2005',
+    historicYear: '1990-2000',
+    source: 'MassDEP',
+    currentColor: '#c96b12',
+    historicColor: '#deb187'
   },
   'diadromous fish': {
     title: 'Diadromous Fish',
     img: require('@/assets/imgs/diadromous_img.jpg'),
     pic: require('@/assets/icons/diadromous.svg'),
-    currentYear: '**2012',
-    historicYear: '**2012',
-    source: 'MassBays'
+    currentYear: 'TBD',
+    historicYear: 'TBD',
+    source: 'MassBays',
+    currentColor: '#000000',
+    historicColor: '#ffffff'
   }
 }
 export const imageLibraryWaterQuality = {

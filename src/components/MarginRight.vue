@@ -14,9 +14,6 @@
     </div>
     <br>
     <div class="row" style="padding-left: 15px">
-      <u><h6>Watershed Embayment Metrics</h6></u>
-    </div>
-    <div class="row" style="padding-left: 15px">
       <app-metric-index-toggle></app-metric-index-toggle>
     </div>
   </div>

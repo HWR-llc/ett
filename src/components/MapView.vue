@@ -20,10 +20,15 @@
             fillOpacity=1
             :color=circleColorer(s.properties.parameter_list)
             radius=5
+            @click="clicked"
           >
-            <l-popup ref="popup">
-              <app-station-popup :stationId="s.id" :parameterList="s.properties.parameter_list"></app-station-popup>
-            </l-popup>
+            <l-tooltip ref="tooltip" style="min-width: 200px; padding: 15px">
+              <app-station-tooltip 
+                :stationId="s.id"
+                :parameterList="s.properties.parameter_list" 
+                :providerName="s.properties.provider_name">
+              </app-station-tooltip>
+            </l-tooltip>
           </l-circle-marker>
         </div>
       </div>
@@ -43,17 +48,18 @@ Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
-import {LMap, LTileLayer, LGeoJson, LCircleMarker, LPopup} from 'vue2-leaflet';
-import StationPopup from './subs/StationPopup.vue'
+import {LMap, LTileLayer, LGeoJson, LCircleMarker, LTooltip} from 'vue2-leaflet';
+import StationTooltip from './subs/StationTooltip.vue'
 import MapLegend from './subs/MapLegend.vue'
+import { imageLibraryHabitat } from '../lib/constants'
 export default {
   components: {
     LMap,
     LTileLayer,
     LGeoJson,
     LCircleMarker,
-    LPopup,
-    appStationPopup: StationPopup,
+    LTooltip,
+    appStationTooltip: StationTooltip,
     appMapLegend: MapLegend
   },
   computed: {
@@ -91,7 +97,7 @@ export default {
       return () => {
         return {
           stroke: false,
-          fillColor: '#255c33',
+          fillColor: this.imageLibraryHabitat['salt marsh'].currentColor,
           fillOpacity: 0.85,
           interactive: false
         };
@@ -101,7 +107,7 @@ export default {
       return () => {
         return {
           stroke: false,
-          fillColor: '#68f28d',
+          fillColor: this.imageLibraryHabitat['salt marsh'].historicColor,
           fillOpacity: 0.5,
           interactive: false
         };
@@ -111,7 +117,7 @@ export default {
       return () => {
         return {
           stroke: false,
-          fillColor: '#e319a6',
+          fillColor: this.imageLibraryHabitat['eelgrass'].currentColor,
           fillOpacity: 0.85,
           interactive: false
         };
@@ -121,7 +127,7 @@ export default {
       return () => {
         return {
           stroke: false,
-          fillColor: '#eba4d5',
+          fillColor: this.imageLibraryHabitat['eelgrass'].historicColor,
           fillOpacity: 0.5,
           interactive: false
         };
@@ -131,7 +137,7 @@ export default {
       return () => {
         return {
           stroke: false,
-          fillColor: '#c96b12',
+          fillColor: this.imageLibraryHabitat['tidal flats'].currentColor,
           fillOpacity: 0.85,
           interactive: false
         };
@@ -141,7 +147,7 @@ export default {
       return () => {
         return {
           stroke: false,
-          fillColor: '#deb187',
+          fillColor: this.imageLibraryHabitat['tidal flats'].historicColor,
           fillOpacity: 0.5,
           interactive: false
         };
@@ -160,6 +166,7 @@ export default {
   },
   data () {
     return {
+      imageLibraryHabitat: imageLibraryHabitat,
       url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}',
       attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
       zoom: 9,
@@ -225,6 +232,9 @@ export default {
       });
       return activeParameters;
       // wqCounts.forEach((key, value) => console.log(key + '-' + value));
+    },
+    clicked() {
+      alert('got clicked');
     }
   },
   created() {

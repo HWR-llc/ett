@@ -7,8 +7,7 @@
           <div class="center-cropped"
                :style="{ 'background-image': 'url(' + item.img + ')' }">
           </div>
-          <h3 class="overlay-text">{{ item.title }}</h3>
-          <img :src="item.pic" style="max-height: 90%" class="overlay-icon">
+          <h2 class="overlay-text"><b>{{ item.title }}</b></h2>
         </div>
       </div>
 
@@ -46,17 +45,10 @@ export default {
 <style scoped>
 .overlay-text {
   position: absolute;
-  top: 35%;
+  top: 25%;
   left: 10%;
   color: white;
 }
-.overlay-icon {
-  position: absolute;
-  top: 50%;
-  right: 10%;
-  transform: translateY(-50%);
-}
-
 .center-cropped {
   width: 100%;
   height: 90px;

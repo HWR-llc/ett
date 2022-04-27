@@ -14,7 +14,11 @@
         </div>
         <div class="row justify-content-center"  style="padding-top: 10px">
           <p style="max-width: 60%; text-align: center">
-            The <b>Ecohealth Tracking Tool</b> is a gateway for citizens, scientists, and policy makers to learn about coastal habitats, the water quality that sustains healthy habitats, and the many benefits these habitats provide. Explore habitat and water quality data for the entire MassBays region…or take a closer look at data for your favorite beach, salt marsh, or estuary. 
+            The <b>Ecohealth Tracking Tool</b> is a gateway for the public, scientists, and policy makers to access information
+            about coastal habitats, the water quality conditions that sustain healthy habitats, and the many benefits these habitats provide.
+            You'll find data for the entire MassBays region, as well as your favorite beach, salt marsh, or estuary.
+            <br>
+            Dive in to learn more about efforts to maintain and restore healthy coastal habitats…and how you can help!
           </p>
         </div>
       </div>

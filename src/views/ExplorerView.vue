@@ -24,11 +24,12 @@
       </div> 
       <div class="col-3" :style="scrollBoxHeightStyle">
         <transition name="fade" mode="out-in">
-          <app-margin-tour v-if="waterQuality == null && habitat == null"></app-margin-tour>
+          <app-margin-instructions v-if="waterQuality == null && habitat == null"></app-margin-instructions>
           <app-margin-right v-else></app-margin-right>
         </transition>
       </div>      
     </div>
+    <app-modal-start></app-modal-start>
   </div>
 </template>
 
@@ -36,8 +37,9 @@
 import HeaderContainer from '../components/HeaderContainer.vue'
 import MarginLeft from '../components/MarginLeft.vue'
 import MarginRight from '../components/MarginRight.vue'
-import MarginTour from '../components/MarginTour.vue'
+import MarginInstructions from '../components/MarginInstructions.vue'
 import MapView from '../components/MapView.vue'
+import ModalStart from '../components/ModalStart.vue'
 export default {
   name: 'ExplorerView',
   data () {
@@ -84,8 +86,9 @@ export default {
     appHeaderContainer: HeaderContainer,
     appMarginLeft: MarginLeft,
     appMarginRight: MarginRight,
-    appMarginTour: MarginTour,
-    appMapView: MapView
+    appMarginInstructions: MarginInstructions,
+    appMapView: MapView,
+    appModalStart: ModalStart
   },
   mounted() {
     this.rowTwoHeight = window.innerHeight - 100

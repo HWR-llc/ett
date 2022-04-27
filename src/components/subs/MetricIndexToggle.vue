@@ -7,7 +7,7 @@
       </div>
       <div class="col-9">
         <div class="row">
-          Percent of Habitat Target
+          % {{ habitatCapital }} Target
         </div>
         <div class="row" style="padding-top: 5px">
           <div class="col-12">
@@ -23,7 +23,7 @@
       </div>         
     </div>
     <!-- Index Toggle -->
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-3" style="padding-top: 5px">
         <toggle-button v-model="habitatIndexLayer" :sync="true"></toggle-button>
       </div>
@@ -43,13 +43,20 @@
           </div>
         </div>     
       </div>         
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 export default {
   computed: {
+    habitatCapital() {
+      const titles = this.$store.state.habitat.split(" ");
+      const capitalTitle = titles.map((word) => {
+        return word[0].toUpperCase() + word.substring(1);
+      }).join(" ");
+      return capitalTitle;
+    },
     habitatMetricLayer: {
       get () {
         return this.$store.state.habitatMetricLayer;
