@@ -1,6 +1,7 @@
 <template>
 	<div>
     <app-map-legend class="legend"></app-map-legend>
+    <app-water-quality-floater class="floater"></app-water-quality-floater>
     <l-map :style="mapStyleObj" :zoom="zoom" :center="center" ref="ettMap">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <l-geo-json 
@@ -36,8 +37,6 @@
           </l-circle-marker>
         </div>
       </div>
-
-
     </l-map>
 	</div>
 </template>
@@ -55,6 +54,7 @@ Icon.Default.mergeOptions({
 import {LMap, LTileLayer, LGeoJson, LCircleMarker, LTooltip} from 'vue2-leaflet';
 import StationTooltip from './subs/StationTooltip.vue'
 import MapLegend from './subs/MapLegend.vue'
+import WaterQualityFloater from '../components/WaterQualityFloater.vue'
 import { imageLibraryHabitat } from '../lib/constants'
 export default {
   components: {
@@ -64,7 +64,8 @@ export default {
     LCircleMarker,
     LTooltip,
     appStationTooltip: StationTooltip,
-    appMapLegend: MapLegend
+    appMapLegend: MapLegend,
+    appWaterQualityFloater: WaterQualityFloater
   },
   computed: {
     baseLayer() {
@@ -295,13 +296,15 @@ export default {
 </script>
 <style scoped>
 .legend {
-  width: 200px;
   position: absolute;
   top: 5%;
   right: 5%;
   z-index: 1000;
 }
-l-tooltip {
-  
+.floater {
+  position: absolute;
+  bottom: 5%;
+  left: 5%;
+  z-index: 2000; 
 }
 </style>

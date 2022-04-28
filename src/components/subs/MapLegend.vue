@@ -87,6 +87,7 @@ export default {
 
 <style scoped>
 .legend-border {
+  width: 200px;
   border: solid 1px gray;
   background-color: rgba(255,255,255,.7);
   border-radius: 10px;

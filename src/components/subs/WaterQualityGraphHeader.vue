@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100%">
+  <div style="width: 100%; min-height: 100px">
     <div class="top-row">
       <h5>Embayment Name</h5>
     </div>
@@ -68,7 +68,7 @@ export default {
 
 .overlay-icon {
   position: absolute;
-  top: 26px;
+  top: 40px;
   left: 5%;
 }
 </style>

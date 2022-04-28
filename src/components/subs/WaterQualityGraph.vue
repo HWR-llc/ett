@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="floating-text" v-if="station == null"> <b>Select an active station and <br> click "Plot Data" to see a graph</b></p>
-    <highcharts class="chart" :options="chartOptions" ref="chart" style="width: 100%; min-height: 300px; max-height:500px"></highcharts>
+    <highcharts class="chart" :options="chartOptions" ref="chart" style="width: 380px; height: 180px"></highcharts>
   </div>
 </template>
 
