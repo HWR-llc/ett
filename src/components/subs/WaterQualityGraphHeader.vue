@@ -10,7 +10,7 @@
         </div>
       </div>
       <h6>{{ station }}</h6>
-      <!-- <h6>{{ waterQualityGraphVariable }}</h6> -->
+      <h6>{{ waterQualityGraphVariableCapital }}</h6>
     </div>  
   </div>
 </template>
@@ -39,7 +39,14 @@ export default {
     },
     waterQuality() {
       return this.$store.state.waterQuality;
-    }
+    },
+    waterQualityGraphVariableCapital() {
+      const titles = this.$store.state.waterQualityGraphVariable.split(" ");
+      const capitalTitle = titles.map((word) => {
+        return word[0].toUpperCase() + word.substring(1);
+      }).join(" ");
+      return capitalTitle;
+    },
   }
 }
 </script>
@@ -56,7 +63,7 @@ export default {
 .bottom-row {
   padding-top: 20px;
   text-align: center;
-  height: 65px;
+  height: 75px;
 }
 
 .overlay-icon {

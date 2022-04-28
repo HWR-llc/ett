@@ -1,9 +1,13 @@
 <template>
 	<div>
     <app-map-legend class="legend"></app-map-legend>
-    <l-map :style="mapStyleObj" :zoom="zoom" :center="center">
+    <l-map :style="mapStyleObj" :zoom="zoom" :center="center" ref="ettMap">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-      <l-geo-json :geojson="embayGeojson" :options="optionsEmbayment" :options-style="embStyle" id="habitat"></l-geo-json>
+      <l-geo-json 
+        :geojson="embayGeojson" 
+        :options="optionsEmbayment" 
+        :options-style="embStyle"
+        ref="embaymentsBase"></l-geo-json>
       <div v-if="baseLayer">
         <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.his" v-if="habitat=='tidal flats'" :options-style="tfStyleHis">></l-geo-json>	  		
         <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.his" v-if="habitat=='salt marsh'" :options-style="smStyleHis"></l-geo-json>	
@@ -16,12 +20,11 @@
         <div v-for="s in stations" :key="s.id">
           <l-circle-marker
             :lat-lng="[s.geometry.coordinates[1], s.geometry.coordinates[0]]"
-            :fillColor=circleColorer(s.properties.parameter_list)
+            :fillColor="circleColorer(s.properties.parameter_list)"
             fillOpacity=1
-            :color=circleColorer(s.properties.parameter_list)
+            :color="circleColorer(s.properties.parameter_list)"
             radius=5
-            @click="plotData(s.id, waterQuality)"
-            interactive=false
+            @click="plotData(s.id, s.properties.parameter_list)"
           >
             <l-tooltip ref="tooltip" style="padding-left: 15px; padding-right: 15px">
               <app-station-tooltip 
@@ -161,7 +164,12 @@ export default {
     },
     onEachEmbaymentFunction() {
       return (feature, layer) => {
-        layer.bindPopup(feature.properties.NAME);
+        layer.on({
+          click: (event) => {
+            this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
+            this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
+          }
+        })
       };
     }
   },
@@ -210,17 +218,6 @@ export default {
       } else {
         return '#808080';
       }
-      // console.log(parameterList);
-      // return 'red';
-    },
-    circleActivatorOptions() {
-      console.log('activator');
-      // if (parameterList.includes(this.waterQuality)) {
-      //   return '#00B0F0';
-      // } else {
-      //   return '#808080';
-      // }
-      return {interactive: false}
     },
     parameterMapper(wqCounts) {
       const waterQualityMap = new Map();
@@ -243,10 +240,11 @@ export default {
       return activeParameters;
       // wqCounts.forEach((key, value) => console.log(key + '-' + value));
     },
-    plotData(stationId) {
-      alert(stationId);
-      this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
-      this.$store.dispatch('setStation', stationId);
+    plotData(stationId, parameterList) {
+      if (parameterList.includes(this.waterQuality)) {
+        this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
+        this.$store.dispatch('setStation', stationId);
+      }
     }
   },
   created() {

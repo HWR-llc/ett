@@ -11,6 +11,9 @@ export default {
   data() {
     return {
       chartOptions: {
+        chart: {
+          type: 'scatter',
+        },
         title: {
           text: null
         },

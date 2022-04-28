@@ -1,19 +1,23 @@
 <template>
  <div>
-   <div class="row">
-    <div class="col-12">
-      <div v-for="(item, key) in imageLibrary" :key="key">
-        <div v-if="habitat==key"   style="width: 100%">
-          <div class="center-cropped"
+    <div class="row">
+      <div class="col-12">
+        <div v-for="(item, key) in imageLibrary" :key="key">
+          <div v-if="habitat==key"   style="width: 100%">
+            <div class="center-cropped"
                :style="{ 'background-image': 'url(' + item.img + ')' }">
+            </div>
+            <h2 class="overlay-text"><b>{{ item.title }}</b></h2>
           </div>
-          <h2 class="overlay-text"><b>{{ item.title }}</b></h2>
         </div>
       </div>
-
+    </div>
+    <div class="row">
+      <div class="col-12" style="text-align: center">
+        <h4>{{ embayment }} </h4>
+      </div>
     </div>
   </div>
-   </div>
 </template>
 
 <script>
@@ -37,6 +41,9 @@ export default {
         return word[0].toUpperCase() + word.substring(1);
       }).join(" ");
       return capitalTitle;
+    },
+    embayment() {
+      return this.$store.state.embayment;
     }
   }
 }
