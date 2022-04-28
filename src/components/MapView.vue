@@ -20,13 +20,14 @@
             fillOpacity=1
             :color=circleColorer(s.properties.parameter_list)
             radius=5
-            @click="clicked"
+            @click="plotData(s.id, waterQuality)"
+            interactive=false
           >
-            <l-tooltip ref="tooltip" style="min-width: 200px; padding: 15px">
+            <l-tooltip ref="tooltip" style="padding-left: 15px; padding-right: 15px">
               <app-station-tooltip 
                 :stationId="s.id"
                 :parameterList="s.properties.parameter_list" 
-                :providerName="s.properties.provider_name">
+                :organizationName="s.properties.organization_identifier">
               </app-station-tooltip>
             </l-tooltip>
           </l-circle-marker>
@@ -212,11 +213,20 @@ export default {
       // console.log(parameterList);
       // return 'red';
     },
+    circleActivatorOptions() {
+      console.log('activator');
+      // if (parameterList.includes(this.waterQuality)) {
+      //   return '#00B0F0';
+      // } else {
+      //   return '#808080';
+      // }
+      return {interactive: false}
+    },
     parameterMapper(wqCounts) {
       const waterQualityMap = new Map();
       waterQualityMap.set('CHLA', 'chlorophyl-a');
       waterQualityMap.set('DO', 'dissolved oxygen');
-      waterQualityMap.set('ECOL', 'e. coli');
+      waterQualityMap.set('ECOLI', 'e. coli');
       waterQualityMap.set('ENT', 'enterococcus');
       waterQualityMap.set('PH', 'pH');
       waterQualityMap.set('SAL', 'salinity');
@@ -233,8 +243,10 @@ export default {
       return activeParameters;
       // wqCounts.forEach((key, value) => console.log(key + '-' + value));
     },
-    clicked() {
-      alert('got clicked');
+    plotData(stationId) {
+      alert(stationId);
+      this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
+      this.$store.dispatch('setStation', stationId);
     }
   },
   created() {
@@ -290,5 +302,8 @@ export default {
   top: 5%;
   right: 5%;
   z-index: 1000;
+}
+l-tooltip {
+  
 }
 </style>
