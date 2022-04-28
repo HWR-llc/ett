@@ -1,0 +1,72 @@
+/* color style by habitat type */
+.eelgrass-background {
+  background-color: #00A3CC;
+}
+
+.eelgrass-main {
+  color: #00A3CC;
+}
+
+.eelgrass-base-current {
+  fill: #00A3CC;
+  stroke: lightgray;
+}
+
+.salt-marsh-background {
+  background-color: #76DF41;
+}
+
+.salt-marsh-main {
+  color: #76DF41;
+}
+
+.salt-marsh-base-current {
+  fill: #76DF41;
+  stroke: lightgray;
+}
+
+.tidal-flats-background {
+  background-color: #34B2A3;
+}
+
+.tidal-flats-main {
+  color: #34B2A3;
+}
+
+.tidal-flats-base-current {
+  fill: #34B2A3;
+  stroke: lightgray;
+}
+
+.diadromous-background {
+  background-color: #1850AD;
+}
+
+.diadromous-main {
+  color: #1850AD;
+  stroke: lightgray;
+}
+
+.diadromous-base-current {
+  fill: #1850AD;
+}
+
+.habitat-background {
+  background-color: #76DF41;
+}
+
+.habitat-main {
+  color: #76DF41;
+}
+
+.water-quality-background {
+  background-color: #00B0F0;
+}
+
+.water-quality-main {
+  color: #00B0F0;
+}
+
+.no-border {
+  border: 0px;
+}
