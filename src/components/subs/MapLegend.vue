@@ -45,9 +45,9 @@
         </svg> 
       </div>
       <div class="col-9">
-        WQ Data Available
+        Data Available for
         <br>
-        At Station
+        Selected Parameter
       </div>
     </div>
     <div class="row" v-if="pointsLayer == true">
@@ -57,9 +57,9 @@
         </svg> 
       </div>
       <div class="col-9">
-        No WQ Data Available
+        No Data Available for
         <br>
-        At Station
+        Selected Parameter
       </div>
     </div>
   </div>

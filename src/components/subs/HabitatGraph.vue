@@ -17,6 +17,9 @@ export default {
           text: null
         },
         xAxis: {
+          title: {
+            text: 'Year'
+          },
           categories: [
             '2000',
             '2005',
@@ -31,7 +34,7 @@ export default {
         yAxis: {
           min: 0,
           title: {
-            text: 'acres'
+            text: 'Acres'
           }
         },
         legend: {

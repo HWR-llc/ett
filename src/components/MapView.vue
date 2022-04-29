@@ -175,7 +175,8 @@ export default {
             this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
             this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
           }
-        })
+        });
+        layer.bindTooltip(feature.properties.NAME);
       };
     }
   },
@@ -236,10 +237,10 @@ export default {
       waterQualityMap.set('TEMP', 'temperature');
       waterQualityMap.set('TN', 'nitrogen');
       waterQualityMap.set('TP', 'phosphorus');
-      waterQualityMap.set('TURB', 'clarity');    
+      waterQualityMap.set('TURB', 'turbidity');    
       let activeParameters = [];
       Object.entries(wqCounts).forEach(([key, value]) => {
-        if (value > 0) {
+        if (value > 0 && key != 'CHLA') {
           activeParameters.push(waterQualityMap.get(key));
         } 
       });

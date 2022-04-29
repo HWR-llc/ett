@@ -3,9 +3,6 @@
     <div class="row">
       <app-habitat-graph-header style="width: 100%"></app-habitat-graph-header>
     </div>
-    <div class="row justify-content-center">
-      <h6 v-if="embayment == null">State Wide</h6><h6 v-else>{{ embayment }}</h6>
-    </div>
     <div class="row">
       <app-habitat-graph style="width: 100%"></app-habitat-graph> 
     </div>
@@ -42,9 +39,6 @@ export default {
     },
     habitatIndexLayer() {
       return this.$store.state.habitatIndexLayer;
-    },
-    embayment() {
-      return this.$store.state.embayment;
     }
   },
   components: {

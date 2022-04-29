@@ -6,10 +6,11 @@
 </template>
 
 <script>
-// import Highcharts from "highcharts"
+import { waterQualityThresholds } from '../../lib/constants'
 export default {
   data() {
     return {
+      waterQualityThresholds: waterQualityThresholds,
       chartOptions: {
         chart: {
           type: 'scatter',
@@ -22,6 +23,9 @@ export default {
         },
         xAxis: {
           type: 'datetime',
+          title: {
+            text: 'Year'
+          },
           labels: {
             format: '{value:%Y-%m}'
           },
@@ -32,12 +36,15 @@ export default {
           }
         },
         legend: {
-          enabled: false
+          enabled: true
         },
         series: [
           {
-            name: 'dataset',
-            lineWidth: 0,
+            name: 'Observed',
+            data: []
+          },
+          {
+            name: 'threshold',
             data: []
           }
         ]
@@ -50,7 +57,14 @@ export default {
     },
     waterQualityGraphVariable() {
       return this.$store.state.waterQualityGraphVariable;
-    }
+    },
+    waterQualityGraphVariableCapital() {
+      const titles = this.$store.state.waterQualityGraphVariable.split(" ");
+      const capitalTitle = titles.map((word) => {
+        return word[0].toUpperCase() + word.substring(1);
+      }).join(" ");
+      return capitalTitle;
+    },
   },
   watch: {
     '$store.state.station'() {
@@ -69,7 +83,7 @@ export default {
       waterQualityMap.set('temperature', 'TEMP');
       waterQualityMap.set('nitrogen', 'TN');
       waterQualityMap.set('phosphorus', 'TP');
-      waterQualityMap.set('clarity', 'TURB'); 
+      waterQualityMap.set('turbidity', 'TURB'); 
       return waterQualityMap.get(parameterName); 
     },
     plotData() {
@@ -81,16 +95,15 @@ export default {
         return response.json()
       }).then(json => {
         let activeData = json.filter(row => row.param == parameterCode)[0];
-        this.chartOptions.yAxis.title.text = this.waterQualityGraphVariable + ' (' + activeData.units + ')';
+        this.chartOptions.yAxis.title.text = this.waterQualityGraphVariableCapital + ' (' + activeData.units + ')';
         let dataSeries = [];
         activeData.values.forEach( row => {
           dataSeries.push({x: new Date(row.datetime).getTime(), y: row.value})
           // dataSeries.push(row.value)
         })
         this.chartOptions.series[0].data = dataSeries;
-
-        console.log(dataSeries);
-
+        this.chartOptions.series[1].name = 'Threshold: ' + this.waterQualityThresholds[this.waterQualityGraphVariable].value + 
+                                          '(' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ')';
       });
     }
   }

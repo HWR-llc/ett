@@ -14,7 +14,8 @@
     </div>
     <div class="row">
       <div class="col-12" style="text-align: center">
-        <h4>{{ embayment }} </h4>
+        <h4> {{ habitatCapital}} Extent</h4>
+        <h5 v-if="embayment == null">MassBays Region</h5><h5 v-else>{{ embayment }}</h5>
       </div>
     </div>
   </div>

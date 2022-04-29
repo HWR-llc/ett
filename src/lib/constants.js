@@ -1,6 +1,26 @@
-export const waterQualitySelections = ['nitrogen', 'phosphorus', 'temperature', 'pH', 'clarity', 'salinity', 'dissolved oxygen', 'e. coli', 'enterococcus'];
-export const habitatSelections = ['salt marsh', 'tidal flats', 'eelgrass', 'diadromous fish'];
+export const waterQualitySelections = [{id:'nitrogen', capital: 'Nitrogen'},
+                                       {id: 'phosphorus', capital: 'Phosphorus'},
+                                       {id: 'temperature', capital: 'Temperature'},
+                                       {id: 'pH', capital: 'PH'},
+                                       {id: 'turbidity', capital: 'Turbidity'},
+                                       {id: 'salinity', capital: 'Salinity'},
+                                       {id: 'dissolved oxygen', capital: 'Dissolved Oxygen'},
+                                       {id: 'e. coli', capital: 'E. Coli'},
+                                       {id: 'enterococcus', capital: "Enterococcus"}];
+export const habitatSelections = [{id:'salt marsh', capital: 'Salt Marsh'},
+                                  {id: 'tidal flats', capital: 'Tidal Flats'},
+                                  {id: 'eelgrass', capital: 'Eelgrass'},
+                                  {id: 'diadromous fish', capital: 'Diadromous Fish'}];
 export const habitatIndexSelections = ['index 1', 'index 2', 'index 3']
+export const waterQualityThresholds = {'nitrogen': {value: 0.35, units: 'mg/L'},
+                                       'enterococcus': {value: 104, units: 'cfu/ 100mL'},
+                                        'e. coli': {value: 235, units: 'cfu/ 100 mL'},
+                                        'dissolved oxygen': {value: 6, units: 'mg/L'},
+                                        'pH': {value: 7, units: 'S.U.'},
+                                        'temperature': {value: 77, units: 'F'},
+                                        'phosphorus': {value: 30, units: 'ug/L'},
+                                        'turbidity': {value: 5, units: 'NTU'},
+                                        'salinity': {value: 1, units: 'mg/L'}}
 export const imageLibraryHabitat = {
   'eelgrass': {
     title: 'Eelgrass',
