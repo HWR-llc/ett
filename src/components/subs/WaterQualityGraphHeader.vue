@@ -9,8 +9,8 @@
           <img :src="item.pic" style="max-height: 60px" class="overlay-icon">
         </div>
       </div>
-      <h6>{{ station }}</h6>
-      <h6>{{ waterQualityGraphVariableCapital }}</h6>
+      <h6>{{ station }}<br>
+      {{ waterQualityGraphVariableCapital }}</h6>
     </div>  
   </div>
 </template>
@@ -61,14 +61,14 @@ export default {
 }
 
 .bottom-row {
-  padding-top: 20px;
+  padding-top: 15px;
   text-align: center;
   height: 75px;
 }
 
 .overlay-icon {
   position: absolute;
-  top: 40px;
+  top: 60px;
   left: 5%;
 }
 </style>

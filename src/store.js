@@ -14,6 +14,7 @@ export const store = new Vuex.Store({
     pointsLayer: false,
     habitatMetricLayer: false,
     habitatIndexLayer: false,
+    waterQualityGraph: false,
     embayment: null,
     station: null,
     activeTab: null
@@ -42,6 +43,12 @@ export const store = new Vuex.Store({
     },
     SWITCH_POINTS_LAYER: state => {
       state.pointsLayer = !state.pointsLayer;
+    },
+    ON_WATER_QUALITY_GRAPH: state => {
+      state.waterQualityGraph = true;
+    },
+    OFF_WATER_QUALITY_GRAPH: state => {
+      state.waterQualityGraph = false;
     },
     ON_POINTS_LAYER: state => {
       state.pointsLayer = true;
@@ -93,6 +100,12 @@ export const store = new Vuex.Store({
       if (state.baseLayer == false) {
         commit('ON_BASE_LAYER');
       }
+    },
+    onWaterQualityGraph: ({commit}) => {
+      commit('ON_WATER_QUALITY_GRAPH');
+    },
+    offWaterQualityGraph: ({commit}) => {
+      commit('OFF_WATER_QUALITY_GRAPH');
     },
     switchHabitatMetricLayer: ({commit, state}) => {
       commit('SWITCH_HABITAT_METRIC_LAYER');

@@ -24,7 +24,7 @@
       </div> 
       <div class="col-3" :style="scrollBoxHeightStyle">
         <transition name="fade" mode="out-in">
-          <app-margin-instructions v-if="waterQuality == null && habitat == null"></app-margin-instructions>
+          <app-margin-instructions v-if="habitat == null"></app-margin-instructions>
           <app-margin-right v-else></app-margin-right>
         </transition>
       </div>      

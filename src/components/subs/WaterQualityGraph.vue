@@ -6,7 +6,7 @@
 </template>
 
 <script>
-
+// import Highcharts from "highcharts"
 export default {
   data() {
     return {
@@ -17,11 +17,14 @@ export default {
         title: {
           text: null
         },
+        tooltip: {
+          pointFormat: "{point.x:%Y-%m-%d %H:%M} <br> {point.y}"
+        },
         xAxis: {
           type: 'datetime',
           labels: {
             format: '{value:%Y-%m}'
-          }
+          },
         },
         yAxis: {
           title: {
@@ -33,6 +36,7 @@ export default {
         },
         series: [
           {
+            name: 'dataset',
             lineWidth: 0,
             data: []
           }

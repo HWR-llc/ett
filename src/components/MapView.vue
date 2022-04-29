@@ -1,7 +1,9 @@
 <template>
 	<div>
     <app-map-legend class="legend"></app-map-legend>
-    <app-water-quality-floater class="floater"></app-water-quality-floater>
+    <transition name="fade" mode="out-in">
+      <app-water-quality-floater class="floater" v-if="waterQualityGraph"></app-water-quality-floater>
+    </transition>   
     <l-map :style="mapStyleObj" :zoom="zoom" :center="center" ref="ettMap">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <l-geo-json 
@@ -79,6 +81,9 @@ export default {
     },
     waterQuality() {
       return this.$store.state.waterQuality;
+    },
+    waterQualityGraph() {
+      return this.$store.state.waterQualityGraph;
     },
     circleColor() {
       if (this.waterQuality == 'nitrogen') {
@@ -243,8 +248,11 @@ export default {
     },
     plotData(stationId, parameterList) {
       if (parameterList.includes(this.waterQuality)) {
-        this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
-        this.$store.dispatch('setStation', stationId);
+        this.$store.dispatch('onWaterQualityGraph');
+        this.$nextTick(() => {
+          this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
+          this.$store.dispatch('setStation', stationId);
+        })
       }
     }
   },
