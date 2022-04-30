@@ -67,46 +67,46 @@ export const imageLibraryWaterQuality = {
   'nitrogen': {
     title: 'nitrogen',
     img: require('@/assets/imgs/white_box.jpg'),
-    pic: require('@/assets/icons/nitrogen.png')
+    pic: require('@/assets/icons/nitrogen.svg')
   },
   'phosphorus': {
     title: 'phosphorus',
     img: require('@/assets/imgs/white_box.jpg'),
-    pic: require('@/assets/icons/phosphorus.png')
+    pic: require('@/assets/icons/phosphorus.svg')
   },
   'temperature': {
     title: 'temperature',
     img: require('@/assets/imgs/white_box.jpg'),
-    pic: require('@/assets/icons/temperature.png')
+    pic: require('@/assets/icons/temperature.svg')
   },
   'pH': {
     title: 'pH',
     img: require('@/assets/imgs/white_box.jpg'),
-    pic: require('@/assets/icons/ph.png')
+    pic: require('@/assets/icons/ph.svg')
   },
-  'clarity': {
-    title: 'clarity',
+  'turbidity': {
+    title: 'turbidity',
     img: require('@/assets/imgs/white_box.jpg'),
-    pic: require('@/assets/icons/clarity.png')
+    pic: require('@/assets/icons/turbidity.svg')
   },
   'salinity': {
     title: 'salinity',
     img: require('@/assets/imgs/white_box.jpg'),
-    pic: require('@/assets/icons/salinity.png')
+    pic: require('@/assets/icons/salinity.svg')
   },
   'dissolved oxygen': {
     title: 'dissolved oxygen',
     img: require('@/assets/imgs/white_box.jpg'),
-    pic: require('@/assets/icons/dissolved_oxygen.png')
+    pic: require('@/assets/icons/dissolved_oxygen.svg')
   },
   'e. coli': {
     title: 'e. coli',
     img: require('@/assets/imgs/white_box.jpg'),
-    pic: require('@/assets/icons/e_coli.png')
+    pic: require('@/assets/icons/e_coli.svg')
   },
   'enterococcus': {
     title: 'enterococcus',
     img: require('@/assets/imgs/white_box.jpg'),
-    pic: require('@/assets/icons/enterococcus.png')
+    pic: require('@/assets/icons/enterococcus.svg')
   }
 }
