@@ -12,11 +12,12 @@ export const store = new Vuex.Store({
     habitatIndex: null,
     baseLayer: false,
     pointsLayer: false,
-    habitatMetricLayer: false,
+    metricLayer: false,
     habitatIndexLayer: false,
     waterQualityGraph: false,
     embayment: null,
     station: null,
+    habitatGraphData: null,
     activeTab: null
   },
   mutations: {
@@ -38,6 +39,9 @@ export const store = new Vuex.Store({
     SET_EMBAYMENT: (state, payload) => {
       state.embayment = payload;
     },   
+    SET_HABITAT_GRAPH_DATA: (state, payload) => {
+      state.habitatGraphData = payload;
+    },
     SWITCH_BASE_LAYER: state => {
       state.baseLayer = !state.baseLayer;
     },
@@ -56,8 +60,8 @@ export const store = new Vuex.Store({
     ON_BASE_LAYER: state => {
       state.baseLayer = true;
     },
-    SWITCH_HABITAT_METRIC_LAYER: state => {
-      state.habitatMetricLayer = !state.habitatMetricLayer;
+    SWITCH_METRIC_LAYER: state => {
+      state.metricLayer = !state.metricLayer;
     },
     SWITCH_HABITAT_INDEX_LAYER: state => {
       state.habitatIndexLayer = !state.habitatIndexLayer;
@@ -85,6 +89,9 @@ export const store = new Vuex.Store({
     setEmbayment: ({commit}, payload) => {
       commit('SET_EMBAYMENT', payload);
     },
+    setHabitatGraphData: ({commit}, payload) => {
+      commit('SET_HABITAT_GRAPH_DATA', payload);
+    },    
     switchBaseLayer: ({commit}) => {
       commit('SWITCH_BASE_LAYER');
     },
@@ -107,11 +114,8 @@ export const store = new Vuex.Store({
     offWaterQualityGraph: ({commit}) => {
       commit('OFF_WATER_QUALITY_GRAPH');
     },
-    switchHabitatMetricLayer: ({commit, state}) => {
-      commit('SWITCH_HABITAT_METRIC_LAYER');
-      if (state.habitatIndexLayer == true && state.habitatMetricLayer == true) {
-        commit('SWITCH_HABITAT_INDEX_LAYER');
-      }
+    switchMetricLayer: ({commit}) => {
+      commit('SWITCH_METRIC_LAYER');
     },
     switchHabitatIndexLayer: ({commit, state}) => {
       commit('SWITCH_HABITAT_INDEX_LAYER');

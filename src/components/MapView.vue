@@ -7,7 +7,7 @@
     <l-map :style="mapStyleObj" :zoom="zoom" :center="center" ref="ettMap">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <l-geo-json 
-        :geojson="embayGeojson" 
+        :geojson="embaymentsGeojson" 
         :options="optionsEmbayment" 
         :options-style="embStyle"
         ref="embaymentsBase"></l-geo-json>
@@ -18,6 +18,11 @@
         <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.cur" v-if="habitat=='tidal flats'" :options-style="tfStyleCur"></l-geo-json>	  		
         <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.cur" v-if="habitat=='salt marsh'" :options-style="smStyleCur"></l-geo-json>	
         <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.cur" v-if="habitat=='eelgrass'" :options-style="egStyleCur"></l-geo-json>
+      </div>
+      <div v-if="metricLayer">
+        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='tidal flats'" :options-style="embaymentColorer">></l-geo-json>	  		
+        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='salt marsh'" :options-style="embaymentColorer">></l-geo-json>	  
+        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='eelgrass'" :options-style="embaymentColorer">></l-geo-json>	  
       </div>
       <div v-if="pointsLayer">
         <div v-for="s in stations" :key="s.id">
@@ -54,6 +59,7 @@ Icon.Default.mergeOptions({
 });
 
 import {LMap, LTileLayer, LGeoJson, LCircleMarker, LTooltip} from 'vue2-leaflet';
+import { interpolateViridis } from 'd3-scale-chromatic'
 import StationTooltip from './subs/StationTooltip.vue'
 import MapLegend from './subs/MapLegend.vue'
 import WaterQualityFloater from '../components/WaterQualityFloater.vue'
@@ -76,6 +82,9 @@ export default {
     pointsLayer() {
       return this.$store.state.pointsLayer;
     },
+    metricLayer() {
+      return this.$store.state.metricLayer;
+    },
     habitat() {
       return this.$store.state.habitat;
     },
@@ -84,13 +93,6 @@ export default {
     },
     waterQualityGraph() {
       return this.$store.state.waterQualityGraph;
-    },
-    circleColor() {
-      if (this.waterQuality == 'nitrogen') {
-        return 'red'
-      } else {
-        return '#808080'
-      }
     },
     embStyle() {
       return () => {
@@ -163,6 +165,16 @@ export default {
         };
       };
     },
+    metricStyleComp() {
+      return () => {
+        return {
+          stroke: false,
+          fillColor: '#FF0000',
+          fillOpacity:0.5,
+          interactive: false
+        };
+      };
+    },
     optionsEmbayment() {
       return {
         onEachFeature: this.onEachEmbaymentFunction
@@ -172,6 +184,7 @@ export default {
       return (feature, layer) => {
         layer.on({
           click: (event) => {
+            console.log(feature);
             this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
             this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
           }
@@ -210,7 +223,7 @@ export default {
           }
         }
       },
-      embayGeojson: null,
+      embaymentsGeojson: null,
       stations: null,
       mapStyleObj: {
         height: Math.floor(window.innerHeight - 100) + 'px',
@@ -225,6 +238,29 @@ export default {
       } else {
         return '#808080';
       }
+    },
+    embaymentColorer(feature) {
+      let featurePercent = null;
+      if (this.habitat == 'tidal flats') {
+        featurePercent = feature.properties.TF_PERC;
+      } else if (this.habitat == 'salt marsh') {
+        featurePercent = feature.properties.SM_PERC;
+      } else if (this.habitat == 'eelgrass') {
+        featurePercent = feature.properties.EG_PERC;
+      } else {
+        featurePercent = 0;
+      }
+      let featureColor = interpolateViridis(featurePercent / 100);
+      let featureOpacity = 0;
+      if (featurePercent > 0) {
+        featureOpacity = 0.5
+      }
+      return {
+          stroke: false,
+          fillColor: featureColor,
+          fillOpacity: featureOpacity,
+          interactive: false
+        };
     },
     parameterMapper(wqCounts) {
       const waterQualityMap = new Map();
@@ -259,11 +295,12 @@ export default {
   },
   created() {
     // fetch embayments
-    fetch("./data/embayments_wgs.geojson")
+    // fetch("./data/embayments_wgs.geojson")
+    fetch("./data/embayments_targets_wgs.geojson")
       .then(response => {
         return response.json()
       }).then(json => {
-        this.embayGeojson = json;
+        this.embaymentsGeojson = json;
     })
     // fetch habitats
     const fileArray = {

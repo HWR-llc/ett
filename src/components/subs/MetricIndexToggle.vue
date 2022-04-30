@@ -3,7 +3,7 @@
     <!-- Metric Toggle -->
     <div class="row">
       <div class="col-3" style="padding-top: 5px">
-        <toggle-button v-model="habitatMetricLayer" :sync="true"></toggle-button>
+        <toggle-button v-model="metricLayer" :sync="true"></toggle-button>
       </div>
       <div class="col-9">
         <div class="row">
@@ -57,12 +57,13 @@ export default {
       }).join(" ");
       return capitalTitle;
     },
-    habitatMetricLayer: {
+    metricLayer: {
       get () {
-        return this.$store.state.habitatMetricLayer;
+        return this.$store.state.metricLayer;
       },
       set () {
-           this.$store.dispatch('switchHabitatMetricLayer');
+        console.log('switching metric layer');
+        this.$store.dispatch('switchMetricLayer');
       }      
     },
     habitatIndexLayer: {
