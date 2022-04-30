@@ -117,7 +117,6 @@ export default {
         if (this.waterQualityGraphVariable == 'temperature') {
           activeDataUnits = '&degC';
         } else {
-          console.log(activeData);
           activeDataUnits = activeData.units;
         }
         this.chartOptions.yAxis.title.text = this.waterQualityGraphVariableCapital + ' (' + activeDataUnits + ')';
@@ -128,7 +127,6 @@ export default {
         this.chartOptions.series[0].data = dataSeries;
         let thresholdValue = this.waterQualityThresholds[this.waterQualityGraphVariable].value
         this.chartOptions.yAxis.plotLines[0].value = thresholdValue
-        console.log(this.waterQualityGraphVariable);
         this.chartOptions.series[1].name = 'Threshold: ' + thresholdValue + ' (' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ')';       
       });
     }
