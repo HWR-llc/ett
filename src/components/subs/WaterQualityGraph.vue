@@ -23,17 +23,26 @@ export default {
         },
         xAxis: {
           type: 'datetime',
-          title: {
-            text: 'Year'
-          },
+          // title: {
+          //   text: 'Date'
+          // },
           labels: {
-            format: '{value:%Y-%m}'
+            format: '{value:%b<br/>%Y}'
           },
+          startOnTick: true,
+          endOnTick: true
         },
         yAxis: {
           title: {
             text: 'parameter (units)'
-          }
+          },
+          plotLines: [{
+            color: '#ff8737',
+            width: 3,
+            dashStyle: 'LongDash',
+            opacity: 0.5,
+            value: 0
+          }]
         },
         legend: {
           enabled: true
@@ -44,8 +53,17 @@ export default {
             data: []
           },
           {
+            type: 'line',
             name: 'threshold',
-            data: []
+            data: [],
+            marker: {
+              enabled: false
+            },
+            color: '#ff8737',
+            lineWidth: 3,
+            dashStyle: 'LongDash',
+            opacity: 0.5,
+            enableMouseTracking: false
           }
         ]
       }
@@ -76,7 +94,7 @@ export default {
       const waterQualityMap = new Map();
       waterQualityMap.set('chlorophyl-a', 'CHLA');
       waterQualityMap.set('dissolved oxygen', 'DO');
-      waterQualityMap.set('e. coli', 'ECOL');
+      waterQualityMap.set('e. coli', 'ECOLI');
       waterQualityMap.set('enterococcus','ENT');
       waterQualityMap.set('pH', 'PH');
       waterQualityMap.set('salinity', 'SAL');
@@ -95,15 +113,23 @@ export default {
         return response.json()
       }).then(json => {
         let activeData = json.filter(row => row.param == parameterCode)[0];
-        this.chartOptions.yAxis.title.text = this.waterQualityGraphVariableCapital + ' (' + activeData.units + ')';
+        let activeDataUnits = null
+        if (this.waterQualityGraphVariable == 'temperature') {
+          activeDataUnits = '&degC';
+        } else {
+          console.log(activeData);
+          activeDataUnits = activeData.units;
+        }
+        this.chartOptions.yAxis.title.text = this.waterQualityGraphVariableCapital + ' (' + activeDataUnits + ')';
         let dataSeries = [];
         activeData.values.forEach( row => {
           dataSeries.push({x: new Date(row.datetime).getTime(), y: row.value})
-          // dataSeries.push(row.value)
         })
         this.chartOptions.series[0].data = dataSeries;
-        this.chartOptions.series[1].name = 'Threshold: ' + this.waterQualityThresholds[this.waterQualityGraphVariable].value + 
-                                          '(' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ')';
+        let thresholdValue = this.waterQualityThresholds[this.waterQualityGraphVariable].value
+        this.chartOptions.yAxis.plotLines[0].value = thresholdValue
+        console.log(this.waterQualityGraphVariable);
+        this.chartOptions.series[1].name = 'Threshold: ' + thresholdValue + ' (' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ')';       
       });
     }
   }

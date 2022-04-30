@@ -17,7 +17,7 @@ export const waterQualityThresholds = {'nitrogen': {value: 0.35, units: 'mg/L'},
                                         'e. coli': {value: 235, units: 'cfu/ 100 mL'},
                                         'dissolved oxygen': {value: 6, units: 'mg/L'},
                                         'pH': {value: 7, units: 'S.U.'},
-                                        'temperature': {value: 77, units: 'F'},
+                                        'temperature': {value: ((77 - 32) / 1.8), units: '&degC'},
                                         'phosphorus': {value: 30, units: 'ug/L'},
                                         'turbidity': {value: 5, units: 'NTU'},
                                         'salinity': {value: 1, units: 'mg/L'}}
