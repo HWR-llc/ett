@@ -49,7 +49,40 @@ export default {
       }
     }
   },
+  computed: {
+    habitat() {
+      return this.$store.state.habitat;
+    },
+  },
+  watch: {
+    '$store.state.habitatGraphData': {
+      handler(newData) {
+        this.updateGraph(newData)
+      }, immediate: true  
+    },
+    '$store.state.habitat': {
+      handler() {
+        this.updateGraph(this.$store.state.habitatGraphData);
+      }      
+    }
+  },
+  methods: {
+    updateGraph(newData) {
+      let newDataSubset = newData[this.habitat]
+      let newCategories = []
+      let newValues = []
+      newDataSubset.data.forEach(row => {
+        newCategories.push(row.year.toString());
+        newValues.push(row.value);
+      });
+      console.log(newCategories);
+      this.chartOptions.xAxis.categories = newCategories;
+      this.chartOptions.series[0].data = newValues;
+      this.chartOptions.yAxis.title.text = newDataSubset.units;
+    }
+  }
 }
+
 </script>
 
 <style>

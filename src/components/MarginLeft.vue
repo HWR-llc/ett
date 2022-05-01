@@ -100,7 +100,14 @@ export default {
         this.$store.dispatch('setEmbayment', newEmb);
       }      
     },
-  }
+  },
+  // watch: {
+  //   '$store.state.habitatGraphData': {
+  //     handler(newData) {
+  //       alert(newData);
+  //     }, immediate: true  
+  //   }
+  // },
 }
 </script>
 

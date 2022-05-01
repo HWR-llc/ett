@@ -32,10 +32,12 @@
 
 <script>
 import { habitatSelections } from '../lib/constants'
+import { stateWideHabitatValues } from '../lib/constants'
 export default {
   data () {
     return {
       habitatSelections: habitatSelections,
+      stateWideHabitatValues: stateWideHabitatValues
     }
   },
   computed: {
@@ -47,11 +49,17 @@ export default {
         this.$store.dispatch('switchBaseLayer');
       }      
     },
+    embayment() {
+      return this.$store.state.embayment;
+    },
     habitat: {
       get () {
         return this.$store.state.habitat;
       },
       set (newHab) {
+        if (this.embayment == null) {
+          this.$store.dispatch('setHabitatGraphData', this.stateWideHabitatValues);
+        }
         this.$store.dispatch('setHabitat', newHab);
         this.$store.dispatch('onBaseLayer');
         this.$store.dispatch('setActiveTab', 'habitat')

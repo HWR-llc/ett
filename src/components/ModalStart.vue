@@ -26,15 +26,18 @@
 
 <script>
 import { imageLibraryHabitat } from '../lib/constants'
+import { stateWideHabitatValues } from '../lib/constants'
 export default {
   data () {
     return {
       modalShow: true,
-      imageLibraryHabitat: imageLibraryHabitat
+      imageLibraryHabitat: imageLibraryHabitat,
+      stateWideHabitatValues: stateWideHabitatValues
     }
   },
   methods: {
     iconClicked(newHab) {
+      this.$store.dispatch('setHabitatGraphData', this.stateWideHabitatValues);
       this.$store.dispatch('setHabitat', newHab);
       this.$store.dispatch('onBaseLayer');
       this.modalShow = false;

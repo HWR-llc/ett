@@ -8,19 +8,6 @@
       <div class="col-7" style="padding-right: 0px; padding-left: 0px">
         
         <app-map-view></app-map-view>
-
-        <!-- <br>
-        <br>
-        <p><b>water quality:</b> {{ waterQuality }}</p>
-        <p><b>habitat:</b> {{ habitat }}</p>
-        <p><b>station:</b> {{ station }}</p>
-        <p><b>embayment:</b> {{ embayment }}</p>        
-        <p><b>graph variable:</b> {{ graphVariable }}</p>
-        <p><b>show base layer:</b> {{ baseLayer }} </p>
-        <p><b>show points layer:</b> {{ pointsLayer }} </p>
-        <p><b>show habitat metric layer:</b> {{ habitatMetricLayer }} </p>
-        <p><b>show habitat index layer:</b> {{ habitatIndexLayer }} </p> -->
-
       </div> 
       <div class="col-3" :style="scrollBoxHeightStyle">
         <transition name="fade" mode="out-in">
@@ -80,6 +67,9 @@ export default {
     },
     habitatIndexLayer() {
       return this.$store.state.habitatIndexLayer;
+    },
+    habitatGraphData() {
+      return this.$store.state.habitatGraphData;
     }
   },
   components: {

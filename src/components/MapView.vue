@@ -184,9 +184,43 @@ export default {
       return (feature, layer) => {
         layer.on({
           click: (event) => {
-            console.log(feature);
             this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
             this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
+            let newHabitatData = {
+                'eelgrass': {
+                  data: [
+                    {year: 2000, value: feature.properties.EG_HIST},
+                    {year: 2005, value: feature.properties.EG_CURR},
+                    {year: 2050, value: feature.properties.EG_TRGT}
+                  ],
+                  units: 'Acres'
+                },
+                'salt marsh': {
+                  data: [
+                    {year: 2000, value: feature.properties.SM_HIST},
+                    {year: 2005, value: feature.properties.SM_CURR},
+                    {year: 2050, value: feature.properties.SM_TRGT}
+                  ],
+                  units: 'Acres'
+                },
+                'tidal flats': {
+                  data: [
+                    {year: 2000, value: feature.properties.TF_HIST},
+                    {year: 2005, value: feature.properties.TF_CURR},
+                    {year: 2050, value: feature.properties.TF_TRGT}
+                  ],
+                  units: 'Acres'
+                },
+                'diadromous fish': {
+                  data: [
+                    {year: 2000, value: feature.properties.DF_HIST},
+                    {year: 2005, value: feature.properties.DF_CURR},
+                    {year: 2050, value: feature.properties.DF_TRGT}
+                  ],
+                  units: 'Miles'
+                }
+            }
+            this.$store.dispatch('setHabitatGraphData', newHabitatData);
           }
         });
         layer.bindTooltip(feature.properties.NAME);
@@ -295,7 +329,6 @@ export default {
   },
   created() {
     // fetch embayments
-    // fetch("./data/embayments_wgs.geojson")
     fetch("./data/embayments_targets_wgs.geojson")
       .then(response => {
         return response.json()

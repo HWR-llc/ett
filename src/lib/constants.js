@@ -110,3 +110,37 @@ export const imageLibraryWaterQuality = {
     pic: require('@/assets/icons/enterococcus.svg')
   }
 }
+export const stateWideHabitatValues = {
+  'eelgrass': {
+    data: [
+      {year: 2000, value: 5000},
+      {year: 2005, value: 4000},
+      {year: 2050, value: 6000}
+    ],
+    units: 'Acres'
+  },
+  'salt marsh': {
+    data: [
+      {year: 2000, value: 2000},
+      {year: 2005, value: 3000},
+      {year: 2050, value: 4000}
+    ],
+    units: 'Acres'
+  },
+  'tidal flats': {
+    data: [
+      {year: 2000, value: 15000},
+      {year: 2005, value: 17000},
+      {year: 2050, value: 14000}
+    ],
+    units: 'Acres'
+  },
+  'diadromous fish': {
+    data: [
+      {year: 2000, value: 600},
+      {year: 2005, value: 1000},
+      {year: 2050, value: 5000}
+    ],
+    units: 'Miles'
+  }
+}
