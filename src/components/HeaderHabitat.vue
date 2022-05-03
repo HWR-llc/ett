@@ -62,7 +62,7 @@ export default {
         }
         this.$store.dispatch('setHabitat', newHab);
         this.$store.dispatch('onBaseLayer');
-        this.$store.dispatch('setActiveTab', 'habitat')
+        this.$store.dispatch('offQuickStart');
       }      
     }
   }

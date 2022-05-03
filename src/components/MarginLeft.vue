@@ -4,10 +4,7 @@
     <br>
     <div class="row" style="padding-top: 30px">
       <div class="col">
-        <b-button squared class="habitat-background no-border full-width" v-b-modal.modal-tour><b>Take a Tour</b></b-button>
-        <b-modal id="modal-tour" title="Tour to be completed in Phase 2?">
-          <p class="my-4">This button will eventually lead to a tour</p>
-        </b-modal> 
+        <b-button squared class="habitat-background no-border full-width" @click='flipQuickStart'><b>{{showOrHide}} Quick Start Guide</b></b-button> 
       </div>
     </div>
     <div class="row" style="padding-top: 10px">
@@ -73,7 +70,7 @@
 
 export default {
   data () {
-    return { 
+    return {
       embaymentList: [
         {value: null, text: 'select a watershed'},
         {value: 'embayment 1', text: 'embayment 1'},  
@@ -98,16 +95,29 @@ export default {
       },
       set (newEmb) {
         this.$store.dispatch('setEmbayment', newEmb);
-      }      
+      }    
     },
+    showQuickStart() {
+      return this.$store.state.showQuickStart;
+    },
+    showOrHide() {
+      if (this.showQuickStart == true) {
+        return 'Hide';
+      } else {
+        return 'Show';
+      }
+    }
   },
-  // watch: {
-  //   '$store.state.habitatGraphData': {
-  //     handler(newData) {
-  //       alert(newData);
-  //     }, immediate: true  
-  //   }
-  // },
+  methods: {
+    flipQuickStart() {
+      if (this.showQuickStart == true) {
+        this.$store.dispatch('offQuickStart');        
+      } else {
+        this.$store.dispatch('onQuickStart');        
+      }
+    }
+  }
+
 }
 </script>
 

@@ -16,7 +16,7 @@
       <span><b>Available Parameters:</b></span>
     </div>
     <div class="row">
-      <span v-for="(parameter, index) in parameterList" :key="parameter"> 
+      <span v-for="(parameter, index) in formattedParameterList" :key="parameter"> 
         {{ parameter}}<span v-if="index != parameterList.length - 1">,&nbsp; </span>
       </span>
     </div>
@@ -30,7 +30,20 @@ export default {
   computed: {
     waterQuality() {
       return this.$store.state.waterQuality;
-    }    
+    },
+    formattedParameterList() {
+      let formattedParameterList = [...this.parameterList];
+      this.parameterList.forEach((param, index) => {
+        if (param == 'enterococcus') {
+          formattedParameterList[index] = 'Enterococcus';
+        }
+        if (param == 'e. coli') {
+          formattedParameterList[index] = 'E. coli';
+        }
+      })
+      console.log(formattedParameterList);
+      return formattedParameterList;
+    } 
   },
   methods: {
     plotData() {

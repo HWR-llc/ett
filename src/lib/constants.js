@@ -1,11 +1,11 @@
 export const waterQualitySelections = [{id:'nitrogen', capital: 'Nitrogen'},
                                        {id: 'phosphorus', capital: 'Phosphorus'},
                                        {id: 'temperature', capital: 'Temperature'},
-                                       {id: 'pH', capital: 'PH'},
+                                       {id: 'pH', capital: 'pH'},
                                        {id: 'turbidity', capital: 'Turbidity'},
                                        {id: 'salinity', capital: 'Salinity'},
                                        {id: 'dissolved oxygen', capital: 'Dissolved Oxygen'},
-                                       {id: 'e. coli', capital: 'E. Coli'},
+                                       {id: 'e. coli', capital: 'E. coli'},
                                        {id: 'enterococcus', capital: "Enterococcus"}];
 export const habitatSelections = [{id:'salt marsh', capital: 'Salt Marsh'},
                                   {id: 'tidal flats', capital: 'Tidal Flats'},

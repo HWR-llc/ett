@@ -40,6 +40,7 @@ export default {
       this.$store.dispatch('setHabitatGraphData', this.stateWideHabitatValues);
       this.$store.dispatch('setHabitat', newHab);
       this.$store.dispatch('onBaseLayer');
+      this.$store.dispatch('offQuickStart');
       this.modalShow = false;
     },
     buttonClicked() {

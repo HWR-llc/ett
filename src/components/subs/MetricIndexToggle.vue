@@ -12,11 +12,11 @@
         <div class="row" style="padding-top: 5px">
           <div class="col-12">
             <svg height="30">
-              <rect id="patch" x="0" y="0" width="35" height="25" style="fill: #86EEC6"/>
-              <rect id="patch" x="35" y="0" width="35" height="25" style="fill: #6AC6C0"/>
-              <rect id="patch" x="70" y="0" width="35" height="25" style="fill: #50A0BA"/>
-              <rect id="patch" x="105" y="0" width="35" height="25" style="fill: #3174B3"/>
-              <rect id="patch" x="140" y="0" width="35" height="25" style="fill: #1850AD"/>
+              <rect id="patch" x="0" y="0" width="35" height="25" :style="{fill: colorScale(0)}"/>
+              <rect id="patch" x="35" y="0" width="35" height="25" :style="{fill: colorScale(0.2)}"/>
+              <rect id="patch" x="70" y="0" width="35" height="25" :style="{fill: colorScale(0.4)}"/>
+              <rect id="patch" x="105" y="0" width="35" height="25" :style="{fill: colorScale(0.6)}"/>
+              <rect id="patch" x="140" y="0" width="35" height="25" :style="{fill: colorScale(0.8)}"/>
             </svg>
           </div>
         </div>     
@@ -48,8 +48,14 @@
 </template>
 
 <script>
+import { interpolateOranges, interpolateGreens, interpolatePurples } from 'd3-scale-chromatic'
+// import { schemeBlues } from 'd3-scale-chromatic'
+// import { scaleOrdinal} from 'd3-scale'
 export default {
   computed: {
+    habitat() {
+      return this.$store.state.habitat;
+    },
     habitatCapital() {
       const titles = this.$store.state.habitat.split(" ");
       const capitalTitle = titles.map((word) => {
@@ -73,6 +79,21 @@ export default {
       set () {
         this.$store.dispatch('switchHabitatIndexLayer');
       }      
+    }
+  },
+  methods: {
+    colorScale(value) {
+      if (this.habitat == 'tidal flats') {
+        return interpolateOranges(value);
+      } else if (this.habitat == 'salt marsh') {
+        return interpolateGreens(value);
+      } else if (this.habitat == 'eelgrass') {
+        return interpolatePurples(value)
+      } else if (this.habitat == 'diadromous fish') {
+        return interpolatePurples(value);
+      } else {
+        return '#ffffff';
+      }
     }
   }
 }

@@ -18,7 +18,7 @@ export const store = new Vuex.Store({
     embayment: null,
     station: null,
     habitatGraphData: null,
-    activeTab: null
+    showQuickStart: true
   },
   mutations: {
     SET_HABITAT: (state, payload) => {
@@ -66,8 +66,11 @@ export const store = new Vuex.Store({
     SWITCH_HABITAT_INDEX_LAYER: state => {
       state.habitatIndexLayer = !state.habitatIndexLayer;
     },
-    SET_ACTIVE_TAB: (state, payload) => {
-      state.activeTab = payload;
+    ON_QUICK_START: state => {
+      state.showQuickStart = true;
+    },
+    OFF_QUICK_START: state => {
+      state.showQuickStart = false;
     }
   },
   actions: {
@@ -123,8 +126,11 @@ export const store = new Vuex.Store({
         commit('SWITCH_HABITAT_METRIC_LAYER');
       }
     },
-    setActiveTab: ({commit}, payload) => {
-      commit('SET_ACTIVE_TAB', payload);
+    onQuickStart: ({commit}) => {
+      commit('ON_QUICK_START');
+    },
+    offQuickStart: ({commit}) => {
+      commit('OFF_QUICK_START');
     } 
   }
 });

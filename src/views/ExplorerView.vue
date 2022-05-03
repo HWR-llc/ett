@@ -11,7 +11,7 @@
       </div> 
       <div class="col-3" :style="scrollBoxHeightStyle">
         <transition name="fade" mode="out-in">
-          <app-margin-instructions v-if="habitat == null"></app-margin-instructions>
+          <app-margin-instructions v-if="showQuickStart"></app-margin-instructions>
           <app-margin-right v-else></app-margin-right>
         </transition>
       </div>      
@@ -70,6 +70,9 @@ export default {
     },
     habitatGraphData() {
       return this.$store.state.habitatGraphData;
+    },
+    showQuickStart() {
+      return this.$store.state.showQuickStart;
     }
   },
   components: {

@@ -12,17 +12,17 @@
         :options-style="embStyle"
         ref="embaymentsBase"></l-geo-json>
       <div v-if="baseLayer">
-        <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.his" v-if="habitat=='tidal flats'" :options-style="tfStyleHis">></l-geo-json>	  		
-        <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.his" v-if="habitat=='salt marsh'" :options-style="smStyleHis"></l-geo-json>	
-        <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.his" v-if="habitat=='eelgrass'" :options-style="egStyleHis"></l-geo-json>
-        <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.cur" v-if="habitat=='tidal flats'" :options-style="tfStyleCur"></l-geo-json>	  		
-        <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.cur" v-if="habitat=='salt marsh'" :options-style="smStyleCur"></l-geo-json>	
-        <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.cur" v-if="habitat=='eelgrass'" :options-style="egStyleCur"></l-geo-json>
+        <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.his" v-if="habitat=='tidal flats'" :options-style="tfStyleHis" ref="his">></l-geo-json>	  		
+        <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.his" v-if="habitat=='salt marsh'" :options-style="smStyleHis"  ref="his"></l-geo-json>	
+        <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.his" v-if="habitat=='eelgrass'" :options-style="egStyleHis" ref="his"></l-geo-json>
+        <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.cur" v-if="habitat=='tidal flats'" :options-style="tfStyleCur" ref="cur"></l-geo-json>	  		
+        <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.cur" v-if="habitat=='salt marsh'" :options-style="smStyleCur" ref="cur"></l-geo-json>	
+        <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.cur" v-if="habitat=='eelgrass'" :options-style="egStyleCur" ref="cur"></l-geo-json>
       </div>
       <div v-if="metricLayer">
-        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='tidal flats'" :options-style="embaymentColorer">></l-geo-json>	  		
-        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='salt marsh'" :options-style="embaymentColorer">></l-geo-json>	  
-        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='eelgrass'" :options-style="embaymentColorer">></l-geo-json>	  
+        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='tidal flats'" :options-style="tidalFlatsColorer">></l-geo-json>	  		
+        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='salt marsh'" :options-style="saltMarshColorer">></l-geo-json>	  
+        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='eelgrass'" :options-style="eelgrassColorer">></l-geo-json>	  
       </div>
       <div v-if="pointsLayer">
         <div v-for="s in stations" :key="s.id">
@@ -59,7 +59,7 @@ Icon.Default.mergeOptions({
 });
 
 import {LMap, LTileLayer, LGeoJson, LCircleMarker, LTooltip} from 'vue2-leaflet';
-import { interpolateViridis } from 'd3-scale-chromatic'
+import { interpolateOranges, interpolateGreens, interpolatePurples } from 'd3-scale-chromatic'
 import StationTooltip from './subs/StationTooltip.vue'
 import MapLegend from './subs/MapLegend.vue'
 import WaterQualityFloater from '../components/WaterQualityFloater.vue'
@@ -273,20 +273,36 @@ export default {
         return '#808080';
       }
     },
-    embaymentColorer(feature) {
-      let featurePercent = null;
-      if (this.habitat == 'tidal flats') {
-        featurePercent = feature.properties.TF_PERC;
-      } else if (this.habitat == 'salt marsh') {
-        featurePercent = feature.properties.SM_PERC;
-      } else if (this.habitat == 'eelgrass') {
-        featurePercent = feature.properties.EG_PERC;
+    colorScale(value, geoHabitat) {
+      if (geoHabitat == 'tidal flats') {
+        return interpolateOranges(value);
+      } else if (geoHabitat == 'salt marsh') {
+        return interpolateGreens(value);
+      } else if (geoHabitat == 'eelgrass') {
+        return interpolatePurples(value)
+      } else if (geoHabitat == 'diadromous fish') {
+        return interpolatePurples(value);
       } else {
-        featurePercent = 0;
+        return '#ffffff';
       }
-      let featureColor = interpolateViridis(featurePercent / 100);
+    },
+    embaymentColorer(value, geoHabitat) {
+      let lowerBinValue = null;
+      if (value < 20) {
+        lowerBinValue = 0.0
+      } else if (value >= 20 && value < 40) {
+        lowerBinValue = 0.2;
+      } else if (value >= 40 && value < 60) {
+        lowerBinValue = 0.4;        
+      } else if (value >= 60 && value < 80) {
+        lowerBinValue = 0.6; 
+      } else if (value >= 80) {
+        lowerBinValue = 0.8; 
+      } 
+
+      let featureColor = this.colorScale(lowerBinValue, geoHabitat);
       let featureOpacity = 0;
-      if (featurePercent > 0) {
+      if (value > 0) {
         featureOpacity = 0.5
       }
       return {
@@ -295,6 +311,18 @@ export default {
           fillOpacity: featureOpacity,
           interactive: false
         };
+    },
+    tidalFlatsColorer(feature) {
+      return this.embaymentColorer(feature.properties.TF_PERC, 'tidal flats');
+    },
+    saltMarshColorer(feature) {
+      return this.embaymentColorer(feature.properties.SM_PERC, 'salt marsh');
+    },
+    eelgrassColorer(feature) {
+      return this.embaymentColorer(feature.properties.EG_PERC, 'eelgrass');
+    },
+    diadromousFishColorer(feature) {
+      return this.embaymentColorer(feature.properties.DF_PERC, 'diadromous fish');
     },
     parameterMapper(wqCounts) {
       const waterQualityMap = new Map();
@@ -315,7 +343,7 @@ export default {
         } 
       });
       return activeParameters;
-      // wqCounts.forEach((key, value) => console.log(key + '-' + value));
+
     },
     plotData(stationId, parameterList) {
       if (parameterList.includes(this.waterQuality)) {
@@ -369,6 +397,13 @@ export default {
       this.stations.forEach(station => {
         station.properties['parameter_list'] = this.parameterMapper(station.properties.wq_counts);
       });
+    })
+  },
+  updated() {
+    this.$nextTick(() => {
+      // console.log(this.$refs.his.mapObject);
+      this.$refs.his.mapObject.bringToBack();
+
     })
   }
 }
