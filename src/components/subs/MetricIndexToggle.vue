@@ -74,7 +74,6 @@ export default {
         return this.$store.state.metricLayer;
       },
       set () {
-        console.log('switching metric layer');
         this.$store.dispatch('switchMetricLayer');
       }      
     },

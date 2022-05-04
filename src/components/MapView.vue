@@ -2,7 +2,7 @@
 	<div>
     <app-map-legend class="legend"></app-map-legend>
     <transition name="fade" mode="out-in">
-      <app-water-quality-floater class="floater" v-if="waterQualityGraph"></app-water-quality-floater>
+      <app-water-quality-floater class="floater-position" v-if="waterQualityGraph"></app-water-quality-floater>
     </transition>   
     <l-map :style="mapStyleObj" :zoom="zoom" :center="center" ref="ettMap">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
@@ -415,10 +415,10 @@ export default {
   right: 5%;
   z-index: 1000;
 }
-.floater {
+.floater-position {
   position: absolute;
   bottom: 5%;
   left: 5%;
-  z-index: 2000; 
+  z-index: 1000; 
 }
 </style>

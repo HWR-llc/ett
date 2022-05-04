@@ -1,15 +1,17 @@
 <template>
   <div>
     <p class="floating-text" v-if="station == null"> <b>Select an active station and <br> click "Plot Data" to see a graph</b></p>
-    <highcharts class="chart" :options="chartOptions" ref="chart" style="width: 380px; height: 180px"></highcharts>
+    <highcharts class="chart" :options="chartOptions" ref="chart" :style="styleObject"></highcharts>
   </div>
 </template>
 
 <script>
 import { waterQualityThresholds } from '../../lib/constants'
 export default {
+  props: ['gwidth', 'gheight'],
   data() {
     return {
+      test: 'test',
       waterQualityThresholds: waterQualityThresholds,
       chartOptions: {
         chart: {
@@ -70,6 +72,12 @@ export default {
     }
   },
   computed: {
+    styleObject() {
+      return {
+        width: this.gwidth,
+        height: this.gheight
+      }
+    },
     station() {
       return this.$store.state.station;
     },
@@ -83,6 +91,9 @@ export default {
       }).join(" ");
       return capitalTitle;
     },
+    showLargeGraph() {
+      return this.$store.state.showLargeGraph;
+    }
   },
   watch: {
     '$store.state.station'() {
@@ -130,6 +141,9 @@ export default {
         this.chartOptions.series[1].name = 'Threshold: ' + thresholdValue + ' (' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ')';       
       });
     }
+  },
+  mounted() {
+    this.plotData();
   }
 }
 </script>

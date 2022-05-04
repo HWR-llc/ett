@@ -18,7 +18,8 @@ export const store = new Vuex.Store({
     embayment: null,
     station: null,
     habitatGraphData: null,
-    showQuickStart: true
+    showQuickStart: true,
+    showLargGraph: false,
   },
   mutations: {
     SET_HABITAT: (state, payload) => {
@@ -71,7 +72,10 @@ export const store = new Vuex.Store({
     },
     OFF_QUICK_START: state => {
       state.showQuickStart = false;
-    }
+    },
+    SWITCH_SHOW_LARGE_GRAPH: state => {
+      state.showLargeGraph = !state.showLargeGraph;
+    },
   },
   actions: {
     setHabitat: ({commit}, payload) => {
@@ -131,6 +135,9 @@ export const store = new Vuex.Store({
     },
     offQuickStart: ({commit}) => {
       commit('OFF_QUICK_START');
-    } 
+    },
+    switchShowLargeGraph: ({commit}) => {
+      commit('SWITCH_SHOW_LARGE_GRAPH');
+    }, 
   }
 });
