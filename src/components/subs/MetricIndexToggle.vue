@@ -7,7 +7,7 @@
       </div>
       <div class="col-9">
         <div class="row">
-          % {{ habitatCapital }} Target
+          % of 2050 {{ habitatCapital }} Goal
         </div>
         <div class="row" style="padding-top: 5px">
           <div class="col-12">

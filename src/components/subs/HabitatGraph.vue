@@ -23,7 +23,7 @@ export default {
           categories: [
             '2000',
             '2005',
-            '2050'
+            '2050 Goal'
           ],
           crosshair: true,
           type: 'datetime',
@@ -75,7 +75,7 @@ export default {
         newCategories.push(row.year.toString());
         newValues.push(row.value);
       });
-      console.log(newCategories);
+      newCategories[newCategories.length - 1] = newCategories[newCategories.length - 1] + ' Goal'
       this.chartOptions.xAxis.categories = newCategories;
       this.chartOptions.series[0].data = newValues;
       this.chartOptions.yAxis.title.text = newDataSubset.units;

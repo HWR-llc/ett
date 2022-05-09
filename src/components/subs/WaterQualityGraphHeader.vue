@@ -30,21 +30,17 @@ export default {
     station() {
       return this.$store.state.station;
     },
-    habitatCapital() {
-      const titles = this.$store.state.habitat.split(" ");
-      const capitalTitle = titles.map((word) => {
-        return word[0].toUpperCase() + word.substring(1);
-      }).join(" ");
-      return capitalTitle;
-    },
     waterQuality() {
       return this.$store.state.waterQuality;
     },
     waterQualityGraphVariableCapital() {
       const titles = this.$store.state.waterQualityGraphVariable.split(" ");
-      const capitalTitle = titles.map((word) => {
+      let capitalTitle = titles.map((word) => {
         return word[0].toUpperCase() + word.substring(1);
       }).join(" ");
+      if ((capitalTitle == 'Nitrogen') || (capitalTitle == 'Phosphorus')) {
+        capitalTitle = 'Total ' + capitalTitle;
+      }
       return capitalTitle;
     },
   }

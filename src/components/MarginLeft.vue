@@ -32,27 +32,27 @@
     <br>
     <div class="row">
       <div class="col-12">
-        <b-button variant="outline-primary" v-b-modal.modal-habitat class="full-width">Learn about <b>habitats</b></b-button>
-        <b-modal id="modal-habitat" title="Habitat Explanation">
-          <p class="my-4">Discussion of relevant habitat goes here</p>
+        <b-button variant="outline-primary" v-b-modal.modal-habitat class="full-width">Learn About <b>Habitats</b></b-button>
+        <b-modal id="modal-habitat" title="Learn About..." size="lg" hide-footer>
+          <app-learn-habitat></app-learn-habitat>
         </b-modal>        
       </div>
     </div>
     <br>
     <div class="row">
       <div class="col-12">
-        <b-button variant="outline-primary" v-b-modal.modal-habitatTargets class="full-width">Learn about <b>habitat targets</b></b-button>
-        <b-modal id="modal-habitatTargets" title="Habitat Targets Explanation">
-          <p class="my-4">Discussion of relevant habitat targets goes here</p>
+        <b-button variant="outline-primary" v-b-modal.modal-habitatGoals class="full-width">Learn About <b>Habitat Goals</b></b-button>
+        <b-modal id="modal-habitatGoals" title="Learn About..." size="lg" hide-footer>
+          <p class="my-4">Discussion of relevant habitat goals goes here</p>
         </b-modal>  
       </div>
     </div>
     <br>
     <div class="row">
       <div class="col-12">
-        <b-button variant="outline-primary" v-b-modal.modal-waterQuality class="full-width">Learn about <b>water quality parameters</b> </b-button>
-        <b-modal id="modal-waterQuality" title="Water Quality Explanation">
-          <p class="my-4">Discussion of relevant water quality goes here</p>
+        <b-button variant="outline-primary" v-b-modal.modal-waterQuality class="full-width">Learn About <b>Water Quality Parameters</b> </b-button>
+        <b-modal id="modal-waterQuality" title="Learn About..." size="xl" hide-footer>
+          <app-learn-water-quality></app-learn-water-quality>
         </b-modal> 
       </div>
     </div>
@@ -67,7 +67,8 @@
 
 <script>
 
-
+import learnHabitat from './subs/learnHabitat.vue'
+import learnWaterQuality from './subs/learnWaterQuality.vue'
 export default {
   data () {
     return {
@@ -116,6 +117,10 @@ export default {
         this.$store.dispatch('onQuickStart');        
       }
     }
+  },
+  components: {
+    appLearnHabitat: learnHabitat,
+    appLearnWaterQuality: learnWaterQuality
   }
 
 }

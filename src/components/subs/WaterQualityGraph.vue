@@ -35,6 +35,7 @@ export default {
           endOnTick: true
         },
         yAxis: {
+          type: 'linear',
           title: {
             text: 'parameter (units)'
           },
@@ -86,9 +87,12 @@ export default {
     },
     waterQualityGraphVariableCapital() {
       const titles = this.$store.state.waterQualityGraphVariable.split(" ");
-      const capitalTitle = titles.map((word) => {
+      let capitalTitle = titles.map((word) => {
         return word[0].toUpperCase() + word.substring(1);
       }).join(" ");
+      if ((capitalTitle == 'Nitrogen') || (capitalTitle == 'Phosphorus')) {
+        capitalTitle = 'Total ' + capitalTitle;
+      }
       return capitalTitle;
     },
     showLargeGraph() {
@@ -124,17 +128,15 @@ export default {
         return response.json()
       }).then(json => {
         let activeData = json.filter(row => row.param == parameterCode)[0];
-        let activeDataUnits = null
-        if (this.waterQualityGraphVariable == 'temperature') {
-          activeDataUnits = '&degC';
-        } else {
-          activeDataUnits = activeData.units;
-        }
-        this.chartOptions.yAxis.title.text = this.waterQualityGraphVariableCapital + ' (' + activeDataUnits + ')';
+
+        this.chartOptions.yAxis.title.text = this.waterQualityGraphVariableCapital + ' (' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ')';    
+        this.chartOptions.yAxis.type = this.waterQualityThresholds[this.waterQualityGraphVariable].scale;
         let dataSeries = [];
         activeData.values.forEach( row => {
           dataSeries.push({x: new Date(row.datetime).getTime(), y: row.value})
         })
+        this.chartOptions.yAxis.min = this.waterQualityThresholds[this.waterQualityGraphVariable].minValue;
+        this.chartOptions.yAxis.max = Math.max(...dataSeries.map(row => row.y));
         this.chartOptions.series[0].data = dataSeries;
         let thresholdValue = this.waterQualityThresholds[this.waterQualityGraphVariable].value
         this.chartOptions.yAxis.plotLines[0].value = thresholdValue
