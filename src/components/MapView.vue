@@ -59,7 +59,7 @@ Icon.Default.mergeOptions({
 });
 
 import {LMap, LTileLayer, LGeoJson, LCircleMarker, LTooltip} from 'vue2-leaflet';
-import { interpolateOranges, interpolateGreens, interpolatePurples } from 'd3-scale-chromatic'
+import { interpolateGreens, interpolateCividis, interpolatePurples } from 'd3-scale-chromatic'
 import StationTooltip from './subs/StationTooltip.vue'
 import MapLegend from './subs/MapLegend.vue'
 import WaterQualityFloater from '../components/WaterQualityFloater.vue'
@@ -186,41 +186,6 @@ export default {
           click: (event) => {
             this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
             this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
-            let newHabitatData = {
-                'eelgrass': {
-                  data: [
-                    {year: 2000, value: feature.properties.EG_HIST},
-                    {year: 2005, value: feature.properties.EG_CURR},
-                    {year: 2050, value: feature.properties.EG_TRGT}
-                  ],
-                  units: 'Acres'
-                },
-                'salt marsh': {
-                  data: [
-                    {year: 2000, value: feature.properties.SM_HIST},
-                    {year: 2005, value: feature.properties.SM_CURR},
-                    {year: 2050, value: feature.properties.SM_TRGT}
-                  ],
-                  units: 'Acres'
-                },
-                'tidal flats': {
-                  data: [
-                    {year: 2000, value: feature.properties.TF_HIST},
-                    {year: 2005, value: feature.properties.TF_CURR},
-                    {year: 2050, value: feature.properties.TF_TRGT}
-                  ],
-                  units: 'Acres'
-                },
-                'diadromous fish': {
-                  data: [
-                    {year: 2000, value: feature.properties.DF_HIST},
-                    {year: 2005, value: feature.properties.DF_CURR},
-                    {year: 2050, value: feature.properties.DF_TRGT}
-                  ],
-                  units: 'Miles'
-                }
-            }
-            this.$store.dispatch('setHabitatGraphData', newHabitatData);
           }
         });
         layer.bindTooltip(feature.properties.NAME);
@@ -275,11 +240,11 @@ export default {
     },
     colorScale(value, geoHabitat) {
       if (geoHabitat == 'tidal flats') {
-        return interpolateOranges(value);
+        return interpolatePurples(value);
       } else if (geoHabitat == 'salt marsh') {
-        return interpolateGreens(value);
+        return interpolateCividis(value);
       } else if (geoHabitat == 'eelgrass') {
-        return interpolatePurples(value)
+        return interpolateGreens(value)
       } else if (geoHabitat == 'diadromous fish') {
         return interpolatePurples(value);
       } else {
@@ -313,16 +278,16 @@ export default {
         };
     },
     tidalFlatsColorer(feature) {
-      return this.embaymentColorer(feature.properties.TF_PERC, 'tidal flats');
+      return this.embaymentColorer(feature.properties.TF_PERCENT_GOAL, 'tidal flats');
     },
     saltMarshColorer(feature) {
-      return this.embaymentColorer(feature.properties.SM_PERC, 'salt marsh');
+      return this.embaymentColorer(feature.properties.SM_PERCENT_GOAL, 'salt marsh');
     },
     eelgrassColorer(feature) {
-      return this.embaymentColorer(feature.properties.EG_PERC, 'eelgrass');
+      return this.embaymentColorer(feature.properties.EG_PERCENT_GOAL, 'eelgrass');
     },
     diadromousFishColorer(feature) {
-      return this.embaymentColorer(feature.properties.DF_PERC, 'diadromous fish');
+      return this.embaymentColorer(feature.properties.DF_PERCENT_GOAL, 'diadromous fish');
     },
     parameterMapper(wqCounts) {
       const waterQualityMap = new Map();
@@ -357,11 +322,22 @@ export default {
   },
   created() {
     // fetch embayments
-    fetch("./data/embayments_targets_wgs.geojson")
+    fetch("./data/assessment_areas_wgs.geojson")
       .then(response => {
         return response.json()
       }).then(json => {
         this.embaymentsGeojson = json;
+        fetch("./data/habitat_goals_percents.json")
+        .then(response => {
+          return response.json()
+        }).then(json => {
+          this.embaymentsGeojson.features.forEach(embayment => {
+            embayment.properties['EG_PERCENT_GOAL'] = json[embayment.properties.NAME].EG_PERCENT_GOAL;
+            embayment.properties['SM_PERCENT_GOAL'] = json[embayment.properties.NAME].SM_PERCENT_GOAL;
+            embayment.properties['TF_PERCENT_GOAL'] = json[embayment.properties.NAME].TF_PERCENT_GOAL;
+            embayment.properties['DF_PERCENT_GOAL'] = json[embayment.properties.NAME].DF_PERCENT_GOAL;
+          })
+        })
     })
     // fetch habitats
     const fileArray = {

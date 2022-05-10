@@ -18,8 +18,12 @@
             </div>
           </div>
           <div class="col-7">
-            <div class="form-check" v-for="selection in habitatSelections.slice(2,4)" :key="selection.id">
+            <div class="form-check" v-for="selection in habitatSelections.slice(2,3)" :key="selection.id">
               <input class="form-check-input" type="radio" id="key" :value="selection.id" v-model="habitat">
+              <label class="form-check-label" for="key" style="color: white"> {{selection.capital}} </label>
+            </div>
+            <div class="form-check" v-for="selection in habitatSelections.slice(3,4)" :key="selection.id">
+              <input class="form-check-input" type="radio" id="key" :value="selection.id" v-model="habitat" disabled>
               <label class="form-check-label" for="key" style="color: white"> {{selection.capital}} </label>
             </div>
           </div>          

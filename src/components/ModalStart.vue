@@ -37,11 +37,15 @@ export default {
   },
   methods: {
     iconClicked(newHab) {
-      this.$store.dispatch('setHabitatGraphData', this.stateWideHabitatValues);
-      this.$store.dispatch('setHabitat', newHab);
-      this.$store.dispatch('onBaseLayer');
-      this.$store.dispatch('offQuickStart');
-      this.modalShow = false;
+      if (newHab == 'diadromous fish') {
+        alert('Diadromous fish habitat coming soon');
+      } else {
+        this.$store.dispatch('setHabitatGraphData', this.stateWideHabitatValues);
+        this.$store.dispatch('setHabitat', newHab);
+        this.$store.dispatch('onBaseLayer');
+        this.$store.dispatch('offQuickStart');
+        this.modalShow = false;
+      }
     },
     buttonClicked() {
       this.$store.dispatch('onPointsLayer');
