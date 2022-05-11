@@ -20,8 +20,8 @@
     </div>
     <br>
     <div class="row justify-content-center">
-      <div class="col-6" style="color: #ffffff; background-color: #1850AD; text-align: center">
-        <p>See the table below for more information on <br><b>water quality parameter thresholds</b><br> used in the Ecohealth Tracking Tool.</p>
+      <div class="col-4" style="color: #ffffff; background-color: #1850AD; text-align: center">
+        <p class="my-auto" style="padding: 15px">See the table below for more information on <br><b>water quality parameter thresholds</b><br> used in the Ecohealth Tracking Tool.</p>
       </div>      
     </div>
     <br>

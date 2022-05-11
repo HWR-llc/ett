@@ -17,12 +17,13 @@
               <rect id="patch" x="75" y="0" width="35" height="25" :style="{fill: colorScale(0.4)}"/>
               <rect id="patch" x="110" y="0" width="35" height="25" :style="{fill: colorScale(0.6)}"/>
               <rect id="patch" x="145" y="0" width="35" height="25" :style="{fill: colorScale(0.8)}"/>
+              <rect id="patch" x="180" y="0" width="35" height="25" :style="{fill: colorScale(1)}"/>
               <text x="0" y="40" class="small">0</text>
               <text x="35" y="40" class="small">20</text>
               <text x="70" y="40" class="small">40</text>
               <text x="105" y="40" class="small">60</text>
               <text x="140" y="40" class="small">80</text>
-              <text x="170" y="40" class="small">100</text>
+              <text x="170" y="40" class="small">100+</text>
             </svg>
           </div>
         </div>     

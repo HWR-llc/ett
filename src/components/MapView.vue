@@ -11,18 +11,18 @@
         :options="optionsEmbayment" 
         :options-style="embStyle"
         ref="embaymentsBase"></l-geo-json>
-      <div v-if="baseLayer">
-        <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.his" v-if="habitat=='tidal flats'" :options-style="tfStyleHis" ref="his">></l-geo-json>	  		
-        <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.his" v-if="habitat=='salt marsh'" :options-style="smStyleHis"  ref="his"></l-geo-json>	
-        <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.his" v-if="habitat=='eelgrass'" :options-style="egStyleHis" ref="his"></l-geo-json>
-        <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.cur" v-if="habitat=='tidal flats'" :options-style="tfStyleCur" ref="cur"></l-geo-json>	  		
-        <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.cur" v-if="habitat=='salt marsh'" :options-style="smStyleCur" ref="cur"></l-geo-json>	
-        <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.cur" v-if="habitat=='eelgrass'" :options-style="egStyleCur" ref="cur"></l-geo-json>
-      </div>
       <div v-if="metricLayer">
-        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='tidal flats'" :options-style="tidalFlatsColorer">></l-geo-json>	  		
-        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='salt marsh'" :options-style="saltMarshColorer">></l-geo-json>	  
-        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='eelgrass'" :options-style="eelgrassColorer">></l-geo-json>	  
+        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='tidal flats'" :options-style="tidalFlatsColorer" ref="metric"></l-geo-json>	  		
+        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='salt marsh'" :options-style="saltMarshColorer" ref="metric"></l-geo-json>	  
+        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='eelgrass'" :options-style="eelgrassColorer" ref="metric"></l-geo-json>	  
+      </div>
+      <div v-if="baseLayer">
+        <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.his" v-if="habitat=='tidal flats'" :options-style="tfStyleHis" ref="historic"></l-geo-json>	  		
+        <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.his" v-if="habitat=='salt marsh'" :options-style="smStyleHis"  ref="historic"></l-geo-json>	
+        <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.his" v-if="habitat=='eelgrass'" :options-style="egStyleHis" ref="historic"></l-geo-json>
+        <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.cur" v-if="habitat=='tidal flats'" :options-style="tfStyleCur" ref="current"></l-geo-json>	  		
+        <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.cur" v-if="habitat=='salt marsh'" :options-style="smStyleCur" ref="current"></l-geo-json>	
+        <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.cur" v-if="habitat=='eelgrass'" :options-style="egStyleCur" ref="current"></l-geo-json>
       </div>
       <div v-if="pointsLayer">
         <div v-for="s in stations" :key="s.id">
@@ -186,9 +186,12 @@ export default {
           click: (event) => {
             this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
             this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
+          },
+          mouseover: (event) => {
+            event.target.getTooltip().setContent(event.target.feature.properties.NAME + '<br>2050 Goal: ' + feature.properties[this.habitat + '_percent_goal'] + '%');            
           }
         });
-        layer.bindTooltip(feature.properties.NAME);
+        layer.bindTooltip('');
       };
     }
   },
@@ -261,33 +264,40 @@ export default {
         lowerBinValue = 0.4;        
       } else if (value >= 60 && value < 80) {
         lowerBinValue = 0.6; 
-      } else if (value >= 80) {
+      } else if (value >= 80 && value < 100) {
         lowerBinValue = 0.8; 
-      } 
+      } else if (value >= 100) {
+        lowerBinValue = 1;
+      }
 
       let featureColor = this.colorScale(lowerBinValue, geoHabitat);
       let featureOpacity = 0;
+      let featureStroke = false;
       if (value > 0) {
-        featureOpacity = 0.5
+        featureOpacity = 1.0
+        featureStroke = true
       }
       return {
-          stroke: false,
+          stroke: featureStroke,
+          weight: 1,
+          color: "black",
+          opacity: 0.5,
           fillColor: featureColor,
           fillOpacity: featureOpacity,
           interactive: false
         };
     },
     tidalFlatsColorer(feature) {
-      return this.embaymentColorer(feature.properties.TF_PERCENT_GOAL, 'tidal flats');
+      return this.embaymentColorer(feature.properties['tidal flats_percent_goal'], 'tidal flats');
     },
     saltMarshColorer(feature) {
-      return this.embaymentColorer(feature.properties.SM_PERCENT_GOAL, 'salt marsh');
+      return this.embaymentColorer(feature.properties['salt marsh_percent_goal'], 'salt marsh');
     },
     eelgrassColorer(feature) {
-      return this.embaymentColorer(feature.properties.EG_PERCENT_GOAL, 'eelgrass');
+      return this.embaymentColorer(feature.properties['eelgrass_percent_goal'], 'eelgrass');
     },
     diadromousFishColorer(feature) {
-      return this.embaymentColorer(feature.properties.DF_PERCENT_GOAL, 'diadromous fish');
+      return this.embaymentColorer(feature.properties['diadromous fish_percent_goal'], 'diadromous fish');
     },
     parameterMapper(wqCounts) {
       const waterQualityMap = new Map();
@@ -326,17 +336,18 @@ export default {
       .then(response => {
         return response.json()
       }).then(json => {
-        this.embaymentsGeojson = json;
+        let embaymentsGeoJson = json;
         fetch("./data/habitat_goals_percents.json")
         .then(response => {
           return response.json()
         }).then(json => {
-          this.embaymentsGeojson.features.forEach(embayment => {
-            embayment.properties['EG_PERCENT_GOAL'] = json[embayment.properties.NAME].EG_PERCENT_GOAL;
-            embayment.properties['SM_PERCENT_GOAL'] = json[embayment.properties.NAME].SM_PERCENT_GOAL;
-            embayment.properties['TF_PERCENT_GOAL'] = json[embayment.properties.NAME].TF_PERCENT_GOAL;
-            embayment.properties['DF_PERCENT_GOAL'] = json[embayment.properties.NAME].DF_PERCENT_GOAL;
+          embaymentsGeoJson.features.forEach(embayment => {
+            embayment.properties['eelgrass_percent_goal'] = json[embayment.properties.NAME].EG_PERCENT_GOAL;
+            embayment.properties['salt marsh_percent_goal'] = json[embayment.properties.NAME].SM_PERCENT_GOAL;
+            embayment.properties['tidal flats_percent_goal'] = json[embayment.properties.NAME].TF_PERCENT_GOAL;
+            embayment.properties['diadromous fish_percent_goal'] = json[embayment.properties.NAME].DF_PERCENT_GOAL;
           })
+          this.embaymentsGeojson = embaymentsGeoJson;
         })
     })
     // fetch habitats
@@ -376,11 +387,10 @@ export default {
     })
   },
   updated() {
-    this.$nextTick(() => {
-      // console.log(this.$refs.his.mapObject);
-      this.$refs.his.mapObject.bringToBack();
-
-    })
+    this.$refs.historic.mapObject.bringToFront();
+    this.$refs.current.mapObject.bringToFront();
+    this.$refs.metric.mapObject.bringToFront();
+    
   }
 }
 </script>

@@ -5,7 +5,8 @@
 </template>
 
 <script>
-
+import Highcharts from "highcharts"
+Highcharts.setOptions({lang: {thousandsSep:','}})
 export default {
   data() {
     return {
@@ -35,7 +36,23 @@ export default {
           min: 0,
           title: {
             text: 'Acres'
-          }
+          },
+          plotLines: [{
+            color: '#00B0F0',
+            width: 3,
+            opacity: 0.5,
+            value: -100,
+            zIndex: 10,
+            label: {
+              text: '2050 Goal',
+              align: 'center',
+              x: 0,
+              y: -10,
+              style: {
+                fontWeight: 'bold'
+              }
+            }
+          }]
         },
         legend: {
           enabled: false
@@ -92,13 +109,19 @@ export default {
           return (row.ASSESSMENT_AREA == 'ALL' && row.TYPE == this.habitat)
         });        
       }
-      console.log(matchSet.length);
       matchSet.sort((a, b) => (a.YEAR > b.YEAR) ? 1 : ((b.YEAR > a.YEAR) ? -1 : 0));
       matchSet.forEach(row => {
         newValues.push(row.VALUE);
         newCategories.push(row.YEAR);
         newUnits.push(row.UNITS);
       })
+      let updatePlotLineValue = -100;
+      if(newCategories[newCategories.length - 1] == '2050 Goal') {
+        updatePlotLineValue = newValues[newValues.length - 1];
+        newCategories = newCategories.slice(0, newCategories.length - 1);
+        newValues = newValues.slice(0, newValues.length - 1);
+      }
+      this.chartOptions.yAxis.plotLines[0].value = updatePlotLineValue;
       this.chartOptions.xAxis.categories = newCategories;
       this.chartOptions.series[0].data = newValues;
       this.chartOptions.yAxis.title.text = newUnits[0];

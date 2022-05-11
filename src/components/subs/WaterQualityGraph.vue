@@ -7,6 +7,8 @@
 
 <script>
 import { waterQualityThresholds } from '../../lib/constants'
+import Highcharts from "highcharts"
+Highcharts.setOptions({lang: {thousandsSep:','}})
 export default {
   props: ['gwidth', 'gheight'],
   data() {
