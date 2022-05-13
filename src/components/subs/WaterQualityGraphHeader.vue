@@ -1,9 +1,31 @@
 <template>
-  <div style="width: 100%; min-height: 100px">
+  <div id="holder">
+    <div class="row top-row">
+      <div class="col-12">
+        <h5>Embayment Name</h5>
+      </div>      
+    </div>
+    <div class="row bottom-row">
+      <div class="col-3 my-auto">
+        <img :src="imageLibrary[waterQualityGraphVariable].pic" style="max-height: 60px">
+      </div>
+      <div class="col-9 my-auto">
+      <h6>{{ station }}<br>{{ waterQualityGraphVariableCapital }}</h6>        
+      </div>      
+    </div>
+  <!-- <div class="row"style="width: 100%; min-height: 100px">
     <div class="top-row">
       <h5>Embayment Name</h5>
     </div>
-    <div class="bottom-row">
+    <div class="row">
+      <div class="col-3">
+        <img :src="imageLibrary[waterQualityGraphVariable].pic" style="max-height: 60px" class="overlay-icon">
+      </div>
+      <div class="col-p">
+      <h6>{{ station }}<br>{{ waterQualityGraphVariableCapital }}</h6>        
+      </div>
+    </div> -->
+    <!-- <div class="bottom-row">
       <div v-for="(item, key) in imageLibrary" :key="key">
         <div v-if="key == waterQualityGraphVariable">
           <img :src="item.pic" style="max-height: 60px" class="overlay-icon">
@@ -11,7 +33,7 @@
       </div>
       <h6>{{ station }}<br>
       {{ waterQualityGraphVariableCapital }}</h6>
-    </div>  
+    </div>   -->
   </div>
 </template>
 
@@ -54,11 +76,12 @@ export default {
   background-color: #1850AD;
   height: 25px;
   width: 100%;
+  margin: 0px;
 }
 
 .bottom-row {
-  padding-top: 15px;
-  text-align: center;
+  padding-top: 5px;
+  margin: 0px;
   height: 75px;
 }
 

@@ -2,6 +2,7 @@
   <div style="height: 100%">
     <br>
     <br>
+    <br>
     <div class="row" style="padding-top: 30px">
       <div class="col">
         <b-button squared class="habitat-background no-border full-width" @click='flipQuickStart'><b>{{showOrHide}} Quick Start Guide</b></b-button> 
@@ -27,7 +28,6 @@
         </div>
       </div>
     </div> -->
-    <br>
     <br>
     <br>
     <div class="row">

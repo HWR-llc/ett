@@ -15,6 +15,7 @@ export const habitatIndexSelections = ['index 1', 'index 2', 'index 3']
 export const waterQualityThresholds = {
   'nitrogen': {
     value: 0.35,
+    type: 'Upper',
     units: 'mg/L',
     scale: 'linear',
     minValue: 0,
@@ -22,6 +23,7 @@ export const waterQualityThresholds = {
   },
   'enterococcus': {
     value: 104,
+    type: 'Upper',
     units: 'cfu/ 100mL',
     scale: 'logarithmic',
     minValue: 1,
@@ -29,6 +31,7 @@ export const waterQualityThresholds = {
   },
   'e. coli': {
     value: 235,
+    type: 'Upper',
     units: 'cfu/ 100 mL',
     scale: 'logarithmic',
     minValue: 1,
@@ -36,6 +39,7 @@ export const waterQualityThresholds = {
   },
   'dissolved oxygen': {
     value: 6,
+    type: 'Lower', 
     units: 'mg/L',
     scale: 'linear',
     minValue: 0,
@@ -43,6 +47,7 @@ export const waterQualityThresholds = {
   },
   'pH': {
     value: 7,
+    type: 'Lower',
     units: 'S.U.',
     scale: 'linear',
     minValue: 6,
@@ -50,6 +55,7 @@ export const waterQualityThresholds = {
   },
   'temperature': {
     value: ((77 - 32) / 1.8),
+    type: 'Upper',
     units: '&degC',
     scale: 'linear',
     minValue: 0,
@@ -57,6 +63,7 @@ export const waterQualityThresholds = {
   },
   'phosphorus': {
     value: 30,
+    type: 'Upper',
     units: 'ug/L',
     scale: 'linear',
     minValue: 0,
@@ -64,6 +71,7 @@ export const waterQualityThresholds = {
   },
   'turbidity': {
     value: 5,
+    type: 'Upper',
     units: 'NTU',
     scale: 'linear',
     minValue: 0,
@@ -71,6 +79,7 @@ export const waterQualityThresholds = {
   },
   'salinity': {
     value: 1,
+    type: 'Variable',
     units: 'ppt',
     scale: 'linear',
     minValue: 0,
@@ -134,48 +143,48 @@ export const imageLibraryHabitat = {
 export const imageLibraryWaterQuality = {
   'nitrogen': {
     title: 'Nitrogen',
-    pic: require('@/assets/icons/nitrogen.svg'),
+    pic: require('@/assets/icons/nitrogen.png'),
     explanation: 'Nitrogen is a nutrient important to all living things which is found naturally in saltwater and freshwater. Nitrogen is typically the most important nutrient determining the growth of algae and aquatic plants in coastal waters. When too much nitrogen enters the water, it can fuel excessive growth of algae which blocks sunlight needed for growth of submerged aquatic vegetation and reduces oxygen for fish and other organisms as it dies and decomposes. Studies indicate that nitrogen levels exceeding 0.35 mg/L are detrimental to eelgrass health.'
   },
   'phosphorus': {
     title: 'Phosphorus',
-    pic: require('@/assets/icons/phosphorus.svg'),
+    pic: require('@/assets/icons/phosphorus.png'),
     explanation: 'Like nitrogen, phosphorus is a nutrient important to all living things which is found naturally in saltwater and freshwater. Phosphorus is typically the most important nutrient determining the growth of algae and plants in freshwater, and water quality standards for this nutrient are typically based on freshwater environments. For healthy habitat conditions in freshwater streams, researchers have determined that total phosphorus levels should be below 30 ug/L.'
   },
   'temperature': {
     title: 'Temperature',
-    pic: require('@/assets/icons/temperature.svg'),
+    pic: require('@/assets/icons/temperature.png'),
     explanation: 'Water temperature can have an important impact on eelgrass habitat, fish, and other aquatic biota within coastal habitats. Climate change has resulted in long-term warming trends that have resulted in increased summer water temperatures in Massachusetts’ bays. Studies indicate that summer water temperatures exceeding 77oF are detrimental to eelgrass health.'
   },
   'pH': {
     title: 'pH',
-    pic: require('@/assets/icons/ph.svg'),
+    pic: require('@/assets/icons/ph.png'),
     explanation: 'pH is a measure of acidity based on the presence of hydrogen ions. A pH of 7.0 is neutral, while values below 7.0 indicate acidic conditions and values above 7.0 indicate basic conditions. Research [in Chesapeake Bay] shows that pH levels below 7.5 have negative impacts on shellfish growth and health, and pH levels below 7.0 will impact salt marsh health. The growth and wellbeing of most fish species is affected by long-term exposure to a pH less than 6.0 or over 9.5.  '
   },
   'turbidity': {
     title: 'Turbidity',
-    pic: require('@/assets/icons/turbidity.svg'),
+    pic: require('@/assets/icons/turbidity.png'),
     explanation: 'Turbidity is a measure of water clarity determined by how much the material suspended in the water column (including algae and suspended particles) decreases light penetration. Stormwater runoff (contributing sediments and nutrients that fuel algal productivity), wastewater discharge, dredging, boating, and natural disturbances such as storms, wave action, and bottom feeding animals, can increase turbidity. High turbidity levels can impair coastal habitats by interfering with plant photosynthesis, smothering benthic organisms, and reducing the quality of fish habitat. Research indicates that the upper turbidity limit for healthy habitats in coastal waters is 5 NTU.'
 
   },
   'salinity': {
     title: 'Salinity',
-    pic: require('@/assets/icons/salinity.svg'),
+    pic: require('@/assets/icons/salinity.png'),
     explanation: 'Salinity refers to the concentration of salts in a water body. The normal range of water salinity near the shore varies considerably depending on the degree of mixing that occurs between freshwater flowing from the land and ocean water.  The U.S. Geological Survey categorizes three primary salinity zones, including freshwater (salinity less than 1 ppt), estuarine water (salinity 1 to 30 ppt), and marine (salinity greater than 30 ppt). Eelgrass beds and salt marshes are mainly found in estuarine environments. Studies indicate that eelgrass grows best in waters with salinity between 20 and 31 ppt. Under 20 ppt, eelgrass productivity can drop by 50 percent. Healthy salt marshes have salinity that varies between 18 and 35 ppt.'
   },
   'dissolved oxygen': {
     title: 'Dissolved Oxygen',
-    pic: require('@/assets/icons/dissolved_oxygen.svg'),
+    pic: require('@/assets/icons/dissolved_oxygen.png'),
     explanation: 'Dissolved oxygen (DO) concentration is a measure of how aerated a water body is, and is influenced by physical mixing (i.e., waves, turbulence) and photosynthesis of rooted plants and algae in the water. DO is one of the best and most immediate indicators of a system’s health and ability to support fish and other aquatic organisms. In addition to impacting the ability of fish and other creatures to respire (breathe), very low oxygen conditions facilitate release of nutrients and other pollutants from bottom sediments, contributing to additional water quality problems. EPA has established a DO level of 6.0 mg/L as the lower threshold for “good” conditions in support of aquatic life'
   },
   'e. coli': {
     title: 'E. coli',
-    pic: require('@/assets/icons/e_coli.svg'),
+    pic: require('@/assets/icons/e_coli.png'),
     explanation: '<i>Escherichia coli (E. coli)</i> is a species of bacteria which is strongly correlated with the presence of harmful pathogens in freshwater due to fecal contamination.  <i>E. coli</i> is used as a representative, or “indicator” bacteria for freshwater to protect the public from harmful exposure during recreational activities in freshwater waterbodies, such as swimming and paddling.  Massachusetts has set a single-sample limit for E. coli in freshwater bathing beach water of 235 colony forming units (CFUs) per 100 ml.  '
   },
   'enterococcus': {
     title: 'Enterococcus',
-    pic: require('@/assets/icons/enterococcus.svg'),
+    pic: require('@/assets/icons/enterococcus.png'),
     explanation: '<i>Enterococcus</i> is a genus of bacteria which is strongly correlated with the presence of harmful pathogens in marine and freshwaters due to fecal contamination.  Enterococcus is used as a representative, or “indicator” bacteria to protect people from harmful exposure during recreational activities in coastal waterbodies, such as swimming and paddling. Massachusetts has set a single-sample limit for <i>Enterococcus</i> in bathing beach water of 100 colony forming units (CFUs) per 100 ml.'
   }
 }

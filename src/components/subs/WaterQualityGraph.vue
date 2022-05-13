@@ -1,6 +1,12 @@
 <template>
   <div>
-    <p class="floating-text" v-if="station == null"> <b>Select an active station and <br> click "Plot Data" to see a graph</b></p>
+    <p class="floating-text" v-if="!plotWaterQualityGraph">
+      <b>Select an active station:</b>
+      <svg height="20" width="30">
+        <circle id="legend 6" cx="15" cy="10" r="5" style="fill: #00B0F0"/>
+      </svg><br>
+      <b>to see a plot of the data.</b>
+    </p>
     <highcharts class="chart" :options="chartOptions" ref="chart" :style="styleObject"></highcharts>
   </div>
 </template>
@@ -46,7 +52,7 @@ export default {
             width: 3,
             dashStyle: 'LongDash',
             opacity: 0.5,
-            value: 0
+            value: -10
           }]
         },
         legend: {
@@ -55,7 +61,8 @@ export default {
         series: [
           {
             name: 'Observed',
-            data: []
+            data: [],
+            showInLegend: false
           },
           {
             type: 'line',
@@ -99,6 +106,9 @@ export default {
     },
     showLargeGraph() {
       return this.$store.state.showLargeGraph;
+    },
+    plotWaterQualityGraph() {
+      return this.$store.state.plotWaterQualityGraph;
     }
   },
   watch: {
@@ -122,32 +132,45 @@ export default {
       return waterQualityMap.get(parameterName); 
     },
     plotData() {
-      let parameterCode = this.parameterMapper(this.waterQualityGraphVariable);
+      if (this.plotWaterQualityGraph == true) {
+        let parameterCode = this.parameterMapper(this.waterQualityGraphVariable);
+        // fetch water quality data
+        fetch('./data/wq/' + this.station +'.json')
+        .then(response => {
+          return response.json()
+        }).then(json => {
+          let activeData = json.filter(row => row.param == parameterCode)[0];
 
-      // fetch water quality data
-      fetch('./data/wq/' + this.station +'.json')
-      .then(response => {
-        return response.json()
-      }).then(json => {
-        let activeData = json.filter(row => row.param == parameterCode)[0];
-
-        this.chartOptions.yAxis.title.text = this.waterQualityGraphVariableCapital + ' (' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ')';    
-        this.chartOptions.yAxis.type = this.waterQualityThresholds[this.waterQualityGraphVariable].scale;
-        let dataSeries = [];
-        activeData.values.forEach( row => {
-          dataSeries.push({x: new Date(row.datetime).getTime(), y: row.value})
-        })
-        this.chartOptions.yAxis.min = this.waterQualityThresholds[this.waterQualityGraphVariable].minValue;
-        this.chartOptions.yAxis.max = Math.max(...dataSeries.map(row => row.y));
-        this.chartOptions.series[0].data = dataSeries;
-        let thresholdValue = this.waterQualityThresholds[this.waterQualityGraphVariable].value
-        this.chartOptions.yAxis.plotLines[0].value = thresholdValue
-        this.chartOptions.series[1].name = 'Threshold: ' + thresholdValue + ' (' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ')';       
-      });
+          this.chartOptions.yAxis.title.text = this.waterQualityGraphVariableCapital + ' (' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ')';    
+          this.chartOptions.yAxis.type = this.waterQualityThresholds[this.waterQualityGraphVariable].scale;
+          let dataSeries = [];
+          activeData.values.forEach( row => {
+            dataSeries.push({x: new Date(row.datetime).getTime(), y: row.value})
+          })
+          this.chartOptions.yAxis.min = this.waterQualityThresholds[this.waterQualityGraphVariable].minValue;
+          let thresholdValue = this.waterQualityThresholds[this.waterQualityGraphVariable].value
+          let maxDataValue = Math.max(...dataSeries.map(row => row.y))
+          if ( maxDataValue> thresholdValue) {
+            this.chartOptions.yAxis.max = maxDataValue;
+          } else {
+            this.chartOptions.yAxis.max = thresholdValue;
+          }        
+          this.chartOptions.series[0].data = dataSeries;
+          this.chartOptions.yAxis.plotLines[0].value = thresholdValue
+          this.chartOptions.series[1].name = this.waterQualityThresholds[this.waterQualityGraphVariable].type + ' Threshold: ' + thresholdValue + ' (' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ')';       
+        });
+      } else {
+        this.chartOptions.yAxis.title.text = 'parameter (units)';
+        this.chartOptions.series[0].data = []
+        this.chartOptions.yAxis.plotLines[0].value = -10;
+        this.chartOptions.series[1].name = 'Threshold';
+      }
     }
   },
   mounted() {
-    this.plotData();
+    this.$nextTick(() => {
+      this.plotData();
+    })
   }
 }
 </script>
@@ -155,8 +178,8 @@ export default {
 <style scoped>
 .floating-text {
   position: absolute;
-  top: 30%;
-  left: 30%;
+  margin: auto;
+  top: 50%; left: 30%;
   z-index: 100;
 }
 

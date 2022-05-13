@@ -19,7 +19,9 @@ export const store = new Vuex.Store({
     station: null,
     habitatGraphData: null,
     showQuickStart: true,
-    showLargGraph: false,
+    showLargeGraph: false,
+    plotHabitatGraph: false,
+    plotWaterQualityGraph: false
   },
   mutations: {
     SET_HABITAT: (state, payload) => {
@@ -75,6 +77,18 @@ export const store = new Vuex.Store({
     },
     SWITCH_SHOW_LARGE_GRAPH: state => {
       state.showLargeGraph = !state.showLargeGraph;
+    },
+    ON_PLOT_HABITAT_GRAPH: state => {
+      state.plotHabitatGraph = true;
+    },
+    OFF_PLOT_HABITAT_GRAPH: state => {
+      state.plotHabitatGraph = false;
+    },
+    ON_PLOT_WATER_QUALITY_GRAPH: state => {
+      state.plotWaterQualityGraph = true;
+    },
+    OFF_PLOT_WATER_QUALITY_GRAPH: state => {
+      state.plotWaterQualityGraph = false;
     },
   },
   actions: {
@@ -139,5 +153,17 @@ export const store = new Vuex.Store({
     switchShowLargeGraph: ({commit}) => {
       commit('SWITCH_SHOW_LARGE_GRAPH');
     }, 
+    onPlotHabitatGraph: ({commit}) => {
+      commit('ON_PLOT_HABITAT_GRAPH');
+    },
+    offPlotHabitatGraph: ({commit}) => {
+      commit('OFF_PLOT_HABITAT_GRAPH');
+    },
+    onPlotWaterQualityGraph: ({commit}) => {
+      commit('ON_PLOT_WATER_QUALITY_GRAPH');
+    },
+    offPlotWaterQualityGraph: ({commit}) => {
+      commit('OFF_PLOT_WATER_QUALITY_GRAPH');
+    },
   }
 });

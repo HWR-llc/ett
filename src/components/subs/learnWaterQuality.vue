@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row justify-content-center">
-          <img src="../../assets/logos/ett_square_no_border.svg" style="max-width: 200px; margin: 10px">
+          <img src="../../assets/logos/ett_square_no_border.png" style="max-width: 200px; margin: 10px">
     </div>
     <div class="row justify-content-center">
       <h2 class="water-quality-main">Water Quality Parameters</h2>
@@ -9,7 +9,7 @@
     <div v-for="(item, key) in imageLibraryWaterQuality" :key="key">
       <div class="row">
         <div class="col-1" style="min-width: 90px">
-          <img :src="item.pic" style="max-width: 90px">
+          <img :src="item.pic" style="max-width: 70px">
         </div>
         <div class="col-10">
           <p>

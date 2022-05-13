@@ -59,7 +59,7 @@ Icon.Default.mergeOptions({
 });
 
 import {LMap, LTileLayer, LGeoJson, LCircleMarker, LTooltip} from 'vue2-leaflet';
-import { interpolateGreens, interpolateCividis, interpolatePurples } from 'd3-scale-chromatic'
+import { interpolateGreens, interpolateOrRd, interpolatePurples } from 'd3-scale-chromatic'
 import StationTooltip from './subs/StationTooltip.vue'
 import MapLegend from './subs/MapLegend.vue'
 import WaterQualityFloater from '../components/WaterQualityFloater.vue'
@@ -186,6 +186,7 @@ export default {
           click: (event) => {
             this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
             this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
+            this.$store.dispatch('offBlockHabitatGraph');
           },
           mouseover: (event) => {
             event.target.getTooltip().setContent(event.target.feature.properties.NAME + '<br>2050 Goal: ' + feature.properties[this.habitat + '_percent_goal'] + '%');            
@@ -245,7 +246,7 @@ export default {
       if (geoHabitat == 'tidal flats') {
         return interpolatePurples(value);
       } else if (geoHabitat == 'salt marsh') {
-        return interpolateCividis(value);
+        return interpolateOrRd(value);
       } else if (geoHabitat == 'eelgrass') {
         return interpolateGreens(value)
       } else if (geoHabitat == 'diadromous fish') {
@@ -321,13 +322,21 @@ export default {
 
     },
     plotData(stationId, parameterList) {
+      this.$store.dispatch('onWaterQualityGraph');
       if (parameterList.includes(this.waterQuality)) {
-        this.$store.dispatch('onWaterQualityGraph');
         this.$nextTick(() => {
-          this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
-          this.$store.dispatch('setStation', stationId);
+          this.$store.dispatch('onPlotWaterQualityGraph');
         })
+      } else {
+        this.$store.dispatch('offPlotWaterQualityGraph')
       }
+      if (this.waterQuality == null) {
+        this.$store.dispatch('setWaterQuality', 'nitrogen');
+        this.$store.dispatch('setWaterQualityGraphVariable', 'nitrogen');
+      } else {
+        this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
+      }
+      this.$store.dispatch('setStation', stationId);
     }
   },
   created() {

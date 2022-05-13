@@ -2,7 +2,7 @@
   <div class="floater">
     <div class="row" style="text-align: right">
       <div class="col-2" style="text-align: left; padding-top: 2px">
-        <b-button class="narrow-button" variant="success"  v-b-modal.modal-large-graph>
+        <b-button class="narrow-button" variant="success"  v-b-modal.modal-large-graph :disabled="!plotWaterQualityGraph">
           enlarge
         </b-button>
       </div>
@@ -13,28 +13,30 @@
       </div>
     </div>
     <div class="row">
-      <app-water-quality-graph-header></app-water-quality-graph-header>
+      <div class="col-12" style="width: 100%; padding: 0px">
+        <app-water-quality-graph-header></app-water-quality-graph-header>
+      </div>
     </div>
-    <div class="row" v-if="true">
+    <div class="row">
       <app-water-quality-graph :gwidth="'380px'" :gheight="'180px'"></app-water-quality-graph>
     </div>
         <b-modal v-model="showLargeGraph" id="modal-large-graph" size="lg" hide-footer hide-header>
-          <b-container fluid class="big-floater">
-            <div class="row justify-con">
+          <div class="row justify-content-center">
+            <div class="col-12" style="width: 100%; padding: 0px">
               <app-water-quality-graph-header></app-water-quality-graph-header>
             </div>
-            <div class="row justify-content-center" v-if="true">
-              <div class="col-12">
-                <app-water-quality-graph :gwidth="'100%'" :gheight="'400px'"></app-water-quality-graph>
-              </div>
+            
+          </div>
+          <div class="row justify-content-center" v-if="true">
+            <div class="col-12">
+              <app-water-quality-graph :gwidth="'100%'" :gheight="'400px'"></app-water-quality-graph>
             </div>
-          </b-container>       
+          </div>
         </b-modal> 
   </div>
 </template>
 
 <script>
-
 import WaterQualityGraph from './subs/WaterQualityGraph.vue'
 import WaterQualityGraphHeader from './subs/WaterQualityGraphHeader.vue'
 export default {
@@ -46,6 +48,9 @@ export default {
     }
   },
   computed: {
+    plotWaterQualityGraph() {
+      return this.$store.state.plotWaterQualityGraph;
+    },
     styleObject: function () {
       return {
         width: `${this.divWidth}px`,
