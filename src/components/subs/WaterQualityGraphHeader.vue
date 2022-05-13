@@ -10,7 +10,7 @@
         <img :src="imageLibrary[waterQualityGraphVariable].pic" style="max-height: 60px">
       </div>
       <div class="col-9 my-auto">
-      <h6>{{ station }}<br>{{ waterQualityGraphVariableCapital }}</h6>        
+      <h6>{{ station }}<br>{{imageLibrary[waterQualityGraphVariable].title }}</h6>        
       </div>      
     </div>
   <!-- <div class="row"style="width: 100%; min-height: 100px">

@@ -51,6 +51,7 @@ export default {
       },
       set () {
         this.$store.dispatch('switchPointsLayer');
+        this.$store.dispatch('offWaterQualityGraph');
       }      
     },
     waterQuality: {
@@ -60,7 +61,7 @@ export default {
       set (newWq) {
         this.$store.dispatch('setWaterQuality', newWq);
         this.$store.dispatch('onPointsLayer');
-        this.$store.dispatch('setActiveTab', 'water quality');
+        this.$store.dispatch('offWaterQualityGraph');
       }      
     }
   }

@@ -13,21 +13,6 @@
         <b-button squared class="water-quality-background no-border full-width" href="https://www.google.com/" target="_blank"><b>Data Sources</b></b-button>
       </div>
     </div> 
-
-    <!-- <div class="row">
-      <div class="col-12">
-        <div class="row" style="padding-top: 20px; padding-left: 50px; padding-right: 50px">
-          <i>Click on a watershed to zoom and center map or select from the list below <br><u>not active yet</u></i>
-        </div>
-        <br>
-        <br>
-        <div class="row">
-          <div class="col-12" style="text-align: center">
-            <b-form-select v-model="embayment" :options="embaymentList">select a watershed</b-form-select>
-          </div>
-        </div>
-      </div>
-    </div> -->
     <br>
     <br>
     <div class="row">

@@ -1,14 +1,13 @@
 <template>
   <div>
-    <p class="floating-text" v-if="!plotHabitatGraph">
-      <b>No observed {{ habitat }} in this area. Select a different area to see data.</b>
-    </p>
     <highcharts class="chart" :options="chartOptions" ref="Chart" style="width: 100%; min-height: 300px; max-height:500px"></highcharts>
   </div>
 </template>
 
 <script>
 import Highcharts from "highcharts"
+import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
+NoDataToDisplay(Highcharts);
 Highcharts.setOptions({lang: {thousandsSep:','}})
 export default {
   data() {
@@ -19,6 +18,9 @@ export default {
         },
         title: {
           text: null
+        },
+        lang: {
+          noData: 'No data to display in this area.<br> Select a different area to see data.'
         },
         xAxis: {
           title: {
@@ -113,9 +115,7 @@ export default {
         this.chartOptions.series[0].data = [];
         this.chartOptions.xAxis.categories = [];
         this.chartOptions.yAxis.title.text = '--'; 
-        this.$store.dispatch('offPlotHabitatGraph');     
       } else {
-        this.$store.dispatch('onPlotHabitatGraph');
         matchSet.sort((a, b) => (a.YEAR > b.YEAR) ? 1 : ((b.YEAR > a.YEAR) ? -1 : 0));
         matchSet.forEach(row => {
           newValues.push(row.VALUE);

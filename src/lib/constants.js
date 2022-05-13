@@ -14,72 +14,72 @@ export const habitatSelections = [{id:'salt marsh', capital: 'Salt Marsh'},
 export const habitatIndexSelections = ['index 1', 'index 2', 'index 3']
 export const waterQualityThresholds = {
   'nitrogen': {
-    value: 0.35,
-    type: 'Upper',
+    value: [0.35],
+    type: ['Upper'],
     units: 'mg/L',
     scale: 'linear',
     minValue: 0,
     title: 'Total Nitrogen'
   },
   'enterococcus': {
-    value: 104,
-    type: 'Upper',
-    units: 'cfu/ 100mL',
+    value: [104],
+    type: ['Upper'],
+    units: 'cfu/100 mL',
     scale: 'logarithmic',
     minValue: 1,
     title: 'Enterococcus'
   },
   'e. coli': {
-    value: 235,
-    type: 'Upper',
-    units: 'cfu/ 100 mL',
+    value: [235],
+    type: ['Upper'],
+    units: 'cfu/100 mL',
     scale: 'logarithmic',
     minValue: 1,
     title: 'E. Coli'
   },
   'dissolved oxygen': {
-    value: 6,
-    type: 'Lower', 
+    value: [6],
+    type: ['Lower'], 
     units: 'mg/L',
     scale: 'linear',
     minValue: 0,
     title: 'Dissolved Oxygen'
   },
   'pH': {
-    value: 7,
-    type: 'Lower',
+    value: [7, 7.5],
+    type: ['Salt Marsh Lower', 'Shellfish Lower'],
     units: 'S.U.',
     scale: 'linear',
     minValue: 6,
     title: 'pH'
   },
   'temperature': {
-    value: ((77 - 32) / 1.8),
-    type: 'Upper',
+    value: [((77 - 32) / 1.8)],
+    type: ['Upper'],
     units: '&degC',
     scale: 'linear',
     minValue: 0,
     title: 'Temperature'
   },
   'phosphorus': {
-    value: 30,
-    type: 'Upper',
+    value: [30],
+    type: ['Upper'],
     units: 'ug/L',
     scale: 'linear',
     minValue: 0,
     title: 'Total Phosphorus'
   },
   'turbidity': {
-    value: 5,
-    type: 'Upper',
+    value: [5],
+    type: ['Upper'],
     units: 'NTU',
     scale: 'linear',
     minValue: 0,
     title: 'Turbidity'
   },
   'salinity': {
-    value: 1,
-    type: 'Variable',
+    value: [1, 30],
+    type: ['Freshwater', 'Marine'],
     units: 'ppt',
     scale: 'linear',
     minValue: 0,
@@ -129,7 +129,7 @@ export const imageLibraryHabitat = {
   'diadromous fish': {
     title: 'Diadromous Fish',
     img: require('@/assets/imgs/diadromous_img.jpg'),
-    pic: require('@/assets/icons/diadromous.svg'),
+    pic: require('@/assets/icons/diadromous_gray.svg'),
     learnImg: require('@/assets/imgs/diadromous_fish_square.jpg'),
     currentYear: 'TBD',
     historicYear: 'TBD',

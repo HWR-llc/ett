@@ -16,7 +16,9 @@
           </figure>
         </div>
       </div>
-      <br>
+      <div class="text-right">
+           &nbsp;<span v-if="spanShow">Diadromous Fish coming soon.</span>
+      </div>
       <div class="row justify-content-center">
         <b-button variant="primary" class="water-quality-background no-border" @click="buttonClicked">Water Quality</b-button>
       </div>
@@ -31,6 +33,7 @@ export default {
   data () {
     return {
       modalShow: true,
+      spanShow: false,
       imageLibraryHabitat: imageLibraryHabitat,
       stateWideHabitatValues: stateWideHabitatValues
     }
@@ -38,7 +41,7 @@ export default {
   methods: {
     iconClicked(newHab) {
       if (newHab == 'diadromous fish') {
-        alert('Diadromous fish habitat coming soon');
+        this.spanShow = true;
       } else {
         this.$store.dispatch('setHabitatGraphData', this.stateWideHabitatValues);
         this.$store.dispatch('setHabitat', newHab);
