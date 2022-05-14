@@ -30,7 +30,7 @@
             :lat-lng="[s.geometry.coordinates[1], s.geometry.coordinates[0]]"
             :fillColor="circleColorer(s.properties.parameter_list)"
             fillOpacity=1
-            :color="circleColorer(s.properties.parameter_list)"
+            :color="activeCircleColorer(s.id, s.properties.parameter_list)"
             radius=5
             @click="plotData($event, s.id, s.properties.parameter_list)"
           >
@@ -94,6 +94,9 @@ export default {
     },
     waterQualityGraph() {
       return this.$store.state.waterQualityGraph;
+    },
+    station() {
+      return this.$store.state.station;
     },
     embStyle() {
       return () => {
