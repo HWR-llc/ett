@@ -25,14 +25,14 @@
         <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.cur" v-if="habitat=='eelgrass'" :options-style="egStyleCur" ref="current"></l-geo-json>
       </div>
       <div v-if="pointsLayer">
-        <div v-for="s in stations" :key="s.id">
+        <l-layer-group ref="stations" v-for="s in stations" :key="s.id">
           <l-circle-marker
             :lat-lng="[s.geometry.coordinates[1], s.geometry.coordinates[0]]"
             :fillColor="circleColorer(s.properties.parameter_list)"
             fillOpacity=1
             :color="circleColorer(s.properties.parameter_list)"
             radius=5
-            @click="plotData(s.id, s.properties.parameter_list)"
+            @click="plotData($event, s.id, s.properties.parameter_list)"
           >
             <l-tooltip ref="tooltip" style="padding-left: 15px; padding-right: 15px">
               <app-station-tooltip 
@@ -42,7 +42,7 @@
               </app-station-tooltip>
             </l-tooltip>
           </l-circle-marker>
-        </div>
+        </l-layer-group>
       </div>
     </l-map>
 	</div>
@@ -58,7 +58,7 @@ Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
-import {LMap, LTileLayer, LGeoJson, LCircleMarker, LTooltip} from 'vue2-leaflet';
+import {LMap, LTileLayer, LLayerGroup, LGeoJson, LCircleMarker, LTooltip} from 'vue2-leaflet';
 import { interpolateGreens, interpolateOrRd, interpolatePurples } from 'd3-scale-chromatic'
 import StationTooltip from './subs/StationTooltip.vue'
 import MapLegend from './subs/MapLegend.vue'
@@ -68,6 +68,7 @@ export default {
   components: {
     LMap,
     LTileLayer,
+    LLayerGroup, 
     LGeoJson,
     LCircleMarker,
     LTooltip,
@@ -98,7 +99,7 @@ export default {
       return () => {
         return {
           weight: 1,
-          color: "black",
+          color: 'black',
           opacity: 0.5,
           fillColor: 'white',
           fillOpacity:0
@@ -186,7 +187,8 @@ export default {
           click: (event) => {
             this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
             this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
-            this.$store.dispatch('offBlockHabitatGraph');
+            this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
+            event.target.setStyle({weight: 2, color: 'red', opacity: 1});
           },
           mouseover: (event) => {
             event.target.getTooltip().setContent(event.target.feature.properties.NAME + '<br>2050 Goal: ' + feature.properties[this.habitat + '_percent_goal'] + '%');            
@@ -194,7 +196,7 @@ export default {
         });
         layer.bindTooltip('');
       };
-    }
+    },
   },
   data () {
     return {
@@ -237,6 +239,15 @@ export default {
   methods: {
     circleColorer(parameterList) {
       if (parameterList.includes(this.waterQuality)) {
+        return '#00B0F0';
+      } else {
+        return '#808080';
+      }
+    },
+    activeCircleColorer(id, parameterList) {
+      if (id == this.station) {
+        return 'red';
+      } else if (parameterList.includes(this.waterQuality)) {
         return '#00B0F0';
       } else {
         return '#808080';
@@ -321,7 +332,15 @@ export default {
       return activeParameters;
 
     },
-    plotData(stationId, parameterList) {
+    plotData(event, stationId, parameterList) {
+      // problem here
+      // console.log(this.$refs.stations);
+      // this.$refs.stations.forEach(s => {
+      //   console.log(s)
+      //   s.setStyle({fillColor: 'green'});
+      // });
+      // this.$refs.stations.setStyle({fillColor: 'green'});
+      // event.target.setStyle({fillColor: 'red'});
       this.$store.dispatch('onWaterQualityGraph');
       if (parameterList.includes(this.waterQuality)) {
         this.$nextTick(() => {

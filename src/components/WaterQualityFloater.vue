@@ -20,7 +20,14 @@
     <div class="row">
       <app-water-quality-graph :gwidth="'380px'" :gheight="'180px'"></app-water-quality-graph>
     </div>
-        <b-modal v-model="showLargeGraph" id="modal-large-graph" size="lg" hide-footer hide-header>
+        <b-modal v-model="showLargeGraph" id="modal-large-graph" size="lg" modal-class="thin-top" hide-footer hide-header>
+          <div class="row" style="text-align: right">
+            <div class="col-12" style="padding-bottom: 5px">
+              <b-button-close @click="switchLargeGraph">
+                <span aria-hidden="true">&times;</span>
+              </b-button-close>
+            </div>
+          </div>
           <div class="row justify-content-center">
             <div class="col-12" style="width: 100%; padding: 0px">
               <app-water-quality-graph-header></app-water-quality-graph-header>
@@ -74,9 +81,8 @@ export default {
     closeWaterQualityGraph() {
       this.$store.dispatch('offWaterQualityGraph');
     },
-    onLargeGraph() {
+    switchLargeGraph() {
       this.$store.dispatch('switchShowLargeGraph');
-
     }
   }
 }
@@ -106,5 +112,8 @@ export default {
   font-size: 12px;
   padding: 2px;
   margin: 2px;
+}
+/deep/ .thin-top {
+  padding-top: 0px!important;
 }
 </style>

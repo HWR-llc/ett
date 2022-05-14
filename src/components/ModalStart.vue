@@ -16,7 +16,7 @@
           </figure>
         </div>
       </div>
-      <div class="text-right">
+      <div class="text-right" style="color: red">
            &nbsp;<span v-if="spanShow">Diadromous Fish coming soon.</span>
       </div>
       <div class="row justify-content-center">

@@ -4,7 +4,6 @@
       <app-habitat-graph-header style="width: 100%"></app-habitat-graph-header>
     </div>
     <div class="row">
-      <!-- <app-gray-box v-if="blockHabitatGraph">{{ blockHabitatGraph }}</app-gray-box> -->
       <app-habitat-graph style="width: 100%"></app-habitat-graph> 
     </div>
     <br>
@@ -15,7 +14,6 @@
 </template>
 
 <script>
-// import GrayBox from './subs/GrayBox.vue'
 import HabitatGraph from './subs/HabitatGraph.vue'
 import MetricIndexToggle from './subs/MetricIndexToggle.vue'
 import HabitatGraphHeader from './subs/HabitatGraphHeader.vue'
@@ -50,7 +48,6 @@ export default {
     appHabitatGraph: HabitatGraph,
     appMetricIndexToggle: MetricIndexToggle,
     appHabitatGraphHeader: HabitatGraphHeader,
-    // appGrayBox: GrayBox
   }
 }
 </script>

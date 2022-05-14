@@ -12,9 +12,18 @@
         </div>
       </div>
     </div>
+    <div class="row" style="padding-top: 5px">
+      <div class="col-7" style="text-align: left; padding-left: 20px">
+        <h4> {{ habitatCapital}} Extent</h4>       
+      </div>
+      <div class="col-5">
+        <b-button variant="secondary" class="narrow-button" @click="nullEmbayment">
+          Region Data
+        </b-button>
+      </div>
+    </div>
     <div class="row">
-      <div class="col-12" style="text-align: center">
-        <h4> {{ habitatCapital}} Extent</h4>
+      <div class="col-12" style="text-align: center; padding-left: 20px">
         <h5 v-if="embayment == null">MassBays Region</h5><h5 v-else>{{ embayment }}</h5>
       </div>
     </div>
@@ -46,6 +55,11 @@ export default {
     embayment() {
       return this.$store.state.embayment;
     }
+  },
+  methods: {
+    nullEmbayment() {
+      this.$store.dispatch('setEmbayment', null);
+    }
   }
 }
 </script>
@@ -62,5 +76,12 @@ export default {
   height: 90px;
   background-position: center center;
   background-repeat: no-repeat
+}
+.narrow-button {
+  height: 30px;
+
+  padding-top: 0px;
+  padding-bottom: 2px;
+  margin: 2px;
 }
 </style>
