@@ -196,12 +196,12 @@ export const imageLibraryHabitatGray = {
 }
 export const imageLibraryWaterQuality = {
   'nitrogen': {
-    title: 'Nitrogen',
+    title: 'Total Nitrogen',
     pic: require('@/assets/icons/nitrogen.png'),
     explanation: 'Nitrogen is a nutrient important to all living things which is found naturally in saltwater and freshwater. Nitrogen is typically the most important nutrient determining the growth of algae and aquatic plants in coastal waters. When too much nitrogen enters the water, it can fuel excessive growth of algae which blocks sunlight needed for growth of submerged aquatic vegetation and reduces oxygen for fish and other organisms as it dies and decomposes. Studies indicate that nitrogen levels exceeding 0.35 mg/L are detrimental to eelgrass health.'
   },
   'phosphorus': {
-    title: 'Phosphorus',
+    title: 'Total Phosphorus',
     pic: require('@/assets/icons/phosphorus.png'),
     explanation: 'Like nitrogen, phosphorus is a nutrient important to all living things which is found naturally in saltwater and freshwater. Phosphorus is typically the most important nutrient determining the growth of algae and plants in freshwater, and water quality standards for this nutrient are typically based on freshwater environments. For healthy habitat conditions in freshwater streams, researchers have determined that total phosphorus levels should be below 30 ug/L.'
   },
