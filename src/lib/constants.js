@@ -129,6 +129,60 @@ export const imageLibraryHabitat = {
   'diadromous fish': {
     title: 'Diadromous Fish',
     img: require('@/assets/imgs/diadromous_img.jpg'),
+    pic: require('@/assets/icons/diadromous.svg'),
+    learnImg: require('@/assets/imgs/diadromous_fish_square.jpg'),
+    currentYear: 'TBD',
+    historicYear: 'TBD',
+    source: 'MassBays',
+    currentColor: '#000000',
+    historicColor: '#ffffff',
+    mainClass: 'diadromous-fish-main',
+    explanation: '<b>What is diadromous fish habitat?</b> Diadromous, or migratory fish, includes two species types: anadromous and catadromous. Anadromous fish begin life in freshwater and spend the majority of their life in the ocean, returning to freshwater only to spawn and lay eggs. Catadromous fish do the opposite, starting their life in the ocean and migrating to freshwater and then returning to the ocean to spawn. Massachusetts waters host several diadromous fish, including two river herring (alewife and blueback), American eel, American shad, and rainbow smelt. Sea-run brook trout and sturgeon are more rare, but restoration efforts are underway. Intact waterways (as opposed to those blocked by dams or tide gates) with curves, variable flow, and a mix of river bottom and bank types provide habitat that supports fish migration, feeding, spawning, and general health.<br><br> <b>Why should I care about diadromous fish?</b> These species are both economically and recreationally important to Massachusetts, serving a critical role in the food web as food for larger fish and other wildlife at sea and upstream. Historically, river herring especially were a core component of indigenous peoples’ diet, and state- and federally-recognized tribal members are the only individuals allowed to take them to preserve the remaining population.<br><br> <b>What are the threats to healthy diadromous fish habitat?</b> As diadromous fish use multiple aspects of coastal and inland habitat, the threats to their habitat are varied. Physical barriers like dams, tide gates and culverts restrict passage and water flow, as can some fish ladders, which may make the fish easier targets for predators. Dredging and development close to riverbanks also change water flow and the characteristics of spawning and nursery areas. Stormwater runoff and wastewater discharges introduce pollution and change water chemistry.'
+  }
+}
+export const imageLibraryHabitatGray = {
+  'eelgrass': {
+    title: 'Eelgrass',
+    img: require('@/assets/imgs/eelgrass_img.jpg'),
+    pic: require('@/assets/icons/eelgrass.svg'),
+    learnImg: require('@/assets/imgs/eelgrass_lobster_square.jpg'),
+    currentYear: 'TBD',
+    historicYear: '1995',
+    source: 'MassDEP',
+    currentColor: '#e319a6',
+    historicColor: '#eba4d5',
+    mainClass: 'eelgrass-main',
+    explanation: '<b>What is an eelgrass meadow?</b> Seagrass meadows are a valuable habitat made up of flowering marine plants that typically grow in wide continuous expanses across shallow, protected estuarine waters. Two species of seagrass are found in Massachusetts, <i>Zostera marina</i> (eelgrass) and <i>Ruppia maritima</i> (widgeon grass), although eelgrass is far more common.<br><br> <b>Why should I care about eelgrass?</b> Eelgrass meadows serve as critical spawning, nursery, refuge, and foraging habitats for many types of fish and invertebrates, including economically important species such as scallops, lobster, and striped bass. Like other plants, eelgrass generates energy through photosynthesis, producing oxygen and storing carbon, which helps drive important food webs. With their extensive root systems, eelgrass meadows stabilize sediment and reduce erosion. Their leaves facilitate the deposition of fine particles of sediment suspended in the water, and they also absorb some pollutants and excess nutrients, thus improving water quality.<br><br> <b>What are the threats to eelgrass?</b> Factors contributing to the loss of eelgrass are typically caused by human activity. Seagrasses are highly sensitive to changes in water quality, particularly water clarity, which is often degraded by the addition of nutrients and pollution from wastewater runoff, stormwater runoff, and dredging.'
+  },
+  'salt marsh': {
+    title: 'Salt Marsh',
+    img: require('@/assets/imgs/salt_marsh_img.jpg'),
+    pic: require('@/assets/icons/salt_marsh.svg'),
+    learnImg: require('@/assets/imgs/salt_marsh_heron_square.jpg'),
+    currentYear: '2005',
+    historicYear: '1990-2000',
+    source: 'MassDEP',
+    currentColor: '#255c33',
+    historicColor: '#68f28d',
+    mainClass: 'salt-marsh-main',
+    explanation: '<b>What is a salt marsh?</b> Salt marshes are coastal wetlands that experience regular flooding with the tides. They are typically found in areas that don’t experience strong waves, usually within embayments or along protected coasts. The protected nature of salt marsh systems allows sediment to be trapped and accumulated in the vegetation, highly specialized plants that can tolerate the presence of salt. The “low marsh,” which receives abundant tidal flow twice daily, is generally dominated by salt marsh cordgrass. The “high marsh,” which receives less regular tidal influence due to its higher elevation, is home to a variety of species including salt marsh hay, black needlerush, and saltgrass.<br><br> <b>Why should I care about salt marshes?</b> Salt marshes act as nurseries for commercially and recreationally important fisheries, and provide habitat and food sources for birds and other wildlife. Salt marshes also play a role in estuarine health by aiding in the cycling of several important environmental nutrients, water filtration, and stabilizing the shoreline. If able to migrate (shift inland with the rising sea levels) and remain healthy, salt marshes capture sediment and help lessen the impacts of coastal flooding, storm surges, and erosion.<br><br> <b>What are the threats to healthy salt marshes?</b> Salt marshes are adversely impacted by invasive species that compete for space and nutrients, ditches and tide gates employed for flood and mosquito control, development on or near the salt marsh’s edge, and polluted stormwater runoff. Construction adjacent to marshes prevent the salt marsh vegetation to migrate inland as sea levels rise.'
+  },
+  'tidal flats': {
+    title: 'Tidal Flats',
+    img: require('@/assets/imgs/tidal_flats_img.jpg'),
+    pic: require('@/assets/icons/tidal_flats.svg'),
+    learnImg: require('@/assets/imgs/tidal_flats_oyster_bed_square.jpg'),
+    currentYear: '2005',
+    historicYear: '1990-2000',
+    source: 'MassDEP',
+    currentColor: '#c96b12',
+    historicColor: '#deb187',
+    mainClass: 'tidal-flats-main',
+    explanation: '<b>What is a tidal flat?</b> Tidal flats are relatively even and sparsely vegetated areas of loose sand and mud that are exposed at low tide and submerged at high tide. These flats, which provide a critical link between the terrestrial and marine systems, are typically found in areas sheltered from waves, where fine-grained sediments settle. Water quality conditions in intertidal flats are variable given the looseness of the sediment, changes in water depth and temperature, and coming and going of water with the tides. <br><br> <b>Why should I care about tidal flats?</b> These seemingly barren areas provide many benefits to aquatic organisms and people alike. Their variability supports high biodiversity, providing habitat for shellfish, crustaceans, and invertebrates like worms and sea stars. In more stable sites, algae grows on the sediment and becomes food for grazers like snails, and also produces oxygen to support life in the tidal flats. As tides rise to cover the flats, juvenile fish often swim in from the nearby shallow subtidal zone to feed. High densities of crustaceans and shellfish thrive in sheltered tidal flats, creating an excellent foraging ground for migrating and wading shorebirds. Intertidal flats also help to mitigate the impacts from storm damage. More specifically, the gradual slope of these areas helps to slow the advances of flood waters and lessens the impacts of waves. <br><br> <b>What are the threats to tidal flats?</b> Coastal development and structures including wharves or seawalls can still contribute to the erosion of tidal flats. Climate change and sea level rise will result in completely submerged tidal flats. Pollutants in tidal flats easily adhere to sand and mud and remain in the area for long periods of time due to low rates of sediment movement.'
+  },
+  'diadromous fish': {
+    title: 'Diadromous Fish',
+    img: require('@/assets/imgs/diadromous_img.jpg'),
     pic: require('@/assets/icons/diadromous_gray.svg'),
     learnImg: require('@/assets/imgs/diadromous_fish_square.jpg'),
     currentYear: 'TBD',

@@ -43,25 +43,25 @@
             <!-- NITROGEN -->
             <b-tr>
               <b-td rowspan="4" variant="primary"><b>{{ waterQualityThresholds['nitrogen'].title }}</b></b-td>
-              <b-td rowspan="4">{{ waterQualityThresholds['nitrogen'].value }}</b-td>
+              <b-td rowspan="4">{{ waterQualityThresholds['nitrogen'].value[0] }}</b-td>
               <b-td rowspan="4">{{ waterQualityThresholds['nitrogen'].units }}</b-td>
               <b-td rowspan="4">eelgrass stress threshold</b-td>
               <b-td rowspan="4">Based on MassBays guidance for protection of eelgrass , review of MA TMDLs, and literature review of eelgrass response to nitrogen levels.</b-td>
-              <b-td><a href="https://www.falmouthma.gov/DocumentCenter/View/1128/Full‐Waquoit‐Bay‐MEP‐Report‐PDF" target="_blank">https://www.falmouthma.gov/DocumentCenter/View/1128/Full‐Waquoit‐Bay‐MEP‐Report‐PDF</a></b-td>
+              <b-td><a href="https://www.falmouthma.gov/DocumentCenter/View/1128/Full-Waquoit-Bay-MEP-Report-PDF" target="_blank">https://www.falmouthma.gov/DocumentCenter/View/1128/Full‐Waquoit‐Bay‐MEP‐Report‐PDF</a></b-td>
             </b-tr>
             <b-tr>
-              <b-td><a href="https://www.mass.gov/doc/final‐nitrogen‐tmdl‐report‐for‐megansett‐squeteague‐harbor‐estuarine‐system‐june‐2020/download" target="_blank">https://www.mass.gov/doc/final‐nitrogen‐tmdl‐report‐for‐megansett‐squeteague‐harbor‐estuarine‐system‐june‐2020/download</a></b-td>
+              <b-td><a href="https://www.mass.gov/doc/final-nitrogen-tmdl-report-for-megansett-squeteague-harbor-estuarine-system-june-2020/download" target="_blank">https://www.mass.gov/doc/final-nitrogen-tmdl-report-for-megansett-squeteague-harbor-estuarine-system-june-2020/download</a></b-td>
             </b-tr>
             <b-tr>
-              <b-td><a href="https://www.des.nh.gov/sites/g/files/ehbemt341/files/documents/r‐wd‐09‐12.pdf" target="_blank">https://www.des.nh.gov/sites/g/files/ehbemt341/files/documents/r‐wd‐09‐12.pdf</a></b-td>
+              <b-td><a href="https://www.des.nh.gov/sites/g/files/ehbemt341/files/documents/r-wd-09-12.pdf" target="_blank">https://www.des.nh.gov/sites/g/files/ehbemt341/files/documents/r-wd-09-12.pdf</a></b-td>
             </b-tr>
             <b-tr>
-              <b-td><a href="https://www.mass.gov/doc/final‐nitrogen‐tmdl‐for‐west‐falmouth‐harbor/download" target="_blank">https://www.mass.gov/doc/final‐nitrogen‐tmdl‐for‐west‐falmouth‐harbor/download</a></b-td>
+              <b-td><a href="https://www.mass.gov/doc/final-nitrogen-tmdl-for-west-falmouth-harbor-0/download" target="_blank">https://www.mass.gov/doc/final-nitrogen-tmdl-for-west-falmouth-harbor-0/download/</a></b-td>
             </b-tr>
             <!-- PHOSPHORUS -->
             <b-tr>
               <b-td rowspan="2" variant="primary"><b>{{ waterQualityThresholds['phosphorus'].title }}</b></b-td>
-              <b-td rowspan="2">{{ waterQualityThresholds['phosphorus'].value }}</b-td>
+              <b-td rowspan="2">{{ waterQualityThresholds['phosphorus'].value[0] }}</b-td>
               <b-td rowspan="2">{{ waterQualityThresholds['phosphorus'].units }}</b-td>
               <b-td rowspan="2">freshwater streams</b-td>   
               <b-td>Draft freshwater criteria for NH is 30 ug/L</b-td>
@@ -69,12 +69,12 @@
             </b-tr>
             <b-tr>
               <b-td>30 ug/L is Chesapeake Bay Eco Health Report Card threshold for "very good"</b-td>
-              <b-td><a href="https://ecoreportcard.org/report‐cards/chesapeake‐bay/bay‐health/" target="_blank">https://ecoreportcard.org/report‐cards/chesapeake‐bay/bay‐health/</a></b-td>              
+              <b-td><a href="https://ecoreportcard.org/report-cards/chesapeake-bay/bay-health/" target="_blank">https://ecoreportcard.org/report-cards/chesapeake-bay/bay-health/</a></b-td>              
             </b-tr>
             <!-- TEMPERATURE -->
             <b-tr>
               <b-td rowspan="5" variant="primary"><b>{{ waterQualityThresholds['temperature'].title }}</b></b-td>
-              <b-td rowspan="5">{{ waterQualityThresholds['temperature'].value }}</b-td>
+              <b-td rowspan="5">{{ waterQualityThresholds['temperature'].value[0] }}</b-td>
               <b-td rowspan="5">&deg;C</b-td>
               <b-td rowspan="5">eelgrass stress threshold</b-td> 
               <b-td>Nantucket Harbor Eel Grass Health Assessment, 2018</b-td>
@@ -82,7 +82,7 @@
             </b-tr>
             <b-tr>
               <b-td>Abe, M., A. Kurashima, and M. Maegawa (2008) Temperature requirements for seed germination and seedling growth of Zostera marina from central Japan. Fisheries Science 74.3:589‐593.</b-td>
-              <b-td><a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1444‐2906.2008.01562.x" target="_blank">https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1444‐2906.2008.01562.x</a></b-td>
+              <b-td><a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1444-2906.2008.01562.x" target="_blank">https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1444-2906.2008.01562.x</a></b-td>
             </b-tr>
             <b-tr>
               <b-td>Beca‐Carretero P, Olesen B, Marbà N, Krause‐Jensen D (2018) Response to experimental warming in northern eelgrass populations: comparison across a range of temperature adaptations. Mar Ecol Prog Ser 589:59‐72.</b-td>
@@ -101,23 +101,23 @@
               <b-td variant="primary" rowspan="2"><b>{{ waterQualityThresholds['pH'].title }}</b></b-td>
               <b-td colspan="3" rowspan="2">range of 7.5 - 8.5 for shellfish, lower limit of 7.0 for salt marsh</b-td>
               <b-td rowspan="2"> Based on guidance from MassBays for protetction of coastal habitats (shellfish and salt marsh).</b-td>
-              <b-td>Oyster reproduction is compromised by acidification experienced seasonally in coastal regions</b-td>
+              <b-td><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5643346/" target="_blank">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5643346/</a></b-td>
             </b-tr>
             <b-tr>
-              <b-td>Oyster Shell Dissolution Rates in Estuarine Waters: Effects of pH and Shell Legacy</b-td>
+              <b-td><a href="https://bioone.org/journals/journal-of-shellfish-research/volume-30/issue-3/035.030.0308/Oyster-Shell-Dissolution-Rates-in-Estuarine-Waters--Effects-of/10.2983/035.030.0308.full" target="_blank">https://bioone.org/journals/journal-of-shellfish-research/volume-30/issue-3/035.030.0308/Oyster-Shell-Dissolution-Rates-in-Estuarine-Waters--Effects-of/10.2983/035.030.0308.full</a></b-td>
             </b-tr>
             <!-- TURBIDITY -->
             <b-tr>
               <b-td variant="primary" rowspan="2"><b>{{ waterQualityThresholds['turbidity'].title }}</b></b-td>
-              <b-td rowspan="2">{{ waterQualityThresholds['turbidity'].value }}</b-td>
+              <b-td rowspan="2">{{ waterQualityThresholds['turbidity'].value[0] }}</b-td>
               <b-td rowspan="2">{{ waterQualityThresholds['turbidity'].units }}</b-td>
               <b-td rowspan="2">coastal waters</b-td>
               <b-td>Rhode Island Class A/SA water quality regulations</b-td>
-              <b-td><a href="https://www.epa.gov/sites/default/files/2014‐12/documents/riwqs.pdf" target="_blank">https://www.epa.gov/sites/default/files/2014‐12/documents/riwqs.pdf</a></b-td>              
+              <b-td><a href="https://www.epa.gov/sites/default/files/2014-12/documents/riwqs.pdf" target="_blank">https://www.epa.gov/sites/default/files/2014-12/documents/riwqs.pdf</a></b-td>              
             </b-tr>
             <b-tr>
               <b-td>Chesapeake Bay Eco Health Report Cards</b-td>
-              <b-td><a href="https://ecoreportcard.org/report‐cards/chesapeake‐bay/indicators/turbidity/" target="_blank">https://ecoreportcard.org/report‐cards/chesapeake‐bay/indicators/turbidity/</a></b-td>
+              <b-td><a href="https://ecoreportcard.org/report-cards/chesapeake-bay/indicators/turbidity/" target="_blank">https://ecoreportcard.org/report-cards/chesapeake-bay/indicators/turbidity/</a></b-td>
             </b-tr>
             <!-- SALINITY -->
             <b-tr>
@@ -126,7 +126,7 @@
               <b-td>{{ waterQualityThresholds['salinity'].units }}</b-td>
               <b-td>freshwater</b-td>
               <b-td rowspan="3">Based on USGS definitions</b-td>
-              <b-td rowspan="3"><a href="https://www.usgs.gov/special‐topics/water‐science‐school/science/saline‐water‐and‐salinity" target="_blank">https://www.usgs.gov/special‐topics/water‐science‐school/science/saline‐water‐and‐salinity</a></b-td>
+              <b-td rowspan="3"><a href="https://www.usgs.gov/special-topics/water-science-school/science/saline-water-and-salinity" target="_blank">https://www.usgs.gov/special-topics/water-science-school/science/saline-water-and-salinity</a></b-td>
             </b-tr>
             <b-tr>
               <b-td>1-30</b-td>
@@ -141,29 +141,29 @@
             <!-- DISSOLVED OXYGEN -->
             <b-tr>
               <b-td variant="primary"><b>{{ waterQualityThresholds['dissolved oxygen'].title }}</b></b-td>
-              <b-td>{{ waterQualityThresholds['dissolved oxygen'].value }}</b-td>
+              <b-td>{{ waterQualityThresholds['dissolved oxygen'].value[0] }}</b-td>
               <b-td>{{ waterQualityThresholds['dissolved oxygen'].units }}</b-td>
               <b-td></b-td> 
               <b-td>EPA Ambient Water Quality Criteria for Dissolved Oxygen</b-td>
-              <b-td><a href="https://www.epa.gov/sites/default/files/2019‐03/documents/ambient‐wqc‐dissolved‐oxygen‐1986.pdf" target="_blank">https://www.epa.gov/sites/default/files/2019‐03/documents/ambient‐wqc‐dissolved‐oxygen‐1986.pdf</a></b-td>
+              <b-td><a href="https://www.epa.gov/sites/default/files/2019-03/documents/ambient-wqc-dissolved-oxygen-1986.pdf" target="_blank">https://www.epa.gov/sites/default/files/2019-03/documents/ambient-wqc-dissolved-oxygen-1986.pdf</a></b-td>
             </b-tr>
             <!-- ENTEROCOCCUS -->
             <b-tr>
               <b-td variant="primary"><b><i>{{ waterQualityThresholds['enterococcus'].title }}</i></b></b-td>
-              <b-td>{{ waterQualityThresholds['enterococcus'].value }}</b-td>
+              <b-td>{{ waterQualityThresholds['enterococcus'].value[0] }}</b-td>
               <b-td>{{ waterQualityThresholds['enterococcus'].units }}</b-td>
               <b-td>coastal, single sample</b-td> 
               <b-td>MA Minimum Standards for Bathing Beaches</b-td>
-              <b-td><a href="https://www.mass.gov/doc/105‐cmr‐445‐state‐sanitary‐code‐chapter‐vii‐minimum‐standards‐for‐bathing‐beaches/download" target="_blank">https://www.mass.gov/doc/105‐cmr‐445‐state‐sanitary‐code‐chapter‐vii‐minimum‐standards‐for‐bathing‐beaches/download</a></b-td>              
+              <b-td><a href="https://www.mass.gov/doc/105-cmr-445-state-sanitary-code-chapter-vii-minimum-standards-for-bathing-beaches/download" target="_blank">https://www.mass.gov/doc/105-cmr-445-state-sanitary-code-chapter-vii-minimum-standards-for-bathing-beaches/download</a></b-td>              
             </b-tr>
-            <!-- ENTEROCOCCUS -->
+            <!-- E. Coli -->
             <b-tr>
               <b-td variant="primary"><b><i>{{ waterQualityThresholds['e. coli'].title }}</i></b></b-td>
-              <b-td>{{ waterQualityThresholds['e. coli'].value }}</b-td>
+              <b-td>{{ waterQualityThresholds['e. coli'].value[0] }}</b-td>
               <b-td>{{ waterQualityThresholds['e. coli'].units }}</b-td>
               <b-td>inland, single sample</b-td> 
               <b-td>MA Minimum Standards for Bathing Beaches</b-td>
-              <b-td><a href="https://www.mass.gov/doc/105‐cmr‐445‐state‐sanitary‐code‐chapter‐vii‐minimum‐standards‐for‐bathing‐beaches/download" target="_blank">https://www.mass.gov/doc/105‐cmr‐445‐state‐sanitary‐code‐chapter‐vii‐minimum‐standards‐for‐bathing‐beaches/download</a></b-td>              
+              <b-td><a href="https://www.mass.gov/doc/105-cmr-445-state-sanitary-code-chapter-vii-minimum-standards-for-bathing-beaches/download" target="_blank">https://www.mass.gov/doc/105-cmr-445-state-sanitary-code-chapter-vii-minimum-standards-for-bathing-beaches/download</a></b-td>              
             </b-tr>
           </b-tbody>
         </b-table-simple>

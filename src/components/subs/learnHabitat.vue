@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row justify-content-center habitat-main">
+    <div class="row justify-content-center">
       <h2>Habitats</h2>
     </div>
     <div class="row justify-content-center">

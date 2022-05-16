@@ -43,7 +43,7 @@ export default {
             text: 'Acres'
           },
           plotLines: [{
-            color: '#00B0F0',
+            color: '#93D051',
             width: 3,
             opacity: 0.5,
             value: -100,
@@ -64,7 +64,7 @@ export default {
         },
         series: [
           {
-            name: 'Placeholder',
+            name: 'Area',
             data: [5000, 4000, 6000]
           }
         ]

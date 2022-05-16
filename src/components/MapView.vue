@@ -194,7 +194,12 @@ export default {
             event.target.setStyle({weight: 2, color: 'red', opacity: 1});
           },
           mouseover: (event) => {
-            event.target.getTooltip().setContent(event.target.feature.properties.NAME + '<br>2050 Goal: ' + feature.properties[this.habitat + '_percent_goal'] + '%');            
+            if (this.metricLayer == true) {
+              event.target.getTooltip().setContent(event.target.feature.properties.NAME + '<br>2050 Goal: ' + feature.properties[this.habitat + '_percent_goal'] + '%');
+            } else {
+              event.target.getTooltip().setContent(event.target.feature.properties.NAME);
+            }
+                        
           }
         });
         layer.bindTooltip('');
