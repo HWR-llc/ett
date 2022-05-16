@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { interpolateGreens, interpolateOrRd, interpolatePurples } from 'd3-scale-chromatic'
+import { interpolateGreens, interpolateOranges, interpolatePurples } from 'd3-scale-chromatic'
 // import { schemeBlues } from 'd3-scale-chromatic'
 // import { scaleOrdinal} from 'd3-scale'
 export default {
@@ -92,7 +92,7 @@ export default {
       if (this.habitat == 'tidal flats') {
         return interpolatePurples(value);
       } else if (this.habitat == 'salt marsh') {
-        return interpolateOrRd(value);
+        return interpolateOranges(value);
       } else if (this.habitat == 'eelgrass') {
         return interpolateGreens(value)
       } else if (this.habitat == 'diadromous fish') {
