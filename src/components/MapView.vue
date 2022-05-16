@@ -195,7 +195,7 @@ export default {
           },
           mouseover: (event) => {
             if (this.metricLayer == true) {
-              event.target.getTooltip().setContent(event.target.feature.properties.NAME + '<br>2050 Goal: ' + feature.properties[this.habitat + '_percent_goal'] + '%');
+              event.target.getTooltip().setContent(event.target.feature.properties.NAME + '<br>% of 2050 Goal: ' + feature.properties[this.habitat + '_percent_goal'] + '%');
             } else {
               event.target.getTooltip().setContent(event.target.feature.properties.NAME);
             }
