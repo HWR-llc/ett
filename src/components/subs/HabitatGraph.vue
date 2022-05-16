@@ -45,6 +45,7 @@ export default {
           plotLines: [{
             color: '#93D051',
             width: 3,
+            dashStyle: 'LongDash',
             opacity: 0.5,
             value: -100,
             zIndex: 10,
