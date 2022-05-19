@@ -3,7 +3,7 @@
     <div class="row" id="top-row">
       <div class="col-12">
         <div class="row justify-content-center">
-          <img src="../assets/imgs/landing_page.jpg" style="width: 35%">
+          <img src="../assets/imgs/landing_page.png" style="width: 35%">
         </div>
         <br>
         <div class="row justify-content-center text-center">

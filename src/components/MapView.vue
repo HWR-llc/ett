@@ -5,7 +5,18 @@
       <app-water-quality-floater class="floater-position" v-if="waterQualityGraph"></app-water-quality-floater>
     </transition>   
     <l-map :style="mapStyleObj" :zoom="zoom" :center="center" ref="ettMap">
-      <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+      <l-control-layers position="topleft"></l-control-layers>
+      <!-- <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer> -->
+      <l-tile-layer
+        v-for="tile in basemaps"
+        :key="tile.name"
+        :name="tile.name"
+        :visible="tile.visible"
+        :url="tile.url"
+        :attribution="tile.attribution"
+        :options="tile.options"
+        layer-type="base"
+      ></l-tile-layer>
       <l-geo-json 
         :geojson="embaymentsGeojson" 
         :options="optionsEmbayment" 
@@ -58,12 +69,13 @@ Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
-import {LMap, LTileLayer, LLayerGroup, LGeoJson, LCircleMarker, LTooltip} from 'vue2-leaflet';
+import {LMap, LTileLayer, LLayerGroup, LGeoJson, LCircleMarker, LTooltip, LControlLayers} from 'vue2-leaflet';
 import { interpolateGreens, interpolateOranges, interpolatePurples, interpolateBlues } from 'd3-scale-chromatic'
 import StationTooltip from './subs/StationTooltip.vue'
 import MapLegend from './subs/MapLegend.vue'
 import WaterQualityFloater from '../components/WaterQualityFloater.vue'
 import { imageLibraryHabitat } from '../lib/constants'
+import { basemaps } from '../lib/constants'
 export default {
   components: {
     LMap,
@@ -72,6 +84,7 @@ export default {
     LGeoJson,
     LCircleMarker,
     LTooltip,
+    LControlLayers,
     appStationTooltip: StationTooltip,
     appMapLegend: MapLegend,
     appWaterQualityFloater: WaterQualityFloater
@@ -209,6 +222,7 @@ export default {
   data () {
     return {
       imageLibraryHabitat: imageLibraryHabitat,
+      basemaps: basemaps,
       url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}',
       attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
       zoom: 9,

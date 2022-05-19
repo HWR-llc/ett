@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row justify-content-center">
-          <img src="../../assets/logos/ett_square_no_border.png" style="max-width: 200px; margin: 10px">
+          <img src="../../assets/logos/ett_square_no_border.svg" style="max-width: 200px; margin: 10px">
     </div>
     <div class="row justify-content-center">
       <h2 class="water-quality-main">Water Quality Parameters</h2>
