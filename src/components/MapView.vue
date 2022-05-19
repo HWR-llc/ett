@@ -59,7 +59,7 @@ Icon.Default.mergeOptions({
 });
 
 import {LMap, LTileLayer, LLayerGroup, LGeoJson, LCircleMarker, LTooltip} from 'vue2-leaflet';
-import { interpolateGreens, interpolateOranges, interpolatePurples } from 'd3-scale-chromatic'
+import { interpolateGreens, interpolateOranges, interpolatePurples, interpolateBlues } from 'd3-scale-chromatic'
 import StationTooltip from './subs/StationTooltip.vue'
 import MapLegend from './subs/MapLegend.vue'
 import WaterQualityFloater from '../components/WaterQualityFloater.vue'
@@ -269,7 +269,7 @@ export default {
       } else if (geoHabitat == 'eelgrass') {
         return interpolateGreens(value)
       } else if (geoHabitat == 'diadromous fish') {
-        return interpolatePurples(value);
+        return interpolateBlues(value);
       } else {
         return '#ffffff';
       }
