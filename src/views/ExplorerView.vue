@@ -75,6 +75,12 @@ export default {
       return this.$store.state.showQuickStart;
     }
   },
+  methods: {
+    onResize () {
+      this.rowTwoHeight = window.innerHeight - 100;
+    }
+
+  },
   components: {
     appHeaderContainer: HeaderContainer,
     appMarginLeft: MarginLeft,
@@ -84,7 +90,11 @@ export default {
     appModalStart: ModalStart
   },
   mounted() {
-    this.rowTwoHeight = window.innerHeight - 100
+    window.addEventListener('resize', this.onResize);
+    this.rowTwoHeight = window.innerHeight - 100;
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize); // stop memory leaks;
   }
 }
 </script>

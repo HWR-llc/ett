@@ -205,14 +205,17 @@ export default {
             this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
             this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
             event.target.setStyle({weight: 2, color: 'red', opacity: 1});
+            this.$refs.embaymentsBase.mapObject.bringToFront();
           },
           mouseover: (event) => {
-            if (this.metricLayer == true) {
-              event.target.getTooltip().setContent(event.target.feature.properties.NAME + '<br>% of 2050 Goal: ' + feature.properties[this.habitat + '_percent_goal'] + '%');
+            let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
+            if ((this.metricLayer == true) && (feature.properties[this.habitat + '_percent_goal'] == '-999')) {
+              event.target.getTooltip().setContent(featureName + '<br>Goal Not Yet Established');
+            } else if (this.metricLayer == true) {
+              event.target.getTooltip().setContent(featureName + '<br>% of 2050 Goal: ' + feature.properties[this.habitat + '_percent_goal'] + '%');
             } else {
-              event.target.getTooltip().setContent(event.target.feature.properties.NAME);
-            }
-                        
+              event.target.getTooltip().setContent(featureName);
+            }    
           }
         });
         layer.bindTooltip('');
@@ -289,37 +292,43 @@ export default {
       }
     },
     embaymentColorer(value, geoHabitat) {
-      let lowerBinValue = null;
-      if (value < 20) {
-        lowerBinValue = 0.0
-      } else if (value >= 20 && value < 40) {
-        lowerBinValue = 0.2;
-      } else if (value >= 40 && value < 60) {
-        lowerBinValue = 0.4;        
-      } else if (value >= 60 && value < 80) {
-        lowerBinValue = 0.6; 
-      } else if (value >= 80 && value < 100) {
-        lowerBinValue = 0.8; 
-      } else if (value >= 100) {
-        lowerBinValue = 1;
-      }
+      if (value == -999) {
+        return {
+          stroke: false,
+          weight: 1,
+          color: 'black',
+          opacity: 0.5,
+          fillColor: '#adadad',
+          fillOpacity: 0,
+          interactive: false          
+        }
+      } else {
+        let lowerBinValue = null;
+        if (value < 20) {
+          lowerBinValue = 0.0
+        } else if (value >= 20 && value < 40) {
+          lowerBinValue = 0.2;
+        } else if (value >= 40 && value < 60) {
+          lowerBinValue = 0.4;        
+        } else if (value >= 60 && value < 80) {
+          lowerBinValue = 0.6; 
+        } else if (value >= 80 && value < 100) {
+          lowerBinValue = 0.8; 
+        } else if (value >= 100) {
+          lowerBinValue = 1;
+        }
 
-      let featureColor = this.colorScale(lowerBinValue, geoHabitat);
-      let featureOpacity = 0;
-      let featureStroke = false;
-      if (value > 0) {
-        featureOpacity = 1.0
-        featureStroke = true
-      }
-      return {
-          stroke: featureStroke,
+        let featureColor = this.colorScale(lowerBinValue, geoHabitat);
+        return {
+          stroke: true,
           weight: 1,
           color: "black",
           opacity: 0.5,
           fillColor: featureColor,
-          fillOpacity: featureOpacity,
+          fillOpacity: 1.0,
           interactive: false
         };
+      }
     },
     tidalFlatsColorer(feature) {
       return this.embaymentColorer(feature.properties['tidal flats_percent_goal'], 'tidal flats');
@@ -355,14 +364,6 @@ export default {
 
     },
     plotData(event, stationId, parameterList) {
-      // problem here
-      // console.log(this.$refs.stations);
-      // this.$refs.stations.forEach(s => {
-      //   console.log(s)
-      //   s.setStyle({fillColor: 'green'});
-      // });
-      // this.$refs.stations.setStyle({fillColor: 'green'});
-      // event.target.setStyle({fillColor: 'red'});
       this.$store.dispatch('onWaterQualityGraph');
       if (parameterList.includes(this.waterQuality)) {
         this.$nextTick(() => {
@@ -378,6 +379,19 @@ export default {
         this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
       }
       this.$store.dispatch('setStation', stationId);
+    },
+    capitalizeFirstLetter(nameString) {
+      let nameStringArray = nameString.split(' ');
+      nameStringArray.forEach((word, index) => {
+        nameStringArray[index] = word[0] + word.slice(1).toLowerCase();
+      });
+      return nameStringArray.join(' ');
+    },
+    onResize () {
+      this.mapStyleObj = {
+        height: Math.floor(window.innerHeight - 100) + 'px',
+        width: '100%',
+      }      
     }
   },
   created() {
@@ -436,11 +450,17 @@ export default {
       });
     })
   },
+  mounted() {
+    window.addEventListener('resize', this.onResize);
+  },
   updated() {
     this.$refs.historic.mapObject.bringToFront();
     this.$refs.current.mapObject.bringToFront();
     this.$refs.metric.mapObject.bringToFront();
     
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize) //stop memory leakage
   }
 }
 </script>

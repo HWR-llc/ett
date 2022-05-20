@@ -111,11 +111,16 @@ export default {
           return (row.ASSESSMENT_AREA == this.embayment && row.TYPE == this.habitat)
         });
       }
-      if (matchSet.length == 1) {
+      if ((matchSet.filter(row => row.VALUE == -999).length > 0) && (matchSet.length == 1)) {
         this.chartOptions.yAxis.plotLines[0].value = -100;       
         this.chartOptions.series[0].data = [];
         this.chartOptions.xAxis.categories = [];
-        this.chartOptions.yAxis.title.text = '--'; 
+        this.chartOptions.yAxis.title.text = '--';         
+      } else if (matchSet.length == 1) {
+        this.chartOptions.yAxis.plotLines[0].value = matchSet[0].VALUE;
+        this.chartOptions.yAxis.title.text = matchSet[0].UNITS;
+        this.chartOptions.xAxis.categories =[''];
+        this.chartOptions.series[0].data =[0];
       } else {
         matchSet.sort((a, b) => (a.YEAR > b.YEAR) ? 1 : ((b.YEAR > a.YEAR) ? -1 : 0));
         matchSet.forEach(row => {

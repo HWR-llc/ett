@@ -24,7 +24,7 @@
     </div>
     <div class="row">
       <div class="col-12" style="text-align: center; padding-left: 20px">
-        <h5 v-if="embayment == null">MassBays Region</h5><h5 v-else>{{ embayment }}</h5>
+        <h5 v-if="embayment == null">MassBays Region</h5><h5 v-else>{{ embaymentCapital }}</h5>
       </div>
     </div>
   </div>
@@ -54,6 +54,13 @@ export default {
     },
     embayment() {
       return this.$store.state.embayment;
+    },
+    embaymentCapital() {
+      let nameStringArray = this.$store.state.embayment.split(" ");
+      nameStringArray.forEach((word, index) => {
+        nameStringArray[index] = word[0] + word.slice(1).toLowerCase();
+      });
+      return nameStringArray.join(' ');    
     }
   },
   methods: {
