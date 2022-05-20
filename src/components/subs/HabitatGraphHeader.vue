@@ -58,7 +58,11 @@ export default {
     embaymentCapital() {
       let nameStringArray = this.$store.state.embayment.split(" ");
       nameStringArray.forEach((word, index) => {
-        nameStringArray[index] = word[0] + word.slice(1).toLowerCase();
+        if (word[0] == '(') {
+          nameStringArray[index] = word.substring(0, 2) + word.slice(2).toLowerCase();
+        } else {
+          nameStringArray[index] = word[0] + word.slice(1).toLowerCase();
+        }
       });
       return nameStringArray.join(' ');    
     }
