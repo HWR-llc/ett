@@ -8,8 +8,8 @@
     </div>
     <div v-for="(item, key) in imageLibraryWaterQuality" :key="key">
       <div class="row">
-        <div class="col-1" style="min-width: 90px">
-          <img :src="item.pic" style="max-width: 70px">
+        <div class="col-1 my-auto justify-content-center" style="min-width: 90px; padding-left: 40px">
+          <img :src="item.pic" style="max-width: 55px">
         </div>
         <div class="col-10">
           <p>
