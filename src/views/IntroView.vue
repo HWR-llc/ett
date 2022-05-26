@@ -9,9 +9,16 @@
         <div class="row justify-content-center text-center">
           <h5>Explore Coastal Habitats and Water Quality <br> in the Massachusetts Bays Region</h5>
         </div>
-        <div class="row justify-content-center">
-          <b-button class="habitat-background no-border" @click="()=>$router.push('explorer')"><b>Start Exploring</b></b-button>
+        <br><br>
+        <div class="d-none d-md-block">
+          <div class="row justify-content-center">
+            <b-button class="habitat-background no-border" @click="()=>$router.push('explorer')" size="lg"><b>Start Exploring</b></b-button>
+          </div>
         </div>
+        <div class="row justify-content-center d-md-none">
+          <b-alert show variant="warning">Mobile Not Supported. Please come back on a laptop or desktop computer.</b-alert>
+        </div>        
+        <br>
         <div class="row justify-content-center"  style="padding-top: 10px">
           <p style="max-width: 60%; text-align: center">
             The <b>Ecohealth Tracking Tool</b> is a gateway for the public, scientists, and policy makers to access information

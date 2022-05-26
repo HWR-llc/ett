@@ -4,23 +4,28 @@
       <div class="row justify-content-center">
         <h4>Welcome to the ETT</h4>
       </div>
-      <div class="row justify-content-center">
-          To get started, select a habitat type or water quality.
-      </div>
-      <br>
-      <div class="row justify-content-center">
-        <div v-for="(item, key) in imageLibraryHabitat" :key="key" @click="iconClicked(key)">
-          <figure>
-            <img :src="item.pic" class="icon-buttons">
-            <figcaption style="text-align: center">{{item.title}}</figcaption>
-          </figure>
+      <div class="d-none d-md-block">
+        <div class="row justify-content-center">
+            To get started, select a habitat type or water quality.
+        </div>
+        <br>
+        <div class="row justify-content-center">
+          <div v-for="(item, key) in imageLibraryHabitat" :key="key" @click="iconClicked(key)">
+            <figure>
+              <img :src="item.pic" class="icon-buttons">
+              <figcaption style="text-align: center">{{item.title}}</figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="text-right" style="color: red">
+            &nbsp;<span v-if="spanShow">Diadromous Fish coming soon.</span>
+        </div>
+        <div class="row justify-content-center">
+          <b-button variant="primary" class="water-quality-background no-border" @click="buttonClicked">Water Quality</b-button>
         </div>
       </div>
-      <div class="text-right" style="color: red">
-           &nbsp;<span v-if="spanShow">Diadromous Fish coming soon.</span>
-      </div>
-      <div class="row justify-content-center">
-        <b-button variant="primary" class="water-quality-background no-border" @click="buttonClicked">Water Quality</b-button>
+      <div class="d-md-none">
+        <b-alert show variant="warning">Mobile Not Supported. Please come back on a laptop or desktop computer.</b-alert>
       </div>
     </b-modal>
   </div>
