@@ -1,12 +1,5 @@
 <template>
   <div>
-    <!-- <p class="floating-text" v-if="!plotWaterQualityGraph">
-      <b>Select an active station:</b>
-      <svg height="20" width="30">
-        <circle id="legend 6" cx="15" cy="10" r="5" style="fill: #00B0F0"/>
-      </svg><br>
-      <b>to see a plot of the data.</b>
-    </p> -->
     <highcharts class="chart" :options="chartOptions" ref="chart" :style="styleObject"></highcharts>
   </div>
 </template>
@@ -63,7 +56,7 @@ export default {
             dashStyle: 'LongDash',
             opacity: 0.5,
             value: -10,
-            zIndex: 10,
+            zIndex: 1,
             label: {
               text: 'threshold',
               align: 'right',
@@ -77,7 +70,7 @@ export default {
             dashStyle: 'LongDash',
             opacity: 0.5,
             value: -10,
-            zIndex: 10,
+            zIndex: 1,
             label: {
               text: 'threshold 2',
               align: 'right',
@@ -232,12 +225,22 @@ export default {
 }
 </script>
 
-<style scoped>
-.floating-text {
-  position: absolute;
-  margin: auto;
-  top: 50%; left: 30%;
-  z-index: 100;
+<style>
+/* .highcharts-container {
+    position: inherit !important;
 }
+.highcharts-tooltip {
+    z-index: 9998;
+    background-color:white;
+    border:1px solid green;
+    opacity:1;
+}
+
+.highcharts-tooltip div {
+    background-color:white;
+    border:1px solid green;
+    opacity:1;
+    z-index:9999!important;
+} */
 
 </style>
