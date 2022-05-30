@@ -43,7 +43,7 @@
             fillOpacity=1
             :color="activeCircleColorer(s.id, s.properties.parameter_list)"
             radius=5
-            @click="plotData($event, s.id, s.properties.parameter_list)"
+            @click="plotData($event, s.id, s.properties.parameter_list, s.properties.eda_unit_name)"
           >
             <l-tooltip ref="tooltip" style="padding-left: 15px; padding-right: 15px">
               <app-station-tooltip 
@@ -363,7 +363,7 @@ export default {
       return activeParameters;
 
     },
-    plotData(event, stationId, parameterList) {
+    plotData(event, stationId, parameterList, stationEmbayment) {
       this.$store.dispatch('onWaterQualityGraph');
       if (parameterList.includes(this.waterQuality)) {
         this.$nextTick(() => {
@@ -379,6 +379,7 @@ export default {
         this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
       }
       this.$store.dispatch('setStation', stationId);
+      this.$store.dispatch('setStationEmbayment', stationEmbayment);
     },
     capitalizeFirstLetter(nameString) {
       let nameStringArray = nameString.split(' ');

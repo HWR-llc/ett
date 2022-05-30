@@ -17,6 +17,7 @@ export const store = new Vuex.Store({
     waterQualityGraph: false,
     embayment: null,
     station: null,
+    stationEmbayment: null,
     habitatGraphData: null,
     showQuickStart: true,
     showLargeGraph: false,
@@ -38,6 +39,9 @@ export const store = new Vuex.Store({
     },    
     SET_STATION: (state, payload) => {
       state.station = payload;
+    },
+    SET_STATION_EMBAYMENT: (state, payload) => {
+      state.stationEmbayment = payload;
     },
     SET_EMBAYMENT: (state, payload) => {
       state.embayment = payload;
@@ -106,6 +110,9 @@ export const store = new Vuex.Store({
     },
     setStation: ({commit}, payload) => {
       commit('SET_STATION', payload);
+    },
+    setStationEmbayment: ({commit}, payload) => {
+      commit('SET_STATION_EMBAYMENT', payload);
     },
     setEmbayment: ({commit}, payload) => {
       commit('SET_EMBAYMENT', payload);

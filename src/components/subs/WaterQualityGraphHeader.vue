@@ -2,7 +2,7 @@
   <div id="holder">
     <div class="row top-row">
       <div class="col-12">
-        <h5>Embayment Name</h5>
+        <h5> {{ stationEmbaymentCapital }}</h5>
       </div>      
     </div>
     <div class="row bottom-row">
@@ -51,6 +51,17 @@ export default {
     },
     station() {
       return this.$store.state.station;
+    },
+    stationEmbaymentCapital() {
+      let nameStringArray = this.$store.state.stationEmbayment.split(" ");
+      nameStringArray.forEach((word, index) => {
+        if (word[0] == '(') {
+          nameStringArray[index] = word.substring(0, 2) + word.slice(2).toLowerCase();
+        } else {
+          nameStringArray[index] = word[0] + word.slice(1).toLowerCase();
+        }
+      });
+      return nameStringArray.join(' ');    
     },
     waterQuality() {
       return this.$store.state.waterQuality;

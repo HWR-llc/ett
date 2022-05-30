@@ -34,7 +34,12 @@ export default {
           noData: 'No observed data to display in this area.<br> Select a different area to see data.'
         },
         tooltip: {
-          pointFormat: "{point.x:%Y-%m-%d %H:%M} <br> {point.y}"
+          pointFormat: "{point.x:%Y-%m-%d %H:%M} <br> {point.y}",
+          style: {
+            zIndex: 100,
+            backgroundColor: "red"
+          }
+          
         },
         xAxis: {
           type: 'datetime',
@@ -90,34 +95,6 @@ export default {
             data: [],
             showInLegend: false
           },
-          // {
-          //   type: 'line',
-          //   name: 'threshold 1',
-          //   showInLegend: true,
-          //   data: [],
-          //   marker: {
-          //     enabled: false
-          //   },
-          //   color: '#ff8737',
-          //   lineWidth: 3,
-          //   dashStyle: 'LongDash',
-          //   opacity: 0.5,
-          //   enableMouseTracking: false
-          // },
-          // {
-          //   type: 'line',
-          //   name: 'threshold 2',
-          //   data: [],
-          //   showInLegend: false,
-          //   marker: {
-          //     enabled: false
-          //   },
-          //   color: '#ff8737',
-          //   lineWidth: 3,
-          //   dashStyle: 'LongDash',
-          //   opacity: 0.5,
-          //   enableMouseTracking: false
-          // }
         ]
       }
     }
@@ -189,7 +166,7 @@ export default {
             dataSeries.push({x: new Date(row.datetime).getTime(), y: row.value})
           })
           this.chartOptions.yAxis.min = this.waterQualityThresholds[this.waterQualityGraphVariable].minValue;
-          let thresholdValue = Math.max(...this.waterQualityThresholds[this.waterQualityGraphVariable].value);
+          let thresholdValue = Math.max(...this.waterQualityThresholds[this.waterQualityGraphVariable].value) * 1.05;
           let maxDataValue = Math.max(...dataSeries.map(row => row.y))
           if ( maxDataValue > thresholdValue) {
             this.chartOptions.yAxis.max = maxDataValue;
