@@ -159,12 +159,13 @@ export default {
             dataSeries.push({x: new Date(row.datetime).getTime(), y: row.value})
           })
           this.chartOptions.yAxis.min = this.waterQualityThresholds[this.waterQualityGraphVariable].minValue;
-          let thresholdValue = Math.max(...this.waterQualityThresholds[this.waterQualityGraphVariable].value) * 1.05;
+          let thresholdValue = Math.max(...this.waterQualityThresholds[this.waterQualityGraphVariable].value);
+          let thresholdValueBuffer = thresholdValue * 1.05
           let maxDataValue = Math.max(...dataSeries.map(row => row.y))
           if ( maxDataValue > thresholdValue) {
             this.chartOptions.yAxis.max = maxDataValue;
           } else {
-            this.chartOptions.yAxis.max = thresholdValue;
+            this.chartOptions.yAxis.max = thresholdValueBuffer;
           }
           if (this.waterQualityGraphVariable == 'salinity') {
             this.chartOptions.yAxis.max = 35;
