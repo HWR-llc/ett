@@ -80,6 +80,7 @@ export default {
   methods: {
     closeWaterQualityGraph() {
       this.$store.dispatch('offWaterQualityGraph');
+      this.$store.dispatch('setStation', null);
     },
     switchLargeGraph() {
       this.$store.dispatch('switchShowLargeGraph');

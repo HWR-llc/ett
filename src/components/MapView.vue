@@ -111,6 +111,9 @@ export default {
     station() {
       return this.$store.state.station;
     },
+    embayment() {
+      return this.$store.state.embayment;
+    },
     embStyle() {
       return () => {
         return {
@@ -201,11 +204,16 @@ export default {
       return (feature, layer) => {
         layer.on({
           click: (event) => {
-            this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
-            this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
-            this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
-            event.target.setStyle({weight: 2, color: 'red', opacity: 1});
-            this.$refs.embaymentsBase.mapObject.bringToFront();
+            if (event.target.feature.properties.NAME == this.embayment) {
+              this.$store.dispatch('setEmbayment', null);
+              this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
+            } else {
+              this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
+              this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
+              this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
+              event.target.setStyle({weight: 2, color: 'red', opacity: 1});
+              this.$refs.embaymentsBase.mapObject.bringToFront();
+            }
           },
           mouseover: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
@@ -260,6 +268,16 @@ export default {
         width: '100%',
       }
     };
+  },
+  watch: {
+    '$store.state.embayment': {
+      handler() {
+        if (this.embayment == null) {
+          this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);  
+          this.$refs.ettMap.mapObject.flyTo(this.center, this.zoom);     
+        }
+      }, immediate: true  
+    }
   },
   methods: {
     circleColorer(parameterList) {
@@ -364,22 +382,27 @@ export default {
 
     },
     plotData(event, stationId, parameterList, stationEmbayment) {
-      this.$store.dispatch('onWaterQualityGraph');
-      if (parameterList.includes(this.waterQuality)) {
-        this.$nextTick(() => {
-          this.$store.dispatch('onPlotWaterQualityGraph');
-        })
+      if (stationId == this.station) {
+        this.$store.dispatch('offWaterQualityGraph');
+        this.$store.dispatch('setStation', null);
       } else {
-        this.$store.dispatch('offPlotWaterQualityGraph')
+        this.$store.dispatch('onWaterQualityGraph');
+        if (parameterList.includes(this.waterQuality)) {
+          this.$nextTick(() => {
+            this.$store.dispatch('onPlotWaterQualityGraph');
+          })
+        } else {
+          this.$store.dispatch('offPlotWaterQualityGraph')
+        }
+        if (this.waterQuality == null) {
+          this.$store.dispatch('setWaterQuality', 'nitrogen');
+          this.$store.dispatch('setWaterQualityGraphVariable', 'nitrogen');
+        } else {
+          this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
+        }
+        this.$store.dispatch('setStation', stationId);
+        this.$store.dispatch('setStationEmbayment', stationEmbayment);
       }
-      if (this.waterQuality == null) {
-        this.$store.dispatch('setWaterQuality', 'nitrogen');
-        this.$store.dispatch('setWaterQualityGraphVariable', 'nitrogen');
-      } else {
-        this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
-      }
-      this.$store.dispatch('setStation', stationId);
-      this.$store.dispatch('setStationEmbayment', stationEmbayment);
     },
     capitalizeFirstLetter(nameString) {
       let nameStringArray = nameString.split(' ');

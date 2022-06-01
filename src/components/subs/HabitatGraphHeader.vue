@@ -13,18 +13,21 @@
       </div>
     </div>
     <div class="row" style="padding-top: 5px">
-      <div class="col-7" style="text-align: left; padding-left: 20px">
+      <div class="col-12" style="text-align: center">
         <h4> {{ habitatCapital}} Extent</h4>       
-      </div>
-      <div class="col-5">
-        <b-button variant="secondary" class="narrow-button" @click="nullEmbayment">
-          Region Data
-        </b-button>
       </div>
     </div>
     <div class="row">
       <div class="col-12" style="text-align: center; padding-left: 20px">
-        <h5 v-if="embayment == null">MassBays Region</h5><h5 v-else>{{ embaymentCapital }}</h5>
+        <div v-if="embayment == null">
+          <h5>All Assessment Areas</h5>
+        </div>
+        <div v-else>
+          <h5 class="d-inline" style="padding-right: 10px">{{ embaymentCapital }}</h5>
+          <b-button variant="success" class="d-inline" size="sm" @click="allEmbayments">
+            <b-icon icon="globe" aria-hidden="true"></b-icon>
+          </b-button>
+        </div>
       </div>
     </div>
   </div>
@@ -70,6 +73,10 @@ export default {
   methods: {
     nullEmbayment() {
       this.$store.dispatch('setEmbayment', null);
+    },
+    allEmbayments() {
+      this.$store.dispatch('setEmbayment', null);
+
     }
   }
 }
@@ -86,11 +93,11 @@ export default {
   width: 100%;
   height: 90px;
   background-position: center center;
-  background-repeat: no-repeat
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .narrow-button {
   height: 30px;
-
   padding-top: 0px;
   padding-bottom: 2px;
   margin: 2px;
