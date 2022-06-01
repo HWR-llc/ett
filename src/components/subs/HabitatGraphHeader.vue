@@ -24,7 +24,7 @@
         </div>
         <div v-else>
           <h5 class="d-inline" style="padding-right: 10px">{{ embaymentCapital }}</h5>
-          <b-button variant="success" class="d-inline" size="sm" @click="allEmbayments">
+          <b-button variant="success" class="d-inline" size="sm" title="return to all MassBays assessment areas" @click="allEmbayments">
             <b-icon icon="globe" aria-hidden="true"></b-icon>
           </b-button>
         </div>
