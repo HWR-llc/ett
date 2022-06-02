@@ -22,6 +22,9 @@ export default {
         lang: {
           noData: 'No data to display in this area.<br> Select a different area to see data.'
         },
+        tooltip: {
+          pointFormat: "{point.y}"     
+        },
         xAxis: {
           title: {
             text: 'Year'
@@ -48,7 +51,6 @@ export default {
             dashStyle: 'LongDash',
             opacity: 0.5,
             value: -100,
-            zIndex: 10,
             label: {
               text: '2050 Goal',
               align: 'center',
@@ -139,7 +141,8 @@ export default {
         this.chartOptions.yAxis.plotLines[0].value = updatePlotLineValue;
         this.chartOptions.xAxis.categories = newCategories;
         this.chartOptions.series[0].data = newValues;
-        this.chartOptions.yAxis.title.text = newUnits[0];        
+        this.chartOptions.yAxis.title.text = newUnits[0]; 
+        this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0] 
       }
 
     }

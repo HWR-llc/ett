@@ -27,12 +27,7 @@ export default {
           noData: 'No observed data to display in this area.<br> Select a different area to see data.'
         },
         tooltip: {
-          pointFormat: "{point.x:%Y-%m-%d %H:%M} <br> {point.y}",
-          style: {
-            zIndex: 100,
-            backgroundColor: "red"
-          }
-          
+          pointFormat: "{point.x:%Y-%m-%d %H:%M} <br> {point.y}"     
         },
         xAxis: {
           type: 'datetime',
