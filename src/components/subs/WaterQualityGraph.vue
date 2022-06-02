@@ -171,6 +171,7 @@ export default {
             this.chartOptions.yAxis.max = 35;
           }
           this.chartOptions.series[0].data = dataSeries;
+          this.chartOptions.tooltip.pointFormat = "{point.x:%Y-%m-%d %H:%M} <br> {point.y} " + this.waterQualityThresholds[this.waterQualityGraphVariable].units
           this.chartOptions.yAxis.plotLines[0].value = this.waterQualityThresholds[this.waterQualityGraphVariable].value[0]
            if (this.waterQualityGraphVariable == 'salinity') {
             this.chartOptions.yAxis.plotLines[1].value = this.waterQualityThresholds[this.waterQualityGraphVariable].value[1];

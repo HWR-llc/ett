@@ -277,6 +277,11 @@ export default {
           this.$refs.ettMap.mapObject.flyTo(this.center, this.zoom);     
         }
       }, immediate: true  
+    },
+    '$store.state.waterQuality': {
+      handler() {
+        this.$store.dispatch('setStation', null);
+      }, immediate: true  
     }
   },
   methods: {
