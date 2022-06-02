@@ -71,9 +71,6 @@ export default {
     }
   },
   methods: {
-    nullEmbayment() {
-      this.$store.dispatch('setEmbayment', null);
-    },
     allEmbayments() {
       this.$store.dispatch('setEmbayment', null);
 

@@ -205,8 +205,12 @@ export default {
         layer.on({
           click: (event) => {
             if (event.target.feature.properties.NAME == this.embayment) {
+              this.stopFlyTo = true;
               this.$store.dispatch('setEmbayment', null);
               this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
+              this.$nextTick(() => {
+                this.stopFlyTo = false;
+              })
             } else {
               this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
               this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
@@ -266,15 +270,18 @@ export default {
       mapStyleObj: {
         height: Math.floor(window.innerHeight - 100) + 'px',
         width: '100%',
-      }
+      },
+      stopFlyTo: false
     };
   },
   watch: {
     '$store.state.embayment': {
       handler() {
-        if (this.embayment == null) {
+        if ((this.embayment == null) && (this.stopFlyTo == false)) {
           this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);  
           this.$refs.ettMap.mapObject.flyTo(this.center, this.zoom);     
+        } else if (this.embayment == null) {
+          this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);          
         }
       }, immediate: true  
     },
