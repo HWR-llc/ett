@@ -51,6 +51,7 @@ export default {
             dashStyle: 'LongDash',
             opacity: 0.5,
             value: -100,
+            zIndex: 3,
             label: {
               text: '2050 Goal',
               align: 'center',
