@@ -32,14 +32,14 @@
 </template>
 
 <script>
-import { imageLibraryHabitatGray } from '../lib/constants'
+import { imageLibraryHabitat } from '../lib/constants'
 import { stateWideHabitatValues } from '../lib/constants'
 export default {
   data () {
     return {
       modalShow: true,
       spanShow: false,
-      imageLibraryHabitat: imageLibraryHabitatGray,
+      imageLibraryHabitat: imageLibraryHabitat,
       stateWideHabitatValues: stateWideHabitatValues
     }
   },
