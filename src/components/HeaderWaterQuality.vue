@@ -19,14 +19,14 @@
           </div>
           <div class="col-3">
             <div class="form-check" v-for="selection in waterQualitySelections.slice(3,6)" :key="selection.id">
-              <input class="form-check-input" type="radio" id="key" :value="selection.id" v-model="waterQuality">
-              <label class="form-check-label" for="key" style="color: white"> {{selection.capital}} </label>
+              <input class="form-check-input" type="radio" :id="selection.id" :value="selection.id" v-model="waterQuality">
+              <label class="form-check-label" :for="selection.id" style="color: white"> {{selection.capital}} </label>
             </div>
           </div>
           <div class="col-5">
             <div class="form-check" v-for="selection in waterQualitySelections.slice(6,9)" :key="selection.id">
-              <input class="form-check-input" type="radio" id="key" :value="selection.id" v-model="waterQuality">
-              <label class="form-check-label" for="key" style="color: white"> <i v-if="selection.id=='e. coli' || selection.id=='enterococcus'">{{selection.capital}}</i> <span v-else>{{selection.capital}}</span></label>
+              <input class="form-check-input" type="radio" :id="selection.id" :value="selection.id" v-model="waterQuality">
+              <label class="form-check-label" :for="selection.id" style="color: white"> <i v-if="selection.id=='e. coli' || selection.id=='enterococcus'">{{selection.capital}}</i> <span v-else>{{selection.capital}}</span></label>
             </div>
           </div>
         </div>
