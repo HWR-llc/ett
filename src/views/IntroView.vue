@@ -3,13 +3,13 @@
     <div class="row" id="top-row">
       <div class="col-12">
         <div class="row justify-content-center">
-          <img src="../assets/imgs/landing_page.png" style="width: 35%">
+          <img src="../assets/imgs/landing_page.png" :style="{'width': imageWidth + '%' }">
         </div>
         <br>
         <div class="row justify-content-center text-center">
           <h5>Explore Coastal Habitats and Water Quality <br> in the Massachusetts Bays Region</h5>
         </div>
-        <br><br>
+        <br><br class="d-none d-md-block">
         <div class="d-none d-md-block">
           <div class="row justify-content-center">
             <b-button class="habitat-background no-border" @click="()=>$router.push('explorer')" size="lg"><b>Start Exploring</b></b-button>
@@ -18,9 +18,9 @@
         <div class="row justify-content-center d-md-none">
           <b-alert show variant="warning">Mobile Not Supported. Please come back on a laptop or desktop computer.</b-alert>
         </div>        
-        <br>
+        <br class="d-none d-md-block">
         <div class="row justify-content-center"  style="padding-top: 10px">
-          <p style="max-width: 60%; text-align: center">
+          <p :style="{'width': textWidth + '%', 'textAlign': textAlign }">
             The <b>Ecohealth Tracking Tool</b> is a gateway for the public, scientists, and policy makers to access information
             about coastal habitats, the water quality conditions that sustain healthy habitats, and the many benefits these habitats provide.
             You'll find data for the entire MassBays region, as well as your favorite beach, salt marsh, or estuary.
@@ -31,13 +31,49 @@
       </div>
     </div>
     <div class="row justify-content-center" id="bottom-row">
-      <img src="../assets/logos/mass_bays_rect.svg" style="max-width: 15%">
+      <img src="../assets/logos/mass_bays_rect.svg" :style="{'width': iconWidth + '%' }">
     </div>
 
   </div>
 </template>
 
 <script>
+export default {
+  name: 'IntroView',
+  data () {
+    return {
+      imageWidth: null,
+      textWidth: null,
+      iconWidth: null,
+      textAlign: null
+
+    }
+  },
+  methods: {
+    onResize () {
+      if (window.innerWidth < 992) {
+        this.imageWidth = 90;
+        this.textWidth = 90;
+        this.iconWidth = 75;
+        this.textAlign = null;
+      } else {
+        this.imageWidth = 35;
+        this.textWidth = 60;
+        this.iconWidth = 15;
+        this.textAlign = 'center';
+      }
+    }
+  },
+  mounted() {
+    window.addEventListener('resize', this.onResize);
+    this.$nextTick(() => {
+      this.onResize();
+    });
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize); // stop memory leaks;
+  }
+}
 
 </script>
 

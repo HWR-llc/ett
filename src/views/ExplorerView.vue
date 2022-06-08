@@ -79,7 +79,6 @@ export default {
     onResize () {
       this.rowTwoHeight = window.innerHeight - 100;
     }
-
   },
   components: {
     appHeaderContainer: HeaderContainer,
