@@ -2,14 +2,14 @@
   <div class="container-fluid" >
     <app-header-container></app-header-container>
     <div class="row" :style="rowTwoHeightStyle">
-      <div class="col-2">
+      <div class="col-2" tabindex="0">
         <app-margin-left></app-margin-left>
       </div>
-      <div class="col-7" style="padding-right: 0px; padding-left: 0px">
+      <div class="col-7" style="padding-right: 0px; padding-left: 0px" tabindex="1">
         
         <app-map-view></app-map-view>
       </div> 
-      <div class="col-3" :style="scrollBoxHeightStyle">
+      <div class="col-3" :style="scrollBoxHeightStyle" tabindex="2">
         <transition name="fade" mode="out-in">
           <app-margin-instructions v-if="showQuickStart"></app-margin-instructions>
           <app-margin-right v-else></app-margin-right>

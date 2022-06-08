@@ -5,10 +5,9 @@
     </div>
     <div class="row justify-content-center">
         <div v-for="(item, key) in imageLibraryHabitat" :key="key">
-          <img :src="item.pic" style="max-height: 120px; margin: 10px">
+          <img :src="item.pic" style="max-height: 120px; margin: 10px" :alt="key + ' logo'">
         </div>
     </div>
-    <!-- EELGRASS -->
     <div v-for="(item, key) in imageLibraryHabitat" :key="key">
       <div class="row">
         <div class="col-12">
@@ -18,7 +17,7 @@
       <div class="row">
         <div class="col-12">
           <div class="clearfix">
-            <img :src="item.learnImg" class="col-5 float-right" alt="...">
+            <img :src="item.learnImg" class="col-5 float-right" :alt="item.altText">
             <p v-html="item.explanation"></p>
           </div>
         </div>

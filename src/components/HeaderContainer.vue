@@ -3,7 +3,7 @@
     <div class="row" id="topRow">
       <div class="col-2" id="logoBox">
           <!-- Problem here making image fit -->
-          <router-link to="/"><img src="../assets/logos/ett_square_no_border.svg" style="background-color: white; max-width: 100%; max-height: 180px; margin: auto; display: block; padding-top: 5px"></router-link>
+          <router-link to="/"><img src="../assets/logos/ett_square_no_border.svg" style="background-color: white; max-width: 100%; max-height: 180px; margin: auto; display: block; padding-top: 5px" alt="ETT logo"></router-link>
       </div>
       <div class="col-4" style="padding-top: 15px">
         <app-header-habitat></app-header-habitat>

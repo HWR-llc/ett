@@ -44,7 +44,7 @@
     <br>
     <div class="bottom-spot">
       <a href="https://www.mass.gov/orgs/massachusetts-bays-national-estuary-partnership"  target="_blank">
-        <img src="../assets/logos/mass_bays_rect.svg" style="max-width: 85%">
+        <img src="../assets/logos/mass_bays_rect.svg" style="max-width: 85%" alt="MassBays logo">
       </a>
     </div>     
   </div>
@@ -52,8 +52,8 @@
 
 <script>
 
-import learnHabitat from './subs/learnHabitat.vue'
-import learnWaterQuality from './subs/learnWaterQuality.vue'
+import LearnHabitat from './subs/LearnHabitat.vue'
+import LearnWaterQuality from './subs/LearnWaterQuality.vue'
 export default {
   data () {
     return {
@@ -104,8 +104,8 @@ export default {
     }
   },
   components: {
-    appLearnHabitat: learnHabitat,
-    appLearnWaterQuality: learnWaterQuality
+    appLearnHabitat: LearnHabitat,
+    appLearnWaterQuality: LearnWaterQuality
   }
 
 }

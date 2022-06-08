@@ -5,7 +5,8 @@
         <div v-for="(item, key) in imageLibrary" :key="key">
           <div v-if="habitat==key"   style="width: 100%">
             <div class="center-cropped"
-               :style="{ 'background-image': 'url(' + item.img + ')' }">
+               :style="{ 'background-image': 'url(' + item.img + ')' }"
+               :alt="'background image for ' + key">
             </div>
             <h2 class="overlay-text"><b>{{ item.title }}</b></h2>
           </div>

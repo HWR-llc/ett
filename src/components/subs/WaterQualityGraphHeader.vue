@@ -7,33 +7,12 @@
     </div>
     <div class="row bottom-row">
       <div class="col-3 my-auto">
-        <img :src="imageLibrary[waterQualityGraphVariable].pic" style="max-height: 60px">
+        <img :src="imageLibrary[waterQualityGraphVariable].pic" style="max-height: 60px" :alt="key + ' logo' ">
       </div>
       <div class="col-9 my-auto">
       <h6>{{ station }}<br>{{imageLibrary[waterQualityGraphVariable].title }}</h6>        
       </div>      
     </div>
-  <!-- <div class="row"style="width: 100%; min-height: 100px">
-    <div class="top-row">
-      <h5>Embayment Name</h5>
-    </div>
-    <div class="row">
-      <div class="col-3">
-        <img :src="imageLibrary[waterQualityGraphVariable].pic" style="max-height: 60px" class="overlay-icon">
-      </div>
-      <div class="col-p">
-      <h6>{{ station }}<br>{{ waterQualityGraphVariableCapital }}</h6>        
-      </div>
-    </div> -->
-    <!-- <div class="bottom-row">
-      <div v-for="(item, key) in imageLibrary" :key="key">
-        <div v-if="key == waterQualityGraphVariable">
-          <img :src="item.pic" style="max-height: 60px" class="overlay-icon">
-        </div>
-      </div>
-      <h6>{{ station }}<br>
-      {{ waterQualityGraphVariableCapital }}</h6>
-    </div>   -->
   </div>
 </template>
 

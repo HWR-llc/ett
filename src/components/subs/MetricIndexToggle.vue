@@ -12,12 +12,12 @@
         <div class="row" style="padding-top: 5px">
           <div class="col-12">
             <svg height="60">
-              <rect id="patch" x="5" y="0" width="35" height="25" :style="{fill: colorScale(0)}"/>
-              <rect id="patch" x="40" y="0" width="35" height="25" :style="{fill: colorScale(0.2)}"/>
-              <rect id="patch" x="75" y="0" width="35" height="25" :style="{fill: colorScale(0.4)}"/>
-              <rect id="patch" x="110" y="0" width="35" height="25" :style="{fill: colorScale(0.6)}"/>
-              <rect id="patch" x="145" y="0" width="35" height="25" :style="{fill: colorScale(0.8)}"/>
-              <rect id="patch" x="180" y="0" width="35" height="25" :style="{fill: colorScale(1)}"/>
+              <rect id="patch 1" x="5" y="0" width="35" height="25" :style="{fill: colorScale(0)}"/>
+              <rect id="patch 2" x="40" y="0" width="35" height="25" :style="{fill: colorScale(0.2)}"/>
+              <rect id="patch 3" x="75" y="0" width="35" height="25" :style="{fill: colorScale(0.4)}"/>
+              <rect id="patch 4" x="110" y="0" width="35" height="25" :style="{fill: colorScale(0.6)}"/>
+              <rect id="patch 5" x="145" y="0" width="35" height="25" :style="{fill: colorScale(0.8)}"/>
+              <rect id="patch 6" x="180" y="0" width="35" height="25" :style="{fill: colorScale(1)}"/>
               <text x="0" y="40" class="small">0</text>
               <text x="35" y="40" class="small">20</text>
               <text x="70" y="40" class="small">40</text>

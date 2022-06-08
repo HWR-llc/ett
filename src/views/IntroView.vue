@@ -3,7 +3,7 @@
     <div class="row" id="top-row">
       <div class="col-12">
         <div class="row justify-content-center">
-          <img src="../assets/imgs/landing_page.png" :style="{'width': imageWidth + '%' }">
+          <img src="../assets/imgs/landing_page.png" :style="{'width': imageWidth + '%' }" alt="Habitat type images and ETT logo">
         </div>
         <br>
         <div class="row justify-content-center text-center">
@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="row justify-content-center" id="bottom-row">
-      <img src="../assets/logos/mass_bays_rect.svg" :style="{'width': iconWidth + '%' }">
+      <img src="../assets/logos/mass_bays_rect.svg" :style="{'width': iconWidth + '%' }" alt="MassBays logo">
     </div>
 
   </div>

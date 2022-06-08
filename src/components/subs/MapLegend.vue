@@ -27,7 +27,7 @@
         <div class="row">
           <div class="col-3">
             <svg height="20" width="30">
-              <rect id="legend 2" x="0" y="0" width="30" height="20" :style="{fill: item.historicColor}"/>
+              <rect :id="'legend' + key" x="0" y="0" width="30" height="20" :style="{fill: item.historicColor}"/>
             </svg> 
           </div>
           <div class="col-9">
@@ -41,7 +41,7 @@
     <div class="row" v-if="pointsLayer == true">
       <div class="col-3">
         <svg height="20" width="30">
-          <circle id="legend 6" cx="15" cy="10" r="5" style="fill: #00B0F0"/>
+          <circle id="available data" cx="15" cy="10" r="5" style="fill: #00B0F0"/>
         </svg> 
       </div>
       <div class="col-9">
@@ -53,7 +53,7 @@
     <div class="row" v-if="pointsLayer == true">
       <div class="col-3">
         <svg height="20" width="30">
-          <circle id="legend 6" cx="15" cy="10" r="5" style="fill: #808080"/>
+          <circle id="unavailable data" cx="15" cy="10" r="5" style="fill: #808080"/>
         </svg> 
       </div>
       <div class="col-9">

@@ -4,7 +4,7 @@
     <transition name="fade" mode="out-in">
       <app-water-quality-floater class="floater-position" v-if="waterQualityGraph"></app-water-quality-floater>
     </transition>   
-    <l-map :style="mapStyleObj" :zoom="zoom" :center="center" ref="ettMap">
+    <l-map :style="mapStyleObj" :zoom="zoom" :center="center" ref="ettMap" alt="Data explorer map">
       <l-control-layers position="topleft"></l-control-layers>
       <!-- <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer> -->
       <l-tile-layer

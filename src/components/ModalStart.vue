@@ -12,7 +12,7 @@
         <div class="row justify-content-center">
           <div v-for="(item, key) in imageLibraryHabitat" :key="key" @click="iconClicked(key)">
             <figure>
-              <img :src="item.pic" class="icon-buttons">
+              <img :src="item.pic" class="icon-buttons" :alt="key + ' logo'">
               <figcaption style="text-align: center">{{item.title}}</figcaption>
             </figure>
           </div>
