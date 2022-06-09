@@ -41,7 +41,6 @@ export default {
           formattedParameterList[index] = 'E. coli';
         }
       })
-      console.log(formattedParameterList);
       return formattedParameterList;
     } 
   },

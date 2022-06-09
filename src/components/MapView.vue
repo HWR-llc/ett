@@ -28,12 +28,16 @@
         <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='eelgrass'" :options-style="eelgrassColorer" ref="metric"></l-geo-json>	  
       </div>
       <div v-if="baseLayer">
-        <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.his" v-if="habitat=='tidal flats'" :options-style="tfStyleHis" ref="historic"></l-geo-json>	  		
-        <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.his" v-if="habitat=='salt marsh'" :options-style="smStyleHis"  ref="historic"></l-geo-json>	
-        <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.his" v-if="habitat=='eelgrass'" :options-style="egStyleHis" ref="historic"></l-geo-json>
-        <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.cur" v-if="habitat=='tidal flats'" :options-style="tfStyleCur" ref="current"></l-geo-json>	  		
-        <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.cur" v-if="habitat=='salt marsh'" :options-style="smStyleCur" ref="current"></l-geo-json>	
-        <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.cur" v-if="habitat=='eelgrass'" :options-style="egStyleCur" ref="current"></l-geo-json>
+        <l-layer-group ref="historic">
+          <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.his" v-if="habitat=='tidal flats'" :options-style="tfStyleHis"></l-geo-json>	  		
+          <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.his" v-if="habitat=='salt marsh'" :options-style="smStyleHis"></l-geo-json>	
+          <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.his" v-if="habitat=='eelgrass'" :options-style="egStyleHis"></l-geo-json>
+        </l-layer-group>
+        <l-layer-group ref="current">
+          <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.cur" v-if="habitat=='tidal flats'" :options-style="tfStyleCur"></l-geo-json>	  		
+          <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.cur" v-if="habitat=='salt marsh'" :options-style="smStyleCur"></l-geo-json>	
+          <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.cur" v-if="habitat=='eelgrass'" :options-style="egStyleCur"></l-geo-json>
+        </l-layer-group>
       </div>
       <div v-if="pointsLayer">
         <l-layer-group ref="stations" v-for="s in stations" :key="s.id">
@@ -216,7 +220,8 @@ export default {
               this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
               this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
               event.target.setStyle({weight: 2, color: 'red', opacity: 1});
-              this.$refs.embaymentsBase.mapObject.bringToFront();
+              // this.$refs.embaymentsBase.mapObject.bringToFront();
+              this.reorderLayers();
             }
           },
           mouseover: (event) => {
@@ -432,6 +437,16 @@ export default {
         height: Math.floor(window.innerHeight - 100) + 'px',
         width: '100%',
       }      
+    },
+    reorderLayers () {
+      this.$nextTick(() => {
+        if (('metric' in this.$refs) && (this.$refs.metric !== undefined)) {
+          this.$refs.metric.mapObject.bringToFront();
+        }
+        if (('embaymentsBase' in this.$refs) && (this.$refs.embaymentsBase !== undefined)) {
+          this.$refs.embaymentsBase.mapObject.bringToFront();
+        }
+      })
     }
   },
   created() {
@@ -494,10 +509,7 @@ export default {
     window.addEventListener('resize', this.onResize);
   },
   updated() {
-    this.$refs.historic.mapObject.bringToFront();
-    this.$refs.current.mapObject.bringToFront();
-    this.$refs.metric.mapObject.bringToFront();
-    
+    this.reorderLayers();   
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.onResize) //stop memory leakage
