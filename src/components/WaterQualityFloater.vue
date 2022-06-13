@@ -2,7 +2,7 @@
   <div class="floater">
     <div class="row" style="text-align: right">
       <div class="col-2" style="text-align: left; padding-top: 2px">
-        <b-button class="narrow-button" variant="success"  v-b-modal.modal-large-graph :disabled="!plotWaterQualityGraph">
+        <b-button class="narrow-button" style="background-color: #3B8416"  v-b-modal.modal-large-graph :disabled="!plotWaterQualityGraph">
           enlarge
         </b-button>
       </div>

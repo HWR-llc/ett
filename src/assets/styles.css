@@ -4,11 +4,11 @@
 }
 
 .eelgrass-main {
-  color: #00A3CC;
+  color: #009fc4;
 }
 
 .eelgrass-base-current {
-  fill: #00A3CC;
+  fill: #009fc4;
   stroke: lightgray;
 }
 
@@ -52,18 +52,26 @@
 }
 
 .habitat-background {
-  background-color: #76DF41;
+  background-color: #4BA81C;
 }
 
 .habitat-main {
+  color: #4BA81C;
+}
+
+.habitat-main-header {
   color: #76DF41;
 }
 
 .water-quality-background {
-  background-color: #00B0F0;
+  background-color: #009FC4;
 }
 
 .water-quality-main {
+  color: #009FC4;
+}
+
+.water-quality-main-header {
   color: #00B0F0;
 }
 

@@ -3,7 +3,7 @@
     <div class="row align-items-center">
       <div class="col-1" style="min-width: 100px"> 
         <div class="row justify-content-center" style="padding-top: 0px">
-          <h6 class="water-quality-main">Water Quality</h6>
+          <h6 class="water-quality-main-header">Water Quality</h6>
         </div>
         <div class="row justify-content-center">
             <toggle-button color="#00B0F0" v-model="pointsLayer" :sync="true"></toggle-button>
