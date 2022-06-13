@@ -1,8 +1,8 @@
 <template>
  <div>
     <div class="row" :class="habitatKebab + '-background'">
-      <div class="col-12" style="text-align: center; color: #ffffff">
-        <h2><b>{{ habitatCapital }}</b></h2>
+      <div class="col-12" style="text-align: center; color: #ffffff;">
+        <h2 style="margin-top: 0.4px; margin-bottom: 4px"><b>{{ habitatCapital }}</b></h2>
       </div>
     </div>
     <div class="row">
