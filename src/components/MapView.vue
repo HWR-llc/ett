@@ -6,6 +6,16 @@
     </transition>   
     <l-map :style="mapStyleObj" :zoom="zoom" :center="center" ref="ettMap" alt="Data explorer map">
       <l-control-layers position="topleft"></l-control-layers>
+      <l-tile-layer
+        v-for="tile in basemaps[0]"
+        :key="tile.name"
+        :name="tile.name"
+        :visible="tile.visible"
+        :url="tile.url"
+        :attribution="tile.attribution"
+        :options="tile.options"
+        layer-type="base"
+      ></l-tile-layer>
       <l-wms-tile-layer
         v-for="tile in basemapsWms"
         :key="tile.name"
@@ -18,7 +28,7 @@
         layer-type="base"
       ></l-wms-tile-layer>
       <l-tile-layer
-        v-for="tile in basemaps"
+        v-for="tile in basemaps[1]"
         :key="tile.name"
         :name="tile.name"
         :visible="tile.visible"
