@@ -22,7 +22,13 @@ export const store = new Vuex.Store({
     showQuickStart: true,
     showLargeGraph: false,
     plotHabitatGraph: false,
-    plotWaterQualityGraph: false
+    plotWaterQualityGraph: false,
+    legendYears: {
+      'eelgrass': {historic: null, current: null},
+      'salt marsh': {historic: null, current: null},
+      'tidal flats': {historic: null, current: null},
+      'diadromous fish': {historic: null, current: null}
+    }
   },
   mutations: {
     SET_HABITAT: (state, payload) => {
@@ -93,6 +99,9 @@ export const store = new Vuex.Store({
     },
     OFF_PLOT_WATER_QUALITY_GRAPH: state => {
       state.plotWaterQualityGraph = false;
+    },
+    SET_HABITAT_LEGEND_YEAR: (state, payload) => {
+      state.legendYears[payload.habitat][payload.period] = payload.value;
     },
   },
   actions: {
@@ -172,5 +181,8 @@ export const store = new Vuex.Store({
     offPlotWaterQualityGraph: ({commit}) => {
       commit('OFF_PLOT_WATER_QUALITY_GRAPH');
     },
+    setHabitatLegendYear: ({commit}, payload) => {
+      commit('SET_HABITAT_LEGEND_YEAR', payload);
+    },      
   }
 });

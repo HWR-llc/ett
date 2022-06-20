@@ -92,8 +92,6 @@ export const imageLibraryHabitat = {
     img: require('@/assets/imgs/eelgrass_img.jpg'),
     pic: require('@/assets/icons/eelgrass.svg'),
     learnImg: require('@/assets/imgs/eelgrass_lobster_square.jpg'),
-    currentYear: '2015-2017',
-    historicYear: '1995',
     source: 'MassDEP',
     currentColor: '#e319a6',
     historicColor: '#eba4d5',
@@ -106,8 +104,6 @@ export const imageLibraryHabitat = {
     img: require('@/assets/imgs/salt_marsh_img.jpg'),
     pic: require('@/assets/icons/salt_marsh.svg'),
     learnImg: require('@/assets/imgs/salt_marsh_heron_square.jpg'),
-    currentYear: '2005',
-    historicYear: '1990-2000',
     source: 'MassDEP',
     currentColor: '#255c33',
     historicColor: '#68f28d',
@@ -120,8 +116,6 @@ export const imageLibraryHabitat = {
     img: require('@/assets/imgs/tidal_flats_img.jpg'),
     pic: require('@/assets/icons/tidal_flats.svg'),
     learnImg: require('@/assets/imgs/tidal_flats_oyster_bed_square.jpg'),
-    currentYear: '2005',
-    historicYear: '1990-2000',
     source: 'MassDEP',
     currentColor: '#c96b12',
     historicColor: '#deb187',
@@ -134,8 +128,6 @@ export const imageLibraryHabitat = {
     img: require('@/assets/imgs/diadromous_img.jpg'),
     pic: require('@/assets/icons/diadromous.svg'),
     learnImg: require('@/assets/imgs/diadromous_fish_square.jpg'),
-    currentYear: 'TBD',
-    historicYear: 'TBD',
     source: 'MassBays',
     currentColor: '#000000',
     historicColor: '#ffffff',
@@ -331,5 +323,15 @@ export const basemaps = [
     visible: false,
     url: '',
     attribution: ''
+  }
+]
+export const basemapsWms = [
+  {
+    url: 'https://gis.charttools.noaa.gov/arcgis/rest/services/MCS/ENCOnline/MapServer/exts/MaritimeChartService/WMSServer',
+    name: 'NOAA Nautical Charts',
+    visible: true,
+    format: 'image/png',
+    transparent: true,
+    attribution: '<a href="https://nauticalcharts.noaa.gov/data/gis-data-and-services.html" _target="_blank">NOAA Maritime Chart Service</a>'
   }
 ]

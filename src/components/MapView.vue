@@ -6,7 +6,17 @@
     </transition>   
     <l-map :style="mapStyleObj" :zoom="zoom" :center="center" ref="ettMap" alt="Data explorer map">
       <l-control-layers position="topleft"></l-control-layers>
-      <!-- <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer> -->
+      <l-wms-tile-layer
+        v-for="tile in basemapsWms"
+        :key="tile.name"
+        :base-url="tile.url"
+        :visible="tile.visible"
+        :name="tile.name"
+        :attribution="tile.attribution"
+        :transparent="tile.transparent"
+        :format="tile.format"
+        layer-type="base"
+      ></l-wms-tile-layer>
       <l-tile-layer
         v-for="tile in basemaps"
         :key="tile.name"
@@ -29,14 +39,14 @@
       </div>
       <div v-if="baseLayer">
         <l-layer-group ref="historic">
-          <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.his" v-if="habitat=='tidal flats'" :options-style="tfStyleHis"></l-geo-json>	  		
-          <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.his" v-if="habitat=='salt marsh'" :options-style="smStyleHis"></l-geo-json>	
-          <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.his" v-if="habitat=='eelgrass'" :options-style="egStyleHis"></l-geo-json>
+          <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.historic" v-if="habitat=='tidal flats'" :options-style="tfStyleHis"></l-geo-json>	  		
+          <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.historic" v-if="habitat=='salt marsh'" :options-style="smStyleHis"></l-geo-json>	
+          <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.historic" v-if="habitat=='eelgrass'" :options-style="egStyleHis"></l-geo-json>
         </l-layer-group>
         <l-layer-group ref="current">
-          <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.cur" v-if="habitat=='tidal flats'" :options-style="tfStyleCur"></l-geo-json>	  		
-          <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.cur" v-if="habitat=='salt marsh'" :options-style="smStyleCur"></l-geo-json>	
-          <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.cur" v-if="habitat=='eelgrass'" :options-style="egStyleCur"></l-geo-json>
+          <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.current" v-if="habitat=='tidal flats'" :options-style="tfStyleCur"></l-geo-json>	  		
+          <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.current" v-if="habitat=='salt marsh'" :options-style="smStyleCur"></l-geo-json>	
+          <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.current" v-if="habitat=='eelgrass'" :options-style="egStyleCur"></l-geo-json>
         </l-layer-group>
       </div>
       <div v-if="pointsLayer">
@@ -72,18 +82,20 @@ Icon.Default.mergeOptions({
   iconUrl: require('leaflet/dist/images/marker-icon.png'),
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
-
-import {LMap, LTileLayer, LLayerGroup, LGeoJson, LCircleMarker, LTooltip, LControlLayers} from 'vue2-leaflet';
+  
+import {LMap, LTileLayer, LWMSTileLayer, LLayerGroup, LGeoJson, LCircleMarker, LTooltip, LControlLayers} from 'vue2-leaflet';
 import { interpolateGreens, interpolateOranges, interpolatePurples, interpolateBlues } from 'd3-scale-chromatic'
 import StationTooltip from './subs/StationTooltip.vue'
 import MapLegend from './subs/MapLegend.vue'
 import WaterQualityFloater from '../components/WaterQualityFloater.vue'
 import { imageLibraryHabitat } from '../lib/constants'
 import { basemaps } from '../lib/constants'
+import { basemapsWms } from '../lib/constants'
 export default {
   components: {
     LMap,
     LTileLayer,
+    'l-wms-tile-layer': LWMSTileLayer,
     LLayerGroup, 
     LGeoJson,
     LCircleMarker,
@@ -243,30 +255,29 @@ export default {
     return {
       imageLibraryHabitat: imageLibraryHabitat,
       basemaps: basemaps,
-      url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}',
-      attribution: 'Tiles &copy; Esri &mdash; Sources: GEBCO, NOAA, CHS, OSU, UNH, CSUMB, National Geographic, DeLorme, NAVTEQ, and Esri',
+      basemapsWms: basemapsWms,
       zoom: 9,
       center: [42.23673, -70.65864],
       bkgrdGeojson: {
         tidalFlats: {
           name: 'tidal flats',
           data: {
-            cur: null,
-            his: null		    			
+            current: null,
+            historic: null		    			
           }
         },
         saltMarsh: {
           name: 'salt marsh',
           data: {
-            cur: null,
-            his: null		    			
+            current: null,
+            historic: null		    			
           }
         },
         eelGrass: {
           name: 'eelgrass',
           data: {
-            cur: null,
-            his: null		    			
+            current: null,
+            historic: null		    			
           }
         }
       },
@@ -472,16 +483,16 @@ export default {
     // fetch habitats
     const fileArray = {
       tidalFlats: {
-        cur: "./data/tidal_flats_current_wgs.geojson",
-        his: "./data/tidal_flats_historic_wgs.geojson"
+        current: "./data/tidal_flats_current_wgs.geojson",
+        historic: "./data/tidal_flats_historic_wgs.geojson"
       },
       saltMarsh: {
-        cur: "./data/salt_marsh_current_wgs.geojson",
-        his: "./data/salt_marsh_historic_wgs.geojson"
+        current: "./data/salt_marsh_current_wgs.geojson",
+        historic: "./data/salt_marsh_historic_wgs.geojson"
       },
       eelGrass: {
-        cur: "./data/eelgrass_current_wgs.geojson",
-        his: "./data/eelgrass_historic_wgs.geojson"
+        current: "./data/eelgrass_current_wgs.geojson",
+        historic: "./data/eelgrass_historic_wgs.geojson"
       },
     }
     Object.entries(this.bkgrdGeojson).forEach(([key, value]) => {
@@ -491,6 +502,8 @@ export default {
             return response.json()
           }).then(json => {
             this.bkgrdGeojson[key].data[alt] = json;
+            const year = json.name.split('_').pop()
+            this.$store.dispatch('setHabitatLegendYear', {habitat: value.name, period: alt, value: year});
         })					
       })
     })

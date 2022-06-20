@@ -21,7 +21,7 @@
           <div class="col-9">
             {{ item.title }} Extent
             <br>
-            ({{item.currentYear}})
+            ({{legendYears[key].current}})
           </div>
         </div>
         <div class="row">
@@ -33,7 +33,7 @@
           <div class="col-9">
             {{ item.title }} Extent
             <br>
-            ({{item.historicYear}})
+            ({{legendYears[key].historic}})
           </div>
         </div>
       </div>
@@ -79,6 +79,9 @@ export default {
     },
     pointsLayer() {
       return this.$store.state.pointsLayer;
+    },
+    legendYears() {
+      return this.$store.state.legendYears;
     }
   }
 
