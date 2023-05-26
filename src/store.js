@@ -12,11 +12,23 @@ export const store = new Vuex.Store({
     habitatIndex: null,
     baseLayer: false,
     pointsLayer: false,
-    habitatMetricLayer: false,
+    metricLayer: false,
     habitatIndexLayer: false,
+    waterQualityGraph: false,
     embayment: null,
     station: null,
-    activeTab: null
+    stationEmbayment: null,
+    habitatGraphData: null,
+    showQuickStart: true,
+    showLargeGraph: false,
+    plotHabitatGraph: false,
+    plotWaterQualityGraph: false,
+    legendYears: {
+      'eelgrass': {historic: null, current: null},
+      'salt marsh': {historic: null, current: null},
+      'tidal flats': {historic: null, current: null},
+      'diadromous fish': {historic: null, current: null}
+    }
   },
   mutations: {
     SET_HABITAT: (state, payload) => {
@@ -34,14 +46,26 @@ export const store = new Vuex.Store({
     SET_STATION: (state, payload) => {
       state.station = payload;
     },
+    SET_STATION_EMBAYMENT: (state, payload) => {
+      state.stationEmbayment = payload;
+    },
     SET_EMBAYMENT: (state, payload) => {
       state.embayment = payload;
     },   
+    SET_HABITAT_GRAPH_DATA: (state, payload) => {
+      state.habitatGraphData = payload;
+    },
     SWITCH_BASE_LAYER: state => {
       state.baseLayer = !state.baseLayer;
     },
     SWITCH_POINTS_LAYER: state => {
       state.pointsLayer = !state.pointsLayer;
+    },
+    ON_WATER_QUALITY_GRAPH: state => {
+      state.waterQualityGraph = true;
+    },
+    OFF_WATER_QUALITY_GRAPH: state => {
+      state.waterQualityGraph = false;
     },
     ON_POINTS_LAYER: state => {
       state.pointsLayer = true;
@@ -49,15 +73,36 @@ export const store = new Vuex.Store({
     ON_BASE_LAYER: state => {
       state.baseLayer = true;
     },
-    SWITCH_HABITAT_METRIC_LAYER: state => {
-      state.habitatMetricLayer = !state.habitatMetricLayer;
+    SWITCH_METRIC_LAYER: state => {
+      state.metricLayer = !state.metricLayer;
     },
     SWITCH_HABITAT_INDEX_LAYER: state => {
       state.habitatIndexLayer = !state.habitatIndexLayer;
     },
-    SET_ACTIVE_TAB: (state, payload) => {
-      state.activeTab = payload;
-    }
+    ON_QUICK_START: state => {
+      state.showQuickStart = true;
+    },
+    OFF_QUICK_START: state => {
+      state.showQuickStart = false;
+    },
+    SWITCH_SHOW_LARGE_GRAPH: state => {
+      state.showLargeGraph = !state.showLargeGraph;
+    },
+    ON_PLOT_HABITAT_GRAPH: state => {
+      state.plotHabitatGraph = true;
+    },
+    OFF_PLOT_HABITAT_GRAPH: state => {
+      state.plotHabitatGraph = false;
+    },
+    ON_PLOT_WATER_QUALITY_GRAPH: state => {
+      state.plotWaterQualityGraph = true;
+    },
+    OFF_PLOT_WATER_QUALITY_GRAPH: state => {
+      state.plotWaterQualityGraph = false;
+    },
+    SET_HABITAT_LEGEND_YEAR: (state, payload) => {
+      state.legendYears[payload.habitat][payload.period] = payload.value;
+    },
   },
   actions: {
     setHabitat: ({commit}, payload) => {
@@ -75,9 +120,15 @@ export const store = new Vuex.Store({
     setStation: ({commit}, payload) => {
       commit('SET_STATION', payload);
     },
+    setStationEmbayment: ({commit}, payload) => {
+      commit('SET_STATION_EMBAYMENT', payload);
+    },
     setEmbayment: ({commit}, payload) => {
       commit('SET_EMBAYMENT', payload);
     },
+    setHabitatGraphData: ({commit}, payload) => {
+      commit('SET_HABITAT_GRAPH_DATA', payload);
+    },    
     switchBaseLayer: ({commit}) => {
       commit('SWITCH_BASE_LAYER');
     },
@@ -94,11 +145,14 @@ export const store = new Vuex.Store({
         commit('ON_BASE_LAYER');
       }
     },
-    switchHabitatMetricLayer: ({commit, state}) => {
-      commit('SWITCH_HABITAT_METRIC_LAYER');
-      if (state.habitatIndexLayer == true && state.habitatMetricLayer == true) {
-        commit('SWITCH_HABITAT_INDEX_LAYER');
-      }
+    onWaterQualityGraph: ({commit}) => {
+      commit('ON_WATER_QUALITY_GRAPH');
+    },
+    offWaterQualityGraph: ({commit}) => {
+      commit('OFF_WATER_QUALITY_GRAPH');
+    },
+    switchMetricLayer: ({commit}) => {
+      commit('SWITCH_METRIC_LAYER');
     },
     switchHabitatIndexLayer: ({commit, state}) => {
       commit('SWITCH_HABITAT_INDEX_LAYER');
@@ -106,8 +160,29 @@ export const store = new Vuex.Store({
         commit('SWITCH_HABITAT_METRIC_LAYER');
       }
     },
-    setActiveTab: ({commit}, payload) => {
-      commit('SET_ACTIVE_TAB', payload);
-    } 
+    onQuickStart: ({commit}) => {
+      commit('ON_QUICK_START');
+    },
+    offQuickStart: ({commit}) => {
+      commit('OFF_QUICK_START');
+    },
+    switchShowLargeGraph: ({commit}) => {
+      commit('SWITCH_SHOW_LARGE_GRAPH');
+    }, 
+    onPlotHabitatGraph: ({commit}) => {
+      commit('ON_PLOT_HABITAT_GRAPH');
+    },
+    offPlotHabitatGraph: ({commit}) => {
+      commit('OFF_PLOT_HABITAT_GRAPH');
+    },
+    onPlotWaterQualityGraph: ({commit}) => {
+      commit('ON_PLOT_WATER_QUALITY_GRAPH');
+    },
+    offPlotWaterQualityGraph: ({commit}) => {
+      commit('OFF_PLOT_WATER_QUALITY_GRAPH');
+    },
+    setHabitatLegendYear: ({commit}, payload) => {
+      commit('SET_HABITAT_LEGEND_YEAR', payload);
+    },      
   }
 });

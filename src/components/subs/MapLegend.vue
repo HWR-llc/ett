@@ -21,19 +21,19 @@
           <div class="col-9">
             {{ item.title }} Extent
             <br>
-            ({{item.currentYear}})
+            ({{legendYears[key].current}})
           </div>
         </div>
         <div class="row">
           <div class="col-3">
             <svg height="20" width="30">
-              <rect id="legend 2" x="0" y="0" width="30" height="20" :style="{fill: item.historicColor}"/>
+              <rect :id="'legend' + key" x="0" y="0" width="30" height="20" :style="{fill: item.historicColor}"/>
             </svg> 
           </div>
           <div class="col-9">
             {{ item.title }} Extent
             <br>
-            ({{item.historicYear}})
+            ({{legendYears[key].historic}})
           </div>
         </div>
       </div>
@@ -41,25 +41,25 @@
     <div class="row" v-if="pointsLayer == true">
       <div class="col-3">
         <svg height="20" width="30">
-          <circle id="legend 6" cx="15" cy="10" r="5" style="fill: #00B0F0"/>
+          <circle id="available data" cx="15" cy="10" r="5" style="fill: #00B0F0"/>
         </svg> 
       </div>
       <div class="col-9">
-        WQ Data Available
+        Data Available for
         <br>
-        At Station
+        Selected Parameter
       </div>
     </div>
     <div class="row" v-if="pointsLayer == true">
       <div class="col-3">
         <svg height="20" width="30">
-          <circle id="legend 6" cx="15" cy="10" r="5" style="fill: #808080"/>
+          <circle id="unavailable data" cx="15" cy="10" r="5" style="fill: #808080"/>
         </svg> 
       </div>
       <div class="col-9">
-        No WQ Data Available
+        No Data Available for
         <br>
-        At Station
+        Selected Parameter
       </div>
     </div>
   </div>
@@ -79,6 +79,9 @@ export default {
     },
     pointsLayer() {
       return this.$store.state.pointsLayer;
+    },
+    legendYears() {
+      return this.$store.state.legendYears;
     }
   }
 
@@ -87,6 +90,7 @@ export default {
 
 <style scoped>
 .legend-border {
+  width: 200px;
   border: solid 1px gray;
   background-color: rgba(255,255,255,.7);
   border-radius: 10px;

@@ -10,6 +10,8 @@
   "dependencies": {
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.8.3",
+    "d3-scale": "^4.0.2",
+    "d3-scale-chromatic": "^3.0.0",
     "highcharts": "^10.0.0",
     "highcharts-vue": "^1.4.0",
     "leaflet": "^1.7.1",

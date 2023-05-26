@@ -2,12 +2,10 @@
   <div style="height: 100%">
     <br>
     <br>
+    <br>
     <div class="row" style="padding-top: 30px">
       <div class="col">
-        <b-button squared class="habitat-background no-border full-width" v-b-modal.modal-tour><b>Take a Tour</b></b-button>
-        <b-modal id="modal-tour" title="Tour to be completed in Phase 2?">
-          <p class="my-4">This button will eventually lead to a tour</p>
-        </b-modal> 
+        <b-button squared class="habitat-background no-border full-width" @click='flipQuickStart'><b>{{showOrHide}} Quick Start Guide</b></b-button> 
       </div>
     </div>
     <div class="row" style="padding-top: 10px">
@@ -15,54 +13,38 @@
         <b-button squared class="water-quality-background no-border full-width" href="https://www.google.com/" target="_blank"><b>Data Sources</b></b-button>
       </div>
     </div> 
-
-    <!-- <div class="row">
-      <div class="col-12">
-        <div class="row" style="padding-top: 20px; padding-left: 50px; padding-right: 50px">
-          <i>Click on a watershed to zoom and center map or select from the list below <br><u>not active yet</u></i>
-        </div>
-        <br>
-        <br>
-        <div class="row">
-          <div class="col-12" style="text-align: center">
-            <b-form-select v-model="embayment" :options="embaymentList">select a watershed</b-form-select>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <br>
     <br>
     <br>
     <div class="row">
       <div class="col-12">
-        <b-button variant="outline-primary" v-b-modal.modal-habitat class="full-width">Learn about <b>habitats</b></b-button>
-        <b-modal id="modal-habitat" title="Habitat Explanation">
-          <p class="my-4">Discussion of relevant habitat goes here</p>
+        <b-button variant="outline-primary" v-b-modal.modal-habitat class="full-width">Learn About <b>Habitats</b></b-button>
+        <b-modal id="modal-habitat" title="Learn About..." size="lg" hide-footer>
+          <app-learn-habitat></app-learn-habitat>
         </b-modal>        
       </div>
     </div>
     <br>
     <div class="row">
       <div class="col-12">
-        <b-button variant="outline-primary" v-b-modal.modal-habitatTargets class="full-width">Learn about <b>habitat targets</b></b-button>
-        <b-modal id="modal-habitatTargets" title="Habitat Targets Explanation">
-          <p class="my-4">Discussion of relevant habitat targets goes here</p>
+        <b-button variant="outline-primary" v-b-modal.modal-habitatGoals class="full-width">Learn About <b>Habitat Goals</b></b-button>
+        <b-modal id="modal-habitatGoals" title="Learn About..." size="lg" hide-footer>
+          <p class="my-4">Discussion of relevant habitat goals goes here</p>
         </b-modal>  
       </div>
     </div>
     <br>
     <div class="row">
       <div class="col-12">
-        <b-button variant="outline-primary" v-b-modal.modal-waterQuality class="full-width">Learn about <b>water quality parameters</b> </b-button>
-        <b-modal id="modal-waterQuality" title="Water Quality Explanation">
-          <p class="my-4">Discussion of relevant water quality goes here</p>
+        <b-button variant="outline-primary" v-b-modal.modal-waterQuality class="full-width">Learn About <b>Water Quality Parameters</b> </b-button>
+        <b-modal id="modal-waterQuality" title="Learn About..." size="xl" hide-footer>
+          <app-learn-water-quality></app-learn-water-quality>
         </b-modal> 
       </div>
     </div>
     <br>
     <div class="bottom-spot">
       <a href="https://www.mass.gov/orgs/massachusetts-bays-national-estuary-partnership"  target="_blank">
-        <img src="../assets/logos/mass_bays_rect.svg" style="max-width: 85%">
+        <img src="../assets/logos/mass_bays_rect.svg" style="max-width: 85%" alt="MassBays logo">
       </a>
     </div>     
   </div>
@@ -70,10 +52,11 @@
 
 <script>
 
-
+import LearnHabitat from './subs/LearnHabitat.vue'
+import LearnWaterQuality from './subs/LearnWaterQuality.vue'
 export default {
   data () {
-    return { 
+    return {
       embaymentList: [
         {value: null, text: 'select a watershed'},
         {value: 'embayment 1', text: 'embayment 1'},  
@@ -98,9 +81,33 @@ export default {
       },
       set (newEmb) {
         this.$store.dispatch('setEmbayment', newEmb);
-      }      
+      }    
     },
+    showQuickStart() {
+      return this.$store.state.showQuickStart;
+    },
+    showOrHide() {
+      if (this.showQuickStart == true) {
+        return 'Hide';
+      } else {
+        return 'Show';
+      }
+    }
+  },
+  methods: {
+    flipQuickStart() {
+      if (this.showQuickStart == true) {
+        this.$store.dispatch('offQuickStart');        
+      } else {
+        this.$store.dispatch('onQuickStart');        
+      }
+    }
+  },
+  components: {
+    appLearnHabitat: LearnHabitat,
+    appLearnWaterQuality: LearnWaterQuality
   }
+
 }
 </script>
 

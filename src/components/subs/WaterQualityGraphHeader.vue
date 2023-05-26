@@ -1,17 +1,18 @@
 <template>
-  <div style="width: 100%">
-    <div class="top-row">
-      <h5>Embayment Name</h5>
+  <div id="holder">
+    <div class="row top-row">
+      <div class="col-12">
+        <h5> {{ stationEmbaymentCapital }}</h5>
+      </div>      
     </div>
-    <div class="bottom-row">
-      <div v-for="(item, key) in imageLibrary" :key="key">
-        <div v-if="key == waterQualityGraphVariable">
-          <img :src="item.pic" style="max-height: 60px" class="overlay-icon">
-        </div>
+    <div class="row bottom-row">
+      <div class="col-3 my-auto">
+        <img :src="imageLibrary[waterQualityGraphVariable].pic" style="max-height: 60px" :alt="key + ' logo' ">
       </div>
-      <h6>{{ station }}</h6>
-      <h6>{{ waterQualityGraphVariableCapital }}</h6>
-    </div>  
+      <div class="col-9 my-auto">
+      <h6>{{ station }}<br>{{imageLibrary[waterQualityGraphVariable].title }}</h6>        
+      </div>      
+    </div>
   </div>
 </template>
 
@@ -30,21 +31,28 @@ export default {
     station() {
       return this.$store.state.station;
     },
-    habitatCapital() {
-      const titles = this.$store.state.habitat.split(" ");
-      const capitalTitle = titles.map((word) => {
-        return word[0].toUpperCase() + word.substring(1);
-      }).join(" ");
-      return capitalTitle;
+    stationEmbaymentCapital() {
+      let nameStringArray = this.$store.state.stationEmbayment.split(" ");
+      nameStringArray.forEach((word, index) => {
+        if (word[0] == '(') {
+          nameStringArray[index] = word.substring(0, 2) + word.slice(2).toLowerCase();
+        } else {
+          nameStringArray[index] = word[0] + word.slice(1).toLowerCase();
+        }
+      });
+      return nameStringArray.join(' ');    
     },
     waterQuality() {
       return this.$store.state.waterQuality;
     },
     waterQualityGraphVariableCapital() {
       const titles = this.$store.state.waterQualityGraphVariable.split(" ");
-      const capitalTitle = titles.map((word) => {
+      let capitalTitle = titles.map((word) => {
         return word[0].toUpperCase() + word.substring(1);
       }).join(" ");
+      if ((capitalTitle == 'Nitrogen') || (capitalTitle == 'Phosphorus')) {
+        capitalTitle = 'Total ' + capitalTitle;
+      }
       return capitalTitle;
     },
   }
@@ -58,17 +66,18 @@ export default {
   background-color: #1850AD;
   height: 25px;
   width: 100%;
+  margin: 0px;
 }
 
 .bottom-row {
-  padding-top: 20px;
-  text-align: center;
+  padding-top: 5px;
+  margin: 0px;
   height: 75px;
 }
 
 .overlay-icon {
   position: absolute;
-  top: 26px;
+  top: 60px;
   left: 5%;
 }
 </style>

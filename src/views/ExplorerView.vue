@@ -2,29 +2,16 @@
   <div class="container-fluid" >
     <app-header-container></app-header-container>
     <div class="row" :style="rowTwoHeightStyle">
-      <div class="col-2">
+      <div class="col-2" tabindex="0">
         <app-margin-left></app-margin-left>
       </div>
-      <div class="col-7" style="padding-right: 0px; padding-left: 0px">
+      <div class="col-7" style="padding-right: 0px; padding-left: 0px" tabindex="1">
         
         <app-map-view></app-map-view>
-
-        <!-- <br>
-        <br>
-        <p><b>water quality:</b> {{ waterQuality }}</p>
-        <p><b>habitat:</b> {{ habitat }}</p>
-        <p><b>station:</b> {{ station }}</p>
-        <p><b>embayment:</b> {{ embayment }}</p>        
-        <p><b>graph variable:</b> {{ graphVariable }}</p>
-        <p><b>show base layer:</b> {{ baseLayer }} </p>
-        <p><b>show points layer:</b> {{ pointsLayer }} </p>
-        <p><b>show habitat metric layer:</b> {{ habitatMetricLayer }} </p>
-        <p><b>show habitat index layer:</b> {{ habitatIndexLayer }} </p> -->
-
       </div> 
-      <div class="col-3" :style="scrollBoxHeightStyle">
+      <div class="col-3" :style="scrollBoxHeightStyle" tabindex="2">
         <transition name="fade" mode="out-in">
-          <app-margin-instructions v-if="waterQuality == null && habitat == null"></app-margin-instructions>
+          <app-margin-instructions v-if="showQuickStart"></app-margin-instructions>
           <app-margin-right v-else></app-margin-right>
         </transition>
       </div>      
@@ -80,6 +67,17 @@ export default {
     },
     habitatIndexLayer() {
       return this.$store.state.habitatIndexLayer;
+    },
+    habitatGraphData() {
+      return this.$store.state.habitatGraphData;
+    },
+    showQuickStart() {
+      return this.$store.state.showQuickStart;
+    }
+  },
+  methods: {
+    onResize () {
+      this.rowTwoHeight = window.innerHeight - 100;
     }
   },
   components: {
@@ -91,7 +89,11 @@ export default {
     appModalStart: ModalStart
   },
   mounted() {
-    this.rowTwoHeight = window.innerHeight - 100
+    window.addEventListener('resize', this.onResize);
+    this.rowTwoHeight = window.innerHeight - 100;
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize); // stop memory leaks;
   }
 }
 </script>
