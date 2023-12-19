@@ -39,6 +39,11 @@
       </div>
     </div> 
     <div class="row" v-if="pointsLayer == true">
+      <div class="col-12">
+        <u>Water Quality Stations</u>
+      </div>
+    </div>
+    <div class="row" v-if="pointsLayer == true">
       <div class="col-3">
         <svg height="20" width="30">
           <circle id="available data" cx="15" cy="10" r="5" style="fill: #00B0F0"/>

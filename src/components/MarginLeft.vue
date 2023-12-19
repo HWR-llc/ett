@@ -9,8 +9,11 @@
       </div>
     </div>
     <div class="row" style="padding-top: 10px">
-      <div class="col">
-        <b-button squared class="water-quality-background no-border full-width" href="https://www.google.com/" target="_blank"><b>Data Sources</b></b-button>
+      <div class="col-12">
+        <b-button squared v-b-modal.modal-data-sources class="water-quality-background no-border full-width"><b>Data Sources</b></b-button>
+        <b-modal id="modal-data-sources" title="Data Sources" size="xl" hide-footer>
+          <app-learn-data-sources></app-learn-data-sources>
+        </b-modal>        
       </div>
     </div> 
     <br>
@@ -28,7 +31,7 @@
       <div class="col-12">
         <b-button variant="outline-primary" v-b-modal.modal-habitatGoals class="full-width">Learn About <b>Habitat Goals</b></b-button>
         <b-modal id="modal-habitatGoals" title="Learn About..." size="lg" hide-footer>
-          <p class="my-4">Discussion of relevant habitat goals goes here</p>
+          <app-learn-habitat-goals></app-learn-habitat-goals>
         </b-modal>  
       </div>
     </div>
@@ -53,7 +56,9 @@
 <script>
 
 import LearnHabitat from './subs/LearnHabitat.vue'
+import LearnHabitatGoals from './subs/LearnHabitatGoals.vue'
 import LearnWaterQuality from './subs/LearnWaterQuality.vue'
+import LearnDataSources from './subs/LearnDataSources.vue'
 export default {
   data () {
     return {
@@ -105,7 +110,9 @@ export default {
   },
   components: {
     appLearnHabitat: LearnHabitat,
-    appLearnWaterQuality: LearnWaterQuality
+    appLearnHabitatGoals: LearnHabitatGoals,
+    appLearnWaterQuality: LearnWaterQuality,
+    appLearnDataSources: LearnDataSources
   }
 
 }
