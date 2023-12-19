@@ -56,7 +56,7 @@ export const waterQualityThresholds = {
   'temperature': {
     value: [((77 - 32) / 1.8)],
     type: ['Upper'],
-    units: '&degC',
+    units: '&#176;C',
     scale: 'linear',
     minValue: 0,
     title: 'Temperature'
@@ -204,7 +204,7 @@ export const imageLibraryWaterQuality = {
   'temperature': {
     title: 'Temperature',
     pic: require('@/assets/icons/temperature.svg'),
-    explanation: 'Water temperature can have an important impact on eelgrass habitat, fish, and other aquatic biota within coastal habitats. Climate change has resulted in long-term warming trends that have resulted in increased summer water temperatures in Massachusetts’ bays. Studies indicate that summer water temperatures exceeding 77oF are detrimental to eelgrass health.'
+    explanation: 'Water temperature can have an important impact on eelgrass habitat, fish, and other aquatic biota within coastal habitats. Climate change has resulted in long-term warming trends that have resulted in increased summer water temperatures in Massachusetts’ bays. Studies indicate that summer water temperatures exceeding 77&degF are detrimental to eelgrass health.'
   },
   'pH': {
     title: 'pH',

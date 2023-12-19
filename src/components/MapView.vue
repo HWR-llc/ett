@@ -472,7 +472,7 @@ export default {
   },
   created() {
     // fetch embayments
-    fetch("./data/assessment_areas_wgs.geojson")
+    fetch("./data/embayments_wgs.geojson")
       .then(response => {
         return response.json()
       }).then(json => {
@@ -512,9 +512,20 @@ export default {
             return response.json()
           }).then(json => {
             this.bkgrdGeojson[key].data[alt] = json;
-            const year = json.name.split('_').pop()
-            this.$store.dispatch('setHabitatLegendYear', {habitat: value.name, period: alt, value: year});
+            // const year = json.name.split('_').pop()
+            // this.$store.dispatch('setHabitatLegendYear', {habitat: value.name, period: alt, value: year});
         })					
+      })
+    })
+    // fetch years file for legend
+    const yearsFile = "./data/habitat_legend_years.json"
+    fetch(yearsFile)
+    .then(response => {
+      return response.json()
+    }).then(json => {
+      json.forEach(habitat => {
+        this.$store.dispatch('setHabitatLegendYear', {habitat: habitat.HABITAT, period: habitat.PERIOD, value: habitat.YEAR});
+        // console.log(habitat.HABITAT);
       })
     })
     // fetch water quality stations
