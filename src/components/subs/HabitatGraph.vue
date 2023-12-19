@@ -142,10 +142,10 @@ export default {
         this.chartOptions.yAxis.plotLines[0].value = updatePlotLineValue;
         this.chartOptions.xAxis.categories = newCategories;
         this.chartOptions.series[0].data = newValues;
-        this.chartOptions.yAxis.title.text = newUnits[0]; 
-        this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0] 
+        this.chartOptions.yAxis.title.text = newUnits[0];
+        this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0]
+        this.chartOptions.yAxis.softMax = updatePlotLineValue * 1.1;
       }
-
     }
   },
   created() {
@@ -155,7 +155,7 @@ export default {
       return response.json()
     }).then(json => {
       this.habitatQuantities = json;
-      this.updateGraph()
+      this.updateGraph();
     })
   }
 }
