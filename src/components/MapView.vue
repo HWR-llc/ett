@@ -42,10 +42,16 @@
         :options="optionsEmbayment" 
         :options-style="embStyle"
         ref="embaymentsBase"></l-geo-json>
+      <l-geo-json 
+        :geojson="diadromousFish" 
+        :options="optionsFishRun" 
+        :options-style="styleFunction"
+        ref="fishBase"></l-geo-json>
       <div v-if="metricLayer">
         <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='tidal flats'" :options-style="tidalFlatsColorer" ref="metric"></l-geo-json>	  		
         <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='salt marsh'" :options-style="saltMarshColorer" ref="metric"></l-geo-json>	  
         <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='eelgrass'" :options-style="eelgrassColorer" ref="metric"></l-geo-json>	  
+        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='diadromous fish'" :options-style="diadromousFishColorer" ref="metric"></l-geo-json>	  
       </div>
       <div v-if="baseLayer">
         <l-layer-group ref="historic">
@@ -140,6 +146,9 @@ export default {
     embayment() {
       return this.$store.state.embayment;
     },
+    fishRun() {
+      return this.$store.state.fishRun;
+    },
     embStyle() {
       return () => {
         return {
@@ -185,7 +194,6 @@ export default {
       return () => {
         return {
           stroke: false,
-          fillColor: this.imageLibraryHabitat['eelgrass'].historicColor,
           fillOpacity: 0.5,
           interactive: false
         };
@@ -211,6 +219,46 @@ export default {
         };
       };
     },
+    // dfStyleCur() {
+    //   return () => {
+    //     return {
+    //       stroke: true,
+    //       color: this.imageLibraryHabitat['diadromous fish'].currentColor,
+    //       opacity: 0.85,
+    //       interactive: true
+    //     };
+    //   };
+    // },	 
+    // dfStyleCur_n() {
+    //   return () => {
+    //     return {
+    //       stroke: true,
+    //       color: 'red',
+    //       opacity: 0.85,
+    //       interactive: true
+    //     };
+    //   };
+    // },	   
+    dfStyleHis() {
+      return () => {
+        return {
+          stroke: true,
+          color: this.imageLibraryHabitat['diadromous fish'].historicColor,
+          fillOpacity: 0.5,
+          interactive: true
+        };
+      };
+    },
+    // dfStyleHis_n() {
+    //   return () => {
+    //     return {
+    //       stroke: true,
+    //       color: 'red',
+    //       fillOpacity: 0.5,
+    //       interactive: true
+    //     };
+    //   };
+    // },
     metricStyleComp() {
       return () => {
         return {
@@ -220,6 +268,44 @@ export default {
           interactive: false
         };
       };
+    },
+    optionsFishRun() {
+       return {
+        onEachFeature: this.onEachFishRun
+       } 
+    },
+    onEachFishRun() {
+      return (feature, layer) => {
+        layer.on({
+          click: (event) => {
+            let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
+            let accessible = event.target.feature.properties.ACCESSIBLE
+
+              event.target.getTooltip().setContent(featureName);
+              console.log(accessible)
+            if (event.target.feature.properties.NAME == this.fishRun) {
+              this.stopFlyTo = true;
+              // this.$store.dispatch('setFishRun', null);
+
+              this.$refs.fishBase.setOptionsStyle(this.styleFunction);
+              this.$nextTick(() => {
+                this.stopFlyTo = false;
+              })
+            } else {
+              this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
+              // this.$store.dispatch('setFishRun', event.target.feature.properties.NAME);
+              this.$refs.fishBase.setOptionsStyle(this.styleFunction);
+              event.target.setStyle({weight: 2, color: 'red', opacity: 1});
+              // this.reorderLayers();
+            }
+          },
+          mouseover: (event) => {
+            let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME);
+            event.target.getTooltip().setContent(featureName);      
+          }
+        })
+        layer.bindTooltip('');
+      }
     },
     optionsEmbayment() {
       return {
@@ -260,6 +346,45 @@ export default {
         layer.bindTooltip('');
       };
     },
+    // optionsFishRun() {
+    //   return {
+    //     onEachFeature: this.onEachFishRunFunction
+    //   };
+    // },
+    // onEachFishRunFunction() {
+    //   return (feature, layer) => {
+    //     layer.on({
+    //       click: (event) => {
+    //         if (event.target.feature.properties.NAME == this.fishRun) {
+    //           this.stopFlyTo = true;
+    //           this.$store.dispatch('setFishRun', null);
+    //           this.$refs.fishBase.setOptionsStyle(this.dfStyleCur);
+    //           this.$nextTick(() => {
+    //             this.stopFlyTo = false;
+    //           })
+    //         } else {
+    //           this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
+    //           this.$store.dispatch('setFishRun', event.target.feature.properties.NAME);
+    //           this.$refs.fishBase.setOptionsStyle(this.dfStyleCur);
+    //           event.target.setStyle({weight: 2, color: 'red', opacity: 1});
+    //           // this.$refs.embaymentsBase.mapObject.bringToFront();
+    //           this.reorderLayers();
+    //         }
+    //       },
+          // mouseover: (event) => {
+          //   let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
+          //   if ((this.metricLayer == true) && (feature.properties[this.habitat + '_percent_goal'] == '-999')) {
+          //     event.target.getTooltip().setContent(featureName + '<br>Goal Not Yet Established');
+          //   } else if (this.metricLayer == true) {
+          //     event.target.getTooltip().setContent(featureName + '<br>% of 2050 Goal: ' + feature.properties[this.habitat + '_percent_goal'] + '%');
+          //   } else {
+          //     event.target.getTooltip().setContent(featureName);
+          //   }    
+          // }
+    //     });
+    //     layer.bindTooltip('');
+    //   };
+    // },
   },
   data () {
     return {
@@ -289,8 +414,10 @@ export default {
             current: null,
             historic: null		    			
           }
-        }
+        },
       },
+
+      diadromousFish: null, 
       embaymentsGeojson: null,
       stations: null,
       mapStyleObj: {
@@ -318,6 +445,19 @@ export default {
     }
   },
   methods: {
+    styleFunction(feature) {
+      if (feature.properties.ACCESSIBLE == "Y") {
+        return {
+        color: "blue",
+        stroke: true
+        }
+      } else {
+        return {
+          color: "orange",
+          stroke: true
+        }
+      }
+      },
     circleColorer(parameterList) {
       if (parameterList.includes(this.waterQuality)) {
         return '#00B0F0';
@@ -487,9 +627,26 @@ export default {
             embayment.properties['tidal flats_percent_goal'] = json[embayment.properties.NAME].TF_PERCENT_GOAL;
             embayment.properties['diadromous fish_percent_goal'] = json[embayment.properties.NAME].DF_PERCENT_GOAL;
           })
-          this.embaymentsGeojson = embaymentsGeoJson;
+          this.embaymentsGeoJson = embaymentsGeoJson;
         })
     })
+    // fetch diadromous fish
+    var diadromousFish = "./data/migratory_habs.geojson";
+      fetch(diadromousFish)
+        .then(response => {
+            return response.json()
+       }).then(json => {
+      
+      this.habs = json.features;
+      this.habs.forEach(hab => {
+        hab.properties['names'] = this.parameterMapper(hab.properties.NAME);
+        hab.properties['accessibility'] = this.parameterMapper(hab.properties.ACCESSIBLE);
+        
+        // this.$store.dispatch('setFishRun', {name: hab.NAME, access: hab.ACCESSIBLE});
+      })
+      this.diadromousFish = json;
+    })
+
     // fetch habitats
     const fileArray = {
       tidalFlats: {
@@ -504,6 +661,11 @@ export default {
         current: "./data/eelgrass_current_wgs.geojson",
         historic: "./data/eelgrass_historic_wgs.geojson"
       },
+      // diadromousFish: {
+      //   current: "./data/y_migratory_habs.geojson",
+      //   current_n: "./data/n_migratory_habs.geojson",
+      //   historic: "./data/n_migratory_habs.geojson"
+      // },
     }
     Object.entries(this.bkgrdGeojson).forEach(([key, value]) => {
       Object.entries(value.data).forEach(([alt]) => {
@@ -512,6 +674,7 @@ export default {
             return response.json()
           }).then(json => {
             this.bkgrdGeojson[key].data[alt] = json;
+            // console.log(key, alt)
             // const year = json.name.split('_').pop()
             // this.$store.dispatch('setHabitatLegendYear', {habitat: value.name, period: alt, value: year});
         })					

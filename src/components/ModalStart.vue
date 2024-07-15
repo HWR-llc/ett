@@ -17,9 +17,9 @@
             </figure>
           </div>
         </div>
-        <div class="text-right" style="color: red">
+        <!-- <div class="text-right" style="color: red">
             &nbsp;<span v-if="spanShow">Diadromous Fish coming soon.</span>
-        </div>
+        </div> -->
         <div class="row justify-content-center">
           <b-button variant="primary" class="water-quality-background no-border" @click="buttonClicked">Water Quality</b-button>
         </div>
@@ -45,16 +45,22 @@ export default {
   },
   methods: {
     iconClicked(newHab) {
-      if (newHab == 'diadromous fish') {
-        this.spanShow = true;
-      } else {
-        this.$store.dispatch('setHabitatGraphData', this.stateWideHabitatValues);
-        this.$store.dispatch('setHabitat', newHab);
-        this.$store.dispatch('onBaseLayer');
-        this.$store.dispatch('onPlotHabitatGraph')
-        this.$store.dispatch('offQuickStart');
-        this.modalShow = false;
-      }
+      this.$store.dispatch('setHabitatGraphData', this.stateWideHabitatValues);
+      this.$store.dispatch('setHabitat', newHab);
+      this.$store.dispatch('onBaseLayer');
+      this.$store.dispatch('onPlotHabitatGraph');
+      this.$store.dispatch('offQuickStart');
+      this.modalShow = false;
+      // if (newHab == 'diadromous fish') {
+      //   this.spanShow = true;
+      // } else {
+      //   this.$store.dispatch('setHabitatGraphData', this.stateWideHabitatValues);
+      //   this.$store.dispatch('setHabitat', newHab);
+      //   this.$store.dispatch('onBaseLayer');
+      //   this.$store.dispatch('onPlotHabitatGraph')
+      //   this.$store.dispatch('offQuickStart');
+      //   this.modalShow = false;
+      // }
     },
     buttonClicked() {
       this.$store.dispatch('onPointsLayer');
