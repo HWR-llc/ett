@@ -58,7 +58,9 @@
           <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.current" v-if="habitat=='tidal flats'" :options-style="tfStyleCur"></l-geo-json>	  		
           <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.current" v-if="habitat=='salt marsh'" :options-style="smStyleCur"></l-geo-json>	
           <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.current" v-if="habitat=='eelgrass'" :options-style="egStyleCur"></l-geo-json>
-          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.current" v-if="habitat=='diadromous fish'" :options="optionsFishRun" :options-style="styleFunction"></l-geo-json>
+          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.current" v-if="habitat=='diadromous fish'" :options="optionsFishRun" :options-style="styleFunction" ref="fishBase"></l-geo-json>
+          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.buff" v-if="habitat=='diadromous fish'" :options="optionsFishRun" :options-style="buffStyle" ref="fishBuff"></l-geo-json>
+
         </l-layer-group>
       </div>
       <div v-if="pointsLayer">
@@ -142,6 +144,9 @@ export default {
     embayment() {
       return this.$store.state.embayment;
     },
+    fishRun() {
+      return this.$store.state.fishRun;
+    },
     embStyle() {
       return () => {
         return {
@@ -193,6 +198,16 @@ export default {
         };
       };
     },
+    buffStyle() {
+      return () => {
+        return {
+          stroke: false,
+          fillColor: "green",
+          fillOpacity: 0,
+          interactive: true
+        }
+      }
+    },
     tfStyleCur() {
       return () => {
         return {
@@ -234,27 +249,33 @@ export default {
           click: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
             let accessible = event.target.feature.properties.ACCESSIBLE
-
             event.target.getTooltip().setContent(featureName);
 
             if (event.target.feature.properties.NAME == this.fishRun) {
               this.stopFlyTo = true;
+              // this.$store.dispatch('setDiadromousFishData', null);
+              this.$store.dispatch('')
 
               this.$refs.fishBase.setOptionsStyle(this.styleFunction);
+              this.$refs.fishBuff.setOptionsStyle(this.buffStyle);
+              
               this.$nextTick(() => {
                 this.stopFlyTo = false;
               });
             } else {
               this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
-              event.target.setStyle({weight: 2, color: 'red', opacity: 1});
+              // this.$store.dispatch('setDiadromousFishData', event.target.feature.properties.Name);
+              this.$refs.fishBase.setOptionsStyle(this.styleFunction);
+              this.$refs.fishBuff.setOptionsStyle(this.buffStyle);
+              event.target.setStyle({weight: 2, color: 'red', opacity: 1, stroke:true});
             }
+            this.plotFishData(event, featureName)
             alert("You've clicked on: " + featureName + ". \n Accessible? " + accessible);
 
           },
           mouseover: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME);
             event.target.getTooltip().setContent(featureName);   
-   
           }
         })
         layer.bindTooltip('');
@@ -333,10 +354,10 @@ export default {
           name: 'diadromous fish',
           data: {
             current: null,
-            historic: null		    			
+            buff: null		    			
           }
         }
-      },
+      }, 
       embaymentsGeojson: null,
       stations: null,
       mapStyleObj: {
@@ -360,6 +381,11 @@ export default {
     '$store.state.waterQuality': {
       handler() {
         this.$store.dispatch('setStation', null);
+      }, immediate: true  
+    },
+    '$store.state.fishRun': {
+      handler() {
+        this.$store.dispatch('setFishRun', null);
       }, immediate: true  
     }
   },
@@ -483,7 +509,7 @@ export default {
         this.$store.dispatch('offWaterQualityGraph');
         this.$store.dispatch('setStation', null);
       } else {
-        this.$store.dispatch('onWaterQualityGraph');
+        this.$store.dispatch('on');
         if (parameterList.includes(this.waterQuality)) {
           this.$nextTick(() => {
             this.$store.dispatch('onPlotWaterQualityGraph');
@@ -500,6 +526,10 @@ export default {
         this.$store.dispatch('setStation', stationId);
         this.$store.dispatch('setStationEmbayment', stationEmbayment);
       }
+    },
+    plotFishData(event, fishRunName) {
+      this.$store.dispatch('onDiadromousFishGraph');
+      console.log('here rn, ' + fishRunName)
     },
     capitalizeFirstLetter(nameString) {
       let nameStringArray = nameString.split(' ');
@@ -525,6 +555,12 @@ export default {
         }
         if (('embaymentsBase' in this.$refs) && (this.$refs.embaymentsBase !== undefined)) {
           this.$refs.embaymentsBase.mapObject.bringToFront();
+        }
+        if (('fishBase' in this.$refs) && (this.$refs.fishBase !== undefined)) {
+          this.$refs.fishBase.mapObject.bringToFront();
+        }
+        if (('fishBuff' in this.$refs) && (this.$refs.fishBuff !== undefined)) {
+          this.$refs.fishBuff.mapObject.bringToFront();
         }
       })
     }
@@ -564,6 +600,7 @@ export default {
         historic: "./data/eelgrass_historic_wgs.geojson"
       },
       diadromousFish: {
+        buff: "./data/buff500.geojson",
         current: "./data/migratory_habs.geojson",
         // historic: null
       }
