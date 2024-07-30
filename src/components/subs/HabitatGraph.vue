@@ -99,53 +99,55 @@ export default {
       }      
     }
   },
+
   methods: {
     updateGraph() {
       let newValues = [];
       let newCategories = [];
       let newUnits = [];
       let matchSet = null;
+
       if (this.embayment == null) {
-        matchSet = this.habitatQuantities.filter(row => {
-          return (row.ASSESSMENT_AREA == 'ALL' && row.TYPE == this.habitat)
-        })
-      } else {
-        matchSet = this.habitatQuantities.filter(row => {
-          return (row.ASSESSMENT_AREA == this.embayment && row.TYPE == this.habitat)
-        });
-      }
-      if ((matchSet.filter(row => row.VALUE == -999).length > 0) && (matchSet.length == 1)) {
-        this.chartOptions.yAxis.plotLines[0].value = -100;       
-        this.chartOptions.series[0].data = [];
-        this.chartOptions.xAxis.categories = [];
-        this.chartOptions.yAxis.title.text = '--';         
-      } else if (matchSet.length == 1) {
-        this.chartOptions.yAxis.plotLines[0].value = matchSet[0].VALUE;
-        this.chartOptions.yAxis.title.text = matchSet[0].UNITS;
-        this.chartOptions.xAxis.categories =[''];
-        this.chartOptions.series[0].data =[0];
-      } else {
-        matchSet.sort((a, b) => (a.YEAR > b.YEAR) ? 1 : ((b.YEAR > a.YEAR) ? -1 : 0));
-        matchSet.forEach(row => {
-          newValues.push(row.VALUE);
-          newCategories.push(row.YEAR);
-          newUnits.push(row.UNITS);
-        })
-        let updatePlotLineValue = -100;
-        if (newCategories[newCategories.length - 1] == '2050 Goal') {
-          if (newValues[newValues.length - 1] != 0) {
-            updatePlotLineValue = newValues[newValues.length - 1];
-          }          
-          newCategories = newCategories.slice(0, newCategories.length - 1);
-          newValues = newValues.slice(0, newValues.length - 1);
+          matchSet = this.habitatQuantities.filter(row => {
+            return (row.ASSESSMENT_AREA == 'ALL' && row.TYPE == this.habitat)
+          })
+        } else {
+          matchSet = this.habitatQuantities.filter(row => {
+            return (row.ASSESSMENT_AREA == this.embayment && row.TYPE == this.habitat)
+          });
         }
-        this.chartOptions.yAxis.plotLines[0].value = updatePlotLineValue;
-        this.chartOptions.xAxis.categories = newCategories;
-        this.chartOptions.series[0].data = newValues;
-        this.chartOptions.yAxis.title.text = newUnits[0];
-        this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0]
-        this.chartOptions.yAxis.softMax = updatePlotLineValue * 1.1;
-      }
+        if ((matchSet.filter(row => row.VALUE == -999).length > 0) && (matchSet.length == 1)) {
+          this.chartOptions.yAxis.plotLines[0].value = -100;       
+          this.chartOptions.series[0].data = [];
+          this.chartOptions.xAxis.categories = [];
+          this.chartOptions.yAxis.title.text = '--';         
+        } else if (matchSet.length == 1) {
+          this.chartOptions.yAxis.plotLines[0].value = matchSet[0].VALUE;
+          this.chartOptions.yAxis.title.text = matchSet[0].UNITS;
+          this.chartOptions.xAxis.categories =[''];
+          this.chartOptions.series[0].data =[0];
+        } else {
+          matchSet.sort((a, b) => (a.YEAR > b.YEAR) ? 1 : ((b.YEAR > a.YEAR) ? -1 : 0));
+          matchSet.forEach(row => {
+            newValues.push(row.VALUE);
+            newCategories.push(row.YEAR);
+            newUnits.push(row.UNITS);
+          })
+          let updatePlotLineValue = -100;
+          if (newCategories[newCategories.length - 1] == '2050 Goal') {
+            if (newValues[newValues.length - 1] != 0) {
+              updatePlotLineValue = newValues[newValues.length - 1];
+            }          
+            newCategories = newCategories.slice(0, newCategories.length - 1);
+            newValues = newValues.slice(0, newValues.length - 1);
+          }
+          this.chartOptions.yAxis.plotLines[0].value = updatePlotLineValue;
+          this.chartOptions.xAxis.categories = newCategories;
+          this.chartOptions.series[0].data = newValues;
+          this.chartOptions.yAxis.title.text = newUnits[0];
+          this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0]
+          this.chartOptions.yAxis.softMax = updatePlotLineValue * 1.1;
+        } 
     }
   },
   created() {

@@ -37,6 +37,7 @@
           </div>
         </div>
       </div>
+      <div v-if="habitat == false"></div>
     </div> 
     <div class="row" v-if="pointsLayer == true">
       <div class="col-12">

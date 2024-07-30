@@ -68,9 +68,9 @@
           <l-circle-marker
             :lat-lng="[s.geometry.coordinates[1], s.geometry.coordinates[0]]"
             :fillColor="circleColorer(s.properties.parameter_list)"
-            fillOpacity=1
+            fillOpacity= 1
             :color="activeCircleColorer(s.id, s.properties.parameter_list)"
-            radius=5
+            radius= 5
             @click="plotData($event, s.id, s.properties.parameter_list, s.properties.eda_unit_name)"
           >
             <l-tooltip ref="tooltip" style="padding-left: 15px; padding-right: 15px">
@@ -248,38 +248,38 @@ export default {
         layer.on({
           click: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
-            let accessible = event.target.feature.properties.ACCESSIBLE
+            let accessible = event.target.feature.properties.ACCESSIBLE;
+
             event.target.getTooltip().setContent(featureName);
 
-            if (event.target.feature.properties.NAME == this.fishRun) {
+            if (event.target.feature.properties.NAME == this.$store.state.fishRun) {
               this.stopFlyTo = true;
-              // this.$store.dispatch('setDiadromousFishData', null);
-              this.$store.dispatch('')
-
+              this.$store.dispatch('setFishRun', null);
               this.$refs.fishBase.setOptionsStyle(this.styleFunction);
               this.$refs.fishBuff.setOptionsStyle(this.buffStyle);
-              
               this.$nextTick(() => {
                 this.stopFlyTo = false;
-              });
+              })
             } else {
               this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
-              // this.$store.dispatch('setDiadromousFishData', event.target.feature.properties.Name);
+              this.$store.dispatch('setFishRun', event.target.feature.properties.Name);
               this.$refs.fishBase.setOptionsStyle(this.styleFunction);
               this.$refs.fishBuff.setOptionsStyle(this.buffStyle);
               event.target.setStyle({weight: 2, color: 'red', opacity: 1, stroke:true});
+              this.reorderLayers()
             }
-            this.plotFishData(event, featureName)
             alert("You've clicked on: " + featureName + ". \n Accessible? " + accessible);
+
+            this.plotFishData(event, event.target.feature.properties.NAME)
 
           },
           mouseover: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME);
             event.target.getTooltip().setContent(featureName);   
           }
-        })
+        });
         layer.bindTooltip('');
-      }
+      };
     },
     optionsEmbayment() {
       return {
@@ -509,7 +509,7 @@ export default {
         this.$store.dispatch('offWaterQualityGraph');
         this.$store.dispatch('setStation', null);
       } else {
-        this.$store.dispatch('on');
+        this.$store.dispatch('onWaterQualityGraph');
         if (parameterList.includes(this.waterQuality)) {
           this.$nextTick(() => {
             this.$store.dispatch('onPlotWaterQualityGraph');
@@ -528,8 +528,14 @@ export default {
       }
     },
     plotFishData(event, fishRunName) {
-      this.$store.dispatch('onDiadromousFishGraph');
-      console.log('here rn, ' + fishRunName)
+      if (fishRunName == this.fishRun) {
+        this.$store.dispatch('offDiadromousFishGraph');
+        this.$store.dispatch('setFishRun', null);
+      } else {
+        this.$store.dispatch('onDiadromousFishGraph');
+        this.$store.dispatch('setFishRun', fishRunName);
+      }
+      console.log(this.$store.state.plotFishRunGraph)
     },
     capitalizeFirstLetter(nameString) {
       let nameStringArray = nameString.split(' ');

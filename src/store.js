@@ -7,8 +7,10 @@ export const store = new Vuex.Store({
   state: {
     habitat: null,
     waterQuality: null,
+    fishRun: null,
     habitatGraphVariable: null,
     waterQualityGraphVariable: null,
+    fishRunGraphVariable: null,
     habitatIndex: null,
     baseLayer: false,
     pointsLayer: false,
@@ -23,6 +25,7 @@ export const store = new Vuex.Store({
     showLargeGraph: false,
     plotHabitatGraph: false,
     plotWaterQualityGraph: false,
+    plotFishRunGraph: false,
     legendYears: {
       'eelgrass': {historic: null, current: null},
       'salt marsh': {historic: null, current: null},
@@ -46,6 +49,9 @@ export const store = new Vuex.Store({
     SET_STATION: (state, payload) => {
       state.station = payload;
     },
+    SET_FISHRUN: (state, payload) => {
+      state.fishRun = payload;
+    },
     SET_STATION_EMBAYMENT: (state, payload) => {
       state.stationEmbayment = payload;
     },
@@ -66,6 +72,12 @@ export const store = new Vuex.Store({
     },
     OFF_WATER_QUALITY_GRAPH: state => {
       state.waterQualityGraph = false;
+    },
+    ON_DIADROMOUS_FISH_GRAPH: state => {
+      state.plotFishRunGraph = true;
+    },
+    OFF_DIADROMOUS_FISH_GRAPH: state => {
+      state.plotFishRunGraph = false;
     },
     ON_POINTS_LAYER: state => {
       state.pointsLayer = true;
@@ -120,6 +132,9 @@ export const store = new Vuex.Store({
     setStation: ({commit}, payload) => {
       commit('SET_STATION', payload);
     },
+    setFishRun: ({commit}, payload) => {
+      commit('SET_FISHRUN', payload)
+    },
     setStationEmbayment: ({commit}, payload) => {
       commit('SET_STATION_EMBAYMENT', payload);
     },
@@ -128,6 +143,9 @@ export const store = new Vuex.Store({
     },
     setHabitatGraphData: ({commit}, payload) => {
       commit('SET_HABITAT_GRAPH_DATA', payload);
+    },
+    setDiadromousFishData: ({commit}, payload) => {
+      commit('SET_DIADROMOUS_FISH_DATA', payload);
     },    
     switchBaseLayer: ({commit}) => {
       commit('SWITCH_BASE_LAYER');
@@ -150,6 +168,12 @@ export const store = new Vuex.Store({
     },
     offWaterQualityGraph: ({commit}) => {
       commit('OFF_WATER_QUALITY_GRAPH');
+    },
+    onDiadromousFishGraph: ({commit}) => {
+      commit('ON_DIADROMOUS_FISH_GRAPH');
+    },
+    offDiadromousFishGraph: ({commit}) => {
+      commit('OFF_DIADROMOUS_FISH_GRAPH');
     },
     switchMetricLayer: ({commit}) => {
       commit('SWITCH_METRIC_LAYER');

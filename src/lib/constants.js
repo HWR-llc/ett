@@ -11,6 +11,7 @@ export const habitatSelections = [{id:'salt marsh', capital: 'Salt Marsh'},
                                   {id: 'tidal flats', capital: 'Tidal Flats'},
                                   {id: 'eelgrass', capital: 'Eelgrass'},
                                   {id: 'diadromous fish', capital: 'Diadromous Fish'}];
+export const fishRunSelections = [{}]
 export const habitatIndexSelections = ['index 1', 'index 2', 'index 3', 'index 4']
 export const waterQualityThresholds = {
   'nitrogen': {
