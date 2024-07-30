@@ -1,6 +1,9 @@
 <template>
     <div>
       <highcharts class="chart" :options="chartOptions" ref="chart" :style="styleObject"></highcharts>
+      <div>
+        FISHRUN <h6>{{ fishRun}}</h6>
+      </div>
     </div>
   </template>
   
@@ -155,9 +158,9 @@
         if (this.$store.state.plotFishRunGraph == true) {
           console.log('okayyy')
           // fetch fish run data
-          fn = this.fishRun.replace(" ","").replace("/", "").replace("'","")
-          fr_data = './data/df/row_' + fn + '.json'
-          console.log(fr_data)
+          // fn = this.fishRun.replace(" ","").replace("/", "").replace("'","")
+          // fr_data = './data/df/row_' + fn + '.json'
+          // console.log(fr_data)
           }
         //   let parameterCode = this.parameterMapper(this.fishRunGraphVariable);
           // fetch fish run data

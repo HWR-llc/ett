@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h6>HABITAT: {{ habitatCapital }}</h6>
+    <h6> FISHRUN: {{ fishRun}}</h6>
     <div class="row">
       <app-habitat-graph-header style="width: 100%"></app-habitat-graph-header>
     </div>
@@ -42,6 +44,9 @@ export default {
         return word[0].toUpperCase() + word.substring(1);
       }).join(" ");
       return capitalTitle;
+    },
+    fishRun() {
+      return this.$store.state.fishRun;
     },
     habitatIndexLayer() {
       return this.$store.state.habitatIndexLayer;
