@@ -265,6 +265,7 @@ export default {
               this.$store.dispatch('setFishRun', event.target.feature.properties.Name);
               this.$refs.fishBase.setOptionsStyle(this.styleFunction);
               this.$refs.fishBuff.setOptionsStyle(this.buffStyle);
+
               event.target.setStyle({weight: 2, color: 'red', opacity: 1, stroke:true});
               this.reorderLayers()
             }
@@ -275,8 +276,9 @@ export default {
           },
           mouseover: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME);
-            event.target.getTooltip().setContent(featureName);   
-          }
+            event.target.getTooltip().setContent(featureName);
+
+          },
         });
         layer.bindTooltip('');
       };
@@ -383,11 +385,11 @@ export default {
         this.$store.dispatch('setStation', null);
       }, immediate: true  
     },
-    '$store.state.fishRun': {
-      handler() {
-        this.$store.dispatch('setFishRun', null);
-      }, immediate: true  
-    }
+    // '$store.state.fishRun': {
+    //   handler() {
+    //     this.$store.dispatch('setFishRun', null);
+    //   }, immediate: true  
+    // }
   },
   methods: {
     styleFunction(feature) {

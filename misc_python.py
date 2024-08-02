@@ -20,7 +20,7 @@ gdf = gdf.to_crs(4326)  # reproject back to 4326
 # save output in new GeoJSON file
 gdf.to_file('buff500.geojson', driver="GeoJSON")
 
-'''
+#-----------------------------------------------------
 
 # create new dataset for the diadromous fish chart
 import pandas as pd
@@ -48,4 +48,19 @@ for i in store_df.index:
     n = nam.replace(" ", "").replace("/", "").replace("'","")
     store_df.loc[i].to_json("public/data/df/row_{}.json".format(n))
 
-# store_df.to_json('mig_habs_data.json')
+store_df.to_json('mig_habs_data.json')
+'''
+
+# find total accessible/inaccessible areas to prepopulate the 
+# stacked bar chart for Accessible/Not Accessible things
+import pandas as pd
+
+df = pd.read_csv('mig_habs_data.csv')
+
+accessible = df.Accessible_Len.sum()
+not_accessible = df.N_Accessible_Len.sum()
+total = df.Total_Len.sum()
+
+print('accessible:     ', accessible)
+print('not accessible: ', not_accessible)
+print('total:          ', total)

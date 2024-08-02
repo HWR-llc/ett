@@ -24,13 +24,26 @@
         <h6> {{ habitatCapital}} Extent</h6>       
       </div>
     </div>
-    <div class="row">
+    <div class="row" v-if="this.$store.state.habitat != 'diadromous fish'">
       <div class="col-12" style="text-align: center; padding-left: 20px">
         <div v-if="embayment == null">
           <h6>All Assessment Areas</h6>
         </div>
         <div v-else>
           <h6 class="d-inline" style="padding-right: 10px">{{ embaymentCapital }}</h6>
+          <b-button variant="success" class="d-inline" size="sm" title="return to all MassBays assessment areas" @click="allEmbayments">
+            <b-icon icon="globe" aria-hidden="true"></b-icon>
+          </b-button>
+        </div>
+      </div>
+      </div>
+      <div class="row" v-else> 
+      <div class="col-12" style="text-align: center; padding-left: 20px">
+        <div v-if="fishRun == null">
+          <h6>All Assessment Areas</h6>
+        </div>
+        <div v-else>
+          <h6 class="d-inline" style="padding-right: 10px">{{ fishRunCapital }}</h6>
           <b-button variant="success" class="d-inline" size="sm" title="return to all MassBays assessment areas" @click="allEmbayments">
             <b-icon icon="globe" aria-hidden="true"></b-icon>
           </b-button>
@@ -65,6 +78,16 @@ export default {
       }).join(" ");
       return capitalTitle;
     },
+    fishRun() {
+      return this.$store.state.fishRun;
+    },
+    fishRunCapital() {
+      const titles = this.$store.state.fishRun.split(" ");
+      const capitalTitle = titles.map((word) => {
+        return word[0].toUpperCase() + word.substring(1);
+      }).join(" ");
+      return capitalTitle;
+    },
     embayment() {
       return this.$store.state.embayment;
     },
@@ -83,7 +106,9 @@ export default {
   methods: {
     allEmbayments() {
       this.$store.dispatch('setEmbayment', null);
-
+    },
+    allFishRun() {
+      this.$store.dispatch('setFishRun', null);
     }
   }
 }
