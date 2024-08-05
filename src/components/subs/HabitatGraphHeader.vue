@@ -44,7 +44,7 @@
         </div>
         <div v-else>
           <h6 class="d-inline" style="padding-right: 10px">{{ fishRunCapital }}</h6>
-          <b-button variant="success" class="d-inline" size="sm" title="return to all MassBays assessment areas" @click="allEmbayments">
+          <b-button variant="success" class="d-inline" size="sm" title="return to all MassBays assessment areas" @click="allFishRun">
             <b-icon icon="globe" aria-hidden="true"></b-icon>
           </b-button>
         </div>

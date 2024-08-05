@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h6>HABITAT: {{ habitatCapital }}</h6>
-    <h6> FISHRUN: {{ fishRun}}</h6>
     <div class="row">
       <app-habitat-graph-header style="width: 100%"></app-habitat-graph-header>
     </div>

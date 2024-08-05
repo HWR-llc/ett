@@ -385,11 +385,16 @@ export default {
         this.$store.dispatch('setStation', null);
       }, immediate: true  
     },
-    // '$store.state.fishRun': {
-    //   handler() {
-    //     this.$store.dispatch('setFishRun', null);
-    //   }, immediate: true  
-    // }
+   '$store.state.fishRun': {
+      handler() {
+        if ((this.fishRun == null) && (this.stopFlyTo == false)) {
+          this.$refs.fishBase.setOptionsStyle(this.fishBase);  
+          this.$refs.ettMap.mapObject.flyTo(this.center, this.zoom);     
+        } else if (this.fishRun == null) {
+          this.$refs.fishBase.setOptionsStyle(this.fishBase);          
+        }
+      }, immediate: true  
+    },
   },
   methods: {
     styleFunction(feature) {
