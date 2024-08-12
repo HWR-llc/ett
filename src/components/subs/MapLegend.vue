@@ -10,6 +10,29 @@
         MassBays Assessment Area
       </div>
     </div>
+    <div v-if="habitat== 'diadromous fish'">
+        <div class="row">
+          <div class="col-3">
+            <svg height="20" width="30">
+              <rect id="legend 2" x="0" y="0" width="30" height="20" style="fill: #008000"/>
+            </svg> 
+          </div>
+          <div class="col-9">
+            Diadromous Fish Extent (Accessible)
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-3">
+            <svg height="20" width="30">
+              <rect :id="'legend' + key" x="0" y="0" width="30" height="20" style="fill: #FF0000"/>
+            </svg> 
+          </div>
+          <div class="col-9">
+            Diadromous Fish Extent (Not Accessible)
+          </div>
+        </div>
+    </div>
+    <div v-else>
     <div v-for="(item, key) in imageLibraryHabitat" :key="key">
       <div v-if="habitat == key">
         <div class="row">
@@ -68,6 +91,7 @@
         Selected Parameter
       </div>
     </div>
+  </div>
   </div>
 </template>
 

@@ -145,6 +145,7 @@
         }},      
 
       plotData() {
+
         if (this.$store.state.plotFishRunGraph == true) {
           // fetch fish run data to update plot with
           var fn = this.fishRun.replaceAll(" ","").replaceAll("/", "").replaceAll("'","")

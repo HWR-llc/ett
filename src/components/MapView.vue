@@ -208,6 +208,16 @@ export default {
         }
       }
     },
+    invisStyle() {
+      return () => {
+        return {
+          stroke: false,
+          fillColor: "blue",
+          fillOpacity: 1,
+          interactive: true
+        }
+      }
+    },
     tfStyleCur() {
       return () => {
         return {
@@ -248,7 +258,6 @@ export default {
         layer.on({
           click: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
-            let accessible = event.target.feature.properties.ACCESSIBLE;
 
             event.target.getTooltip().setContent(featureName);
 
@@ -266,10 +275,16 @@ export default {
               this.$refs.fishBase.setOptionsStyle(this.styleFunction);
               this.$refs.fishBuff.setOptionsStyle(this.buffStyle);
 
-              event.target.setStyle({weight: 2, color: 'red', opacity: 1, stroke:true});
+              for (fishRun in this.$refs.fishBase) {
+                if (targ.Name == event.target.feature.properties.NAME) {
+                  targ.setStyle({weight: 2, color:'#00ff00', opacity: 1, stroke:true});
+
+                }
+              }
+              // event.target.setStyle({weight: 2, color:'#00ff00', opacity: 1, stroke:true});
               this.reorderLayers()
             }
-            alert("You've clicked on: " + featureName + ". \n Accessible? " + accessible);
+            // alert("You've clicked on: " + featureName + ". \n Accessible? " + accessible);
 
             this.plotFishData(event, event.target.feature.properties.NAME)
 
@@ -295,6 +310,7 @@ export default {
             if (event.target.feature.properties.NAME == this.embayment) {
               this.stopFlyTo = true;
               this.$store.dispatch('setEmbayment', null);
+              
               this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
               this.$nextTick(() => {
                 this.stopFlyTo = false;
@@ -356,7 +372,8 @@ export default {
           name: 'diadromous fish',
           data: {
             current: null,
-            buff: null		    			
+            buff: null,
+            invis: null   			
           }
         }
       }, 
@@ -400,12 +417,12 @@ export default {
     styleFunction(feature) {
       if (feature.properties.ACCESSIBLE == "Y") {
         return {
-        color: "blue",
+        color: "green",
         stroke: true
         }
       } else {
         return {
-          color: "orange",
+          color: "red",
           stroke: true
         }
       }
@@ -613,9 +630,9 @@ export default {
         historic: "./data/eelgrass_historic_wgs.geojson"
       },
       diadromousFish: {
-        buff: "./data/buff500.geojson",
+        buff: "./data/trial_dissolved.geojson",
         current: "./data/migratory_habs.geojson",
-        // historic: null
+        invis: "./data/dissolved_fish.geojson"
       }
     }
     Object.entries(this.bkgrdGeojson).forEach(([key, value]) => {
