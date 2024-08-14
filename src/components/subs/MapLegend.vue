@@ -12,9 +12,14 @@
     </div>
     <div v-if="habitat== 'diadromous fish'">
         <div class="row">
-          <div class="col-3">
+          <div v-if="this.$store.state.dfLegendColor" class="col-3">
             <svg height="20" width="30">
-              <rect id="legend 2" x="0" y="0" width="30" height="20" style="fill: #008000"/>
+              <rect id="legend 2" x="0" y="0" width="30" height="20" :style="{fill: this.imageLibraryHabitat['diadromous fish'].clickAccColor}"/>
+            </svg> 
+          </div>
+          <div v-else class="col-3">
+            <svg height="20" width="30">
+              <rect id="legend 2" x="0" y="0" width="30" height="20" :style="{fill: this.imageLibraryHabitat['diadromous fish'].accColor}"/>
             </svg> 
           </div>
           <div class="col-9">
@@ -22,9 +27,14 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-3">
+          <div v-if="this.$store.state.dfLegendColor" class="col-3">
             <svg height="20" width="30">
-              <rect :id="'legend' + key" x="0" y="0" width="30" height="20" style="fill: #FF0000"/>
+              <rect :id="'legend' + key" x="0" y="0" width="30" height="20" :style="{fill: this.imageLibraryHabitat['diadromous fish'].clickNAColor}"/>
+            </svg> 
+          </div>
+          <div v-else class="col-3">
+            <svg height="20" width="30">
+              <rect :id="'legend' + key" x="0" y="0" width="30" height="20" :style="{fill: this.imageLibraryHabitat['diadromous fish'].naColor}"/>
             </svg> 
           </div>
           <div class="col-9">

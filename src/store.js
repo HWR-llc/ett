@@ -26,6 +26,7 @@ export const store = new Vuex.Store({
     plotHabitatGraph: false,
     plotWaterQualityGraph: false,
     plotFishRunGraph: false,
+    dfLegendColor: false,
     legendYears: {
       'eelgrass': {historic: null, current: null},
       'salt marsh': {historic: null, current: null},
@@ -34,6 +35,9 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
+    SET_DF_LEGEND_COLOR: (state, payload) => {
+      state.dfLegendColor = payload;
+    },
     SET_HABITAT: (state, payload) => {
       state.habitat = payload;
     },
@@ -117,6 +121,9 @@ export const store = new Vuex.Store({
     },
   },
   actions: {
+    setDFLegendColor: ({commit}, payload) => {
+      commit('SET_DF_LEGEND_COLOR', payload)
+    },
     setHabitat: ({commit}, payload) => {
       commit('SET_HABITAT', payload);
     },
