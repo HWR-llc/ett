@@ -1,15 +1,18 @@
 <template>
   <div>
     <highcharts class="chart" :options="chartOptions" ref="chart" :style="styleObject"></highcharts>
+    <button @click="exportChart">Export Chart</button>
   </div>
 </template>
 
 <script>
 import { waterQualityThresholds } from '../../lib/constants'
 import Highcharts from "highcharts"
+import Exporting from 'highcharts/modules/exporting';
 Highcharts.setOptions({lang: {thousandsSep:','}})
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
 NoDataToDisplay(Highcharts);
+Exporting(Highcharts);
 export default {
   props: ['gwidth', 'gheight'],
   data() {

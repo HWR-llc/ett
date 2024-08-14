@@ -1,14 +1,17 @@
 <template>
   <div>
     <highcharts class="chart" :options="chartOptions" ref="Chart" style="width: 100%; min-height: 300px; max-height:500px"></highcharts>
-  </div>
+    <button @click="exportChart">Export Chart</button>
+ </div>
 </template>
 
 <script>
 import Highcharts from "highcharts"
+import Exporting from 'highcharts/modules/exporting';
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
 NoDataToDisplay(Highcharts);
 Highcharts.setOptions({lang: {thousandsSep:','}})
+Exporting(Highcharts);
 export default {
   data() {
     return {
@@ -73,7 +76,7 @@ export default {
           }
         ]
       },
-      habitatQuantities: null
+      habitatQuantities: null,
     }
   },
   computed: {
@@ -101,6 +104,12 @@ export default {
   },
 
   methods: {
+    exportChart() {
+      const chart = this.$refs.chart.chart;
+      if (chart) {
+        chart.exportChart();
+      }
+    },
     updateGraph() {
       let newValues = [];
       let newCategories = [];

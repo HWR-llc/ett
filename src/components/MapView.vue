@@ -104,6 +104,7 @@ import WaterQualityFloater from '../components/WaterQualityFloater.vue'
 import { imageLibraryHabitat } from '../lib/constants'
 import { basemaps } from '../lib/constants'
 import { basemapsWms } from '../lib/constants'
+
 export default {
   components: {
     LMap,
