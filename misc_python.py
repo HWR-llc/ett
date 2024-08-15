@@ -19,7 +19,7 @@ gdf = gdf.to_crs(4326)  # reproject back to 4326
 
 # save output in new GeoJSON file
 gdf.to_file('buff500.geojson', driver="GeoJSON")
-
+'''
 #-----------------------------------------------------
 
 # create new dataset for the diadromous fish chart
@@ -27,6 +27,7 @@ import pandas as pd
 
 df = pd.read_csv('public/data/df_to_delete.csv')
 store_df = pd.DataFrame(columns=['Name', 'Accessible_Len', 'N_Accessible_Len', 'Total_Len'])
+alist = []
 
 # get all same name ones and add their lengths
 
@@ -41,26 +42,33 @@ for i in unique:
     y_len = y_temp['Lengthmile'].sum()
     total_len = n_len + y_len
 
-    store_df = pd.concat([store_df, pd.DataFrame([{'Name':i, 'Accessible_Len':y_len, 'N_Accessible_Len':n_len, 'Total_Len':total_len}])], ignore_index=True)
+    name = i.replace(" ", "").replace("/", "").replace("'","")
+    
+    alist.append({'Name': name, 'Accessible_Len':y_len, 'N_Accessible_Len':n_len, 'Total_Len':total_len})
+    # store_df = pd.concat([store_df, pd.DataFrame([{f'{name}_Name':name, f'{name}_Accessible_Len':y_len, f'{name}_N_Accessible_Len':n_len, f'{name}_Total_Len':total_len}])], ignore_index=True)
 
-for i in store_df.index:
-    nam = store_df.loc[i].Name
-    n = nam.replace(" ", "").replace("/", "").replace("'","")
-    store_df.loc[i].to_json("public/data/df/row_{}.json".format(n))
+# for i in store_df.index:
+#     nam = store_df.loc[i].Name
+#     n = nam.replace(" ", "").replace("/", "").replace("'","")
+#     store_df.loc[i].to_json("public/data/df/row_{}.json".format(n))
+import json
 
-store_df.to_json('mig_habs_data.json')
-'''
+with open("testJSON.json", "w") as outfile:
+    json.dump(alist, outfile)
+print(json.dumps(alist))
+# store_df.to_csv('mig_habs_all_data.csv')
+
 
 # find total accessible/inaccessible areas to prepopulate the 
 # stacked bar chart for Accessible/Not Accessible things
-import pandas as pd
+# import pandas as pd
 
-df = pd.read_csv('mig_habs_data.csv')
+# df = pd.read_csv('mig_habs_data.csv')
 
-accessible = df.Accessible_Len.sum()
-not_accessible = df.N_Accessible_Len.sum()
-total = df.Total_Len.sum()
+# accessible = df.Accessible_Len.sum()
+# not_accessible = df.N_Accessible_Len.sum()
+# total = df.Total_Len.sum()
 
-print('accessible:     ', accessible)
-print('not accessible: ', not_accessible)
-print('total:          ', total)
+# print('accessible:     ', accessible)
+# print('not accessible: ', not_accessible)
+# print('total:          ', total)

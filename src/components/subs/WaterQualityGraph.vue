@@ -1,7 +1,7 @@
 <template>
   <div>
     <highcharts class="chart" :options="chartOptions" ref="chart" :style="styleObject"></highcharts>
-    <button @click="exportChart">Export Chart</button>
+    <input type="range" min="0" max="100" value="50" class="slider" />
   </div>
 </template>
 
@@ -25,6 +25,11 @@ export default {
         },
         title: {
           text: null
+        },
+        rangeSelector: {
+          verticalAlign: 'top',
+          x:0,
+          y:0
         },
         lang: {
           noData: 'No observed data to display in this area.<br> Select a different area to see data.'

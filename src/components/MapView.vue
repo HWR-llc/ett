@@ -258,6 +258,9 @@ export default {
               this.$store.dispatch('setFishRun', null);
               this.$refs.fishBase.setOptionsStyle(this.styleFunction);
 
+              console.log(this.fishRun)
+              this.plotFishData(event, event.target.feature.properties.NAME)
+
               this.$nextTick(() => {
                 this.stopFlyTo = false;
               })
@@ -270,6 +273,7 @@ export default {
               this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
 
               this.reorderLayers()
+
             }
             this.plotFishData(event, event.target.feature.properties.NAME)
           },
@@ -591,6 +595,7 @@ export default {
       }
     },
     plotFishData(event, fishRunName) {
+      
       if (fishRunName == this.fishRun) {
         this.$store.dispatch('offDiadromousFishGraph');
         this.$store.dispatch('setFishRun', null);

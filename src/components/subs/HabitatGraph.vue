@@ -1,7 +1,6 @@
 <template>
   <div>
     <highcharts class="chart" :options="chartOptions" ref="Chart" style="width: 100%; min-height: 300px; max-height:500px"></highcharts>
-    <button @click="exportChart">Export Chart</button>
  </div>
 </template>
 
@@ -160,7 +159,7 @@ export default {
     }
   },
   created() {
-    // fetch water quality stations
+    // fetch habitat stations
     fetch('./data/habitat_quantities.json')
     .then(response => {
       return response.json()

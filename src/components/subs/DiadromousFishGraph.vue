@@ -5,8 +5,8 @@
   </template>
   
   <script>
-  import Highcharts from "highcharts"
-  Highcharts.setOptions({lang: {thousandsSep:','}})
+  import Highcharts from "highcharts";
+import { Math } from "core-js";({lang: {thousandsSep:','}})
   import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
   NoDataToDisplay(Highcharts);
   export default {
@@ -75,18 +75,22 @@
             },
             tooltip: {
                   headerFormat: '',
-                  pointFormat: "{series.name}: {point.y} miles<br/>Total: {point.stackTotal} miles"     
+                  pointFormat: "{series.name}: {point.y} miles<br/>Total: {point.stackTotal} miles"  
                 }
           },
           // set to the total accessible/not fishruns
           series: [
             {
               name: 'Accessible',
-              data: [413.05570218665525],
+              data: [{
+                y : 413.1,
+                color: '#006400'}],
             },
             {
               name: 'Not Accessible',
-              data: [145.76605947501952],
+              data: [{
+                y: 145.8,
+                color: '#ff0000'}],
             }
           ]
         }
@@ -115,18 +119,20 @@
     },
     methods: {
       updateChart(newData) {
+        
         if (this.$refs.chart) {
           const chart = this.$refs.chart.chart;
           const series_a = chart.series[0]
           const series_na = chart.series[1]
-
-          // set the new Accessible and Not Accessible data
-          series_a.setData([
-            {name: 'Accessible', y :newData.Accessible_Len},
-          ], false);
-          series_na.setData([
-            {name: 'Not Accessible', y:newData.N_Accessible_Len}
-          ], false);
+          
+          if (newData !== null) {
+            // set the new Accessible and Not Accessible data
+            series_a.setData([
+              {name: 'Accessible', y : Math.round(newData.Accessible_Len * 10) / 10, color:'#15ff2b'},
+            ], false);
+            series_na.setData([
+              {name: 'Not Accessible', y:Math.round(newData.N_Accessible_Len * 10) / 10, color:'#ff15c3'}
+            ], false);
 
           // retain stacking
           chart.update({
@@ -141,23 +147,56 @@
             xAxis: {
               categories: [this.$store.state.fishRun]
             }
-          }, true);
+          }, true)} else {
+            // return to overall values
+            series_a.setData([
+              {name: 'Accessible', y:413.1, color:'#006400'},
+            ], false);
+            series_na.setData([
+              {name: 'Not Accessible', y:145.8, color:'#ff0000'}
+            ], false);
+
+          // retain stacking
+          chart.update({
+            plotOptions: {
+              series: {
+                stacking: 'normal',
+                tooltip: {
+                  pointFormat: "{series.name}: {point.y} miles<br/>Total: {point.stackTotal} miles"     
+                }
+              }
+            },
+            xAxis: {
+              categories: ['All Assessment Areas']
+            }
+          }, true)
+          }
         }},      
 
       plotData() {
+        if (this.fishRun == null) {
+          this.updateChart(null)
+        } else {
 
-        if (this.$store.state.plotFishRunGraph == true) {
+        if (this.$store.state.plotFishRunGraph === true) {
           // fetch fish run data to update plot with
           var fn = this.fishRun.replaceAll(" ","").replaceAll("/", "").replaceAll("'","")
-          const filePath = './data/df/row_'+fn+'.json';
-
+          // const filePath = './data/df/row_'+fn+'.json';
+          const filePath = './data/df_chart_data.json';
+          
           fetch(filePath)
             .then(response => {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
               return response.json()
+
             }).then(json => {
-              this.updateChart(json)
-            })
-          }
+              const extractThis = json.find(item => item.Name === fn);
+              this.updateChart(extractThis);
+            } )
+    
+          }}
     },
 
     mounted() {
