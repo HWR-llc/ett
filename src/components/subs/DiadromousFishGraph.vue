@@ -80,18 +80,20 @@ import { Math } from "core-js";({lang: {thousandsSep:','}})
           },
           // set to the total accessible/not fishruns
           series: [
-            {
-              name: 'Accessible',
-              data: [{
-                y : 413.1,
-                color: '#006400'}],
-            },
-            {
+          {
               name: 'Not Accessible',
-              data: [{
-                y: 145.8,
-                color: '#ff0000'}],
-            }
+              data: [145.8],
+                color: '#ff0000',
+            },
+          {
+              name: 'Accessible',
+              data: [413.1],
+              color: '#006400'},
+            // {
+            //   name: 'Not Accessible',
+            //   data: [145.8],
+            //     color: '#ff0000',
+            // }
           ]
         }
       }
@@ -122,13 +124,13 @@ import { Math } from "core-js";({lang: {thousandsSep:','}})
         
         if (this.$refs.chart) {
           const chart = this.$refs.chart.chart;
-          const series_a = chart.series[0]
-          const series_na = chart.series[1]
+          const series_a = chart.series[1]
+          const series_na = chart.series[0]
           
           if (newData !== null) {
             // set the new Accessible and Not Accessible data
             series_a.setData([
-              {name: 'Accessible', y : Math.round(newData.Accessible_Len * 10) / 10, color:'#15ff2b'},
+              {name: 'Accessible', y: Math.round(newData.Accessible_Len * 10) / 10, color:'#15ff2b'},
             ], false);
             series_na.setData([
               {name: 'Not Accessible', y:Math.round(newData.N_Accessible_Len * 10) / 10, color:'#ff15c3'}

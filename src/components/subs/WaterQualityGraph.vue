@@ -1,24 +1,43 @@
 <template>
   <div>
     <highcharts class="chart" :options="chartOptions" ref="chart" :style="styleObject"></highcharts>
-    <input type="range" min="0" max="100" value="50" class="slider" />
+    <!-- <range-selector-slider
+      :initialMin="minTimestamp"
+      :initialMax="maxTimestamp"
+      :minRange="minTimestamp"
+      :maxRange="maxTimestamp"
+      :chart="chart"
+      /> -->
   </div>
 </template>
 
 <script>
+// import { BIconSliders } from 'bootstrap-vue';
 import { waterQualityThresholds } from '../../lib/constants'
 import Highcharts from "highcharts"
+// import RangeSelectorSlider from './RangeSelectorSlider.vue';
 import Exporting from 'highcharts/modules/exporting';
 Highcharts.setOptions({lang: {thousandsSep:','}})
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
 NoDataToDisplay(Highcharts);
 Exporting(Highcharts);
+
 export default {
-  props: ['gwidth', 'gheight'],
+  props: {
+    // ['gwidth', 'gheight'],
+    data: {
+      type: Array,
+      default: () => []
+    }
+
+  },
+  
   data() {
+
     return {
       test: 'test',
       waterQualityThresholds: waterQualityThresholds,
+      
       chartOptions: {
         chart: {
           type: 'scatter',
@@ -26,22 +45,24 @@ export default {
         title: {
           text: null
         },
-        rangeSelector: {
-          verticalAlign: 'top',
-          x:0,
-          y:0
-        },
         lang: {
           noData: 'No observed data to display in this area.<br> Select a different area to see data.'
         },
         tooltip: {
           pointFormat: "{point.x:%Y-%m-%d %H:%M} <br> {point.y}"     
         },
+        rangeSelector: {
+          enabled: true,
+          selected:1
+        },
         xAxis: {
           type: 'datetime',
           // title: {
           //   text: 'Date'
           // },
+          // min: minTime,
+          // max: maxTime,
+
           labels: {
             format: '{value:%b<br/>%Y}'
           },
@@ -88,7 +109,7 @@ export default {
         series: [
           {
             name: 'Measurement',
-            data: [],
+            data: this.data,
             showInLegend: false
           },
         ]
@@ -128,9 +149,26 @@ export default {
   watch: {
     '$store.state.station'() {
       this.plotData();
+    },
+    data: {
+      handler(newData) {
+        this.updateChart(newData);
+      }, deep: true
     }
   },
   methods: {
+    updateChart(data) {
+      if (data.length > 0) {
+        const minTime = Math.min(...data.map(point => point[0]));
+        const maxTime = Math.max(...data.map(point => point[0]));
+
+        this.chartOptions.xAxis.min = minTime;
+        this.chartOptions.xAxis.max = maxTime;
+        this.chartOptions.series[0].data = data;
+
+        this.$refs.chart.chart.update(this.chartOptions);
+      }
+    },
     parameterMapper(parameterName) {
       const waterQualityMap = new Map();
       waterQualityMap.set('chlorophyl-a', 'CHLA');
