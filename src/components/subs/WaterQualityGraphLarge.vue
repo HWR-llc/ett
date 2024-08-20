@@ -1,15 +1,39 @@
 <template>
   <div>
     <highcharts class="chart" :options="chartOptions" ref="chart" :style="styleObject"></highcharts>
+    <div>
+      <label>Start Year: {{ startYear }}</label>
+      <br>
+      <input 
+        type="range"
+        :min="minYear"
+        :max="maxYear"
+        v-model="startYear"
+        @input="plotData"
+        />
+    </div>
+    <div>
+      <label>End Year: {{ endYear }}</label>
+      <br>
+      <input 
+        type="range"
+        :min="minYear"
+        :max="maxYear"
+        v-model="endYear"
+        @input="plotData"
+        />
+    </div>
   </div>
 </template>
 
 <script>
 import { waterQualityThresholds } from '../../lib/constants'
 import Highcharts from "highcharts"
+// import Exporting from 'highcharts/modules/exporting';
 Highcharts.setOptions({lang: {thousandsSep:','}})
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
 NoDataToDisplay(Highcharts);
+// Exporting(Highcharts);
 
 export default {
   props: ['gwidth', 'gheight'],
@@ -23,9 +47,6 @@ export default {
       chartOptions: {
         chart: {
           type: 'scatter',
-        },
-        exporting: {
-          enabled: false
         },
         title: {
           text: null
@@ -42,6 +63,11 @@ export default {
         },
         xAxis: {
           type: 'datetime',
+          // title: {
+          //   text: 'Date'
+          // },
+          // min: minTime,
+          // max: maxTime,
 
           labels: {
             format: '{value:%b<br/>%Y}'
@@ -94,6 +120,10 @@ export default {
           },
         ]
       },
+      startYear: null,
+      endYear: null,
+      minYear: null,
+      maxYear: null,
     }
   },
   computed: {
@@ -129,9 +159,50 @@ export default {
   watch: {
     '$store.state.station'() {
       this.plotData();
+    },
+    data: {
+      handler(newData) {
+        this.updateYears(newData);
+      }, deep: true
     }
   },
   methods: {
+    setYears(data) {
+      let holdMin = Infinity;
+      let holdMax = -Infinity;
+
+      // find the minimum and maximum years
+      data.forEach(param => {
+        if (Array.isArray(param.values)) {
+          param.values.forEach(v => {
+            const date = new Date(v.datetime);
+
+            if (!isNaN(date.getTime())) {
+              const year = date.getFullYear();
+
+              if (year < holdMin) holdMin = year;
+              if (year > holdMax) holdMax = year;
+            }
+          });
+        }
+      });
+
+      this.minYear = holdMin;
+      this.maxYear = holdMax;
+      this.startYear = holdMin;
+      this.endYear = holdMax;
+
+      if (this.$refs.chart && this.$refs.chart.chart) {
+        this.$refs.chart.chart.update(this.minYear)
+        this.$refs.chart.chart.update(this.maxYear)
+        this.$refs.chart.chart.update(this.startYear)
+        this.$refs.chart.chart.update(this.endYear);
+      }
+    },
+    updateYears() {
+      this.$refs.chart.chart.update(this.startYear);
+      this.$refs.chart.chart.update(this.endYear);
+    },
     parameterMapper(parameterName) {
       const waterQualityMap = new Map();
       waterQualityMap.set('chlorophyl-a', 'CHLA');
@@ -154,15 +225,27 @@ export default {
         .then(response => {
           return response.json()
         }).then(json => {
+          if (this.minYear == null) {
+            this.setYears(json);
+          } else {
+            this.updateYears();
+          }
 
           let activeData = json.filter(row => row.param == parameterCode)[0];
 
+          // console.log(activeData)
           this.chartOptions.yAxis.title.text = this.waterQualityThresholds[this.waterQualityGraphVariable].title + ' (' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ')';    
           this.chartOptions.yAxis.type = this.waterQualityThresholds[this.waterQualityGraphVariable].scale;
           let dataSeries = [];
 
           activeData.values.forEach( row => {
-            dataSeries.push({x: new Date(row.datetime).getTime(), y: row.value})
+            let year = new Date(row.datetime).getFullYear();
+            // console.log(year, ' || min: ', this.minYear, ' || max : ', this.maxYear)
+            if (year >= this.startYear && year <= this.endYear) {
+              dataSeries.push({x: new Date(row.datetime).getTime(), y: row.value})
+            } else {
+              console.log('out of bounds')
+            }
           })
           this.chartOptions.yAxis.min = this.waterQualityThresholds[this.waterQualityGraphVariable].minValue;
           let thresholdValue = Math.max(...this.waterQualityThresholds[this.waterQualityGraphVariable].value);

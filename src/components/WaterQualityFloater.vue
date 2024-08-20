@@ -2,6 +2,7 @@
   <div class="floater">
     <div class="row" style="text-align: right">
       <div class="col-2" style="text-align: left; padding-top: 2px">
+        <!-- <b-button class="narrow-button" style="background-color: #3B8416"  v-b-modal.modal-large-graph :disabled="!plotWaterQualityGraph"> -->
         <b-button class="narrow-button" style="background-color: #3B8416"  v-b-modal.modal-large-graph :disabled="!plotWaterQualityGraph">
           enlarge
         </b-button>
@@ -23,6 +24,8 @@
         <b-modal v-model="showLargeGraph" id="modal-large-graph" size="lg" modal-class="thin-top" hide-footer hide-header>
           <div class="row" style="text-align: right">
             <div class="col-12" style="padding-bottom: 5px">
+              <!-- <b-button-close @click="plotWaterQualityGraphLarge"> -->
+
               <b-button-close @click="switchLargeGraph">
                 <span aria-hidden="true">&times;</span>
               </b-button-close>
@@ -36,7 +39,7 @@
           </div>
           <div class="row justify-content-center" v-if="true">
             <div class="col-12">
-              <app-water-quality-graph :gwidth="'100%'" :gheight="'400px'"></app-water-quality-graph>
+              <app-water-quality-graph-large :gwidth="'100%'" :gheight="'400px'"></app-water-quality-graph-large>
             </div>
           </div>
         </b-modal> 
@@ -45,6 +48,7 @@
 
 <script>
 import WaterQualityGraph from './subs/WaterQualityGraph.vue'
+import WaterQualityGraphLarge from './subs/WaterQualityGraphLarge.vue'
 import WaterQualityGraphHeader from './subs/WaterQualityGraphHeader.vue'
 export default {
   data () {
@@ -57,6 +61,9 @@ export default {
   computed: {
     plotWaterQualityGraph() {
       return this.$store.state.plotWaterQualityGraph;
+    },
+    plotWaterQualityGraphLarge() {
+      return this.$store.state.plotWaterQualityGraphLarge;
     },
     styleObject: function () {
       return {
@@ -75,6 +82,7 @@ export default {
   },
   components: {
     appWaterQualityGraph: WaterQualityGraph,
+    appWaterQualityGraphLarge: WaterQualityGraphLarge,
     appWaterQualityGraphHeader: WaterQualityGraphHeader,
   },
   methods: {
@@ -114,7 +122,8 @@ export default {
   padding: 2px;
   margin: 2px;
 }
-/deep/ .thin-top {
+
+.thin-top {
   padding-top: 0px!important;
 }
 </style>
