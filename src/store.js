@@ -23,6 +23,8 @@ export const store = new Vuex.Store({
     habitatGraphData: null,
     showQuickStart: true,
     showLargeGraph: false,
+    showHabitatGraphDynamic: false,
+    showDiadromousFishGraphDynamic: false,
     plotHabitatGraph: false,
     plotWaterQualityGraph: false,
     plotFishRunGraph: false,
@@ -104,6 +106,12 @@ export const store = new Vuex.Store({
     SWITCH_SHOW_LARGE_GRAPH: state => {
       state.showLargeGraph = !state.showLargeGraph;
     },
+    SWITCH_SHOW_HABITAT_GRAPH_DYNAMIC: state => {
+      state.showHabitatGraphDynamic = !state.showHabitatGraphDynamic;
+    },
+    SWITCH_SHOW_DIADROMOUS_FISH_GRAPH_DYNAMIC: state => {
+      state.showDiadromousFishGraphDynamic = !state.showDiadromousFishGraphDynamic;
+    },
     ON_PLOT_HABITAT_GRAPH: state => {
       state.plotHabitatGraph = true;
     },
@@ -118,7 +126,7 @@ export const store = new Vuex.Store({
     },
     SET_HABITAT_LEGEND_YEAR: (state, payload) => {
       state.legendYears[payload.habitat][payload.period] = payload.value;
-    },
+    }
   },
   actions: {
     setDFLegendColor: ({commit}, payload) => {
@@ -199,6 +207,12 @@ export const store = new Vuex.Store({
     },
     switchShowLargeGraph: ({commit}) => {
       commit('SWITCH_SHOW_LARGE_GRAPH');
+    }, 
+    switchShowHabitatGraphDynamic: ({commit}) => {
+      commit('SWITCH_SHOW_HABITAT_GRAPH_DYNAMIC');
+    }, 
+    switchShowDiadromousFishGraphDynamic: ({commit}) => {
+      commit('SWITCH_SHOW_DIADROMOUS_FISH_GRAPH_DYNAMIC');
     }, 
     onPlotHabitatGraph: ({commit}) => {
       commit('ON_PLOT_HABITAT_GRAPH');

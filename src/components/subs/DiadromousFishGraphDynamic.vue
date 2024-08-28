@@ -6,23 +6,23 @@
   
 <script>
 import Highcharts from "highcharts";
+import Exporting from 'highcharts/modules/exporting';
 import { Math } from "core-js";({lang: {thousandsSep:','}})
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
 NoDataToDisplay(Highcharts);
-  export default {
-    props: ['gwidth', 'gheight'],
-    data() {
+Exporting(Highcharts);
+
+export default {
+  props: ['gwidth', 'gheight'],
+  data() {
       return {
         test: 'test',
         chartOptions: {
           chart: {
             type: 'column',
           },
-          exporting: {
-            enabled: false
-          },
           title: {
-            text: null
+            text: 'Diadromous Fish Extent<br>All Assessment Areas'
           },
           lang: {
             noData: 'No observed data to display in this area.<br> Select a waterway to see data.'
@@ -69,8 +69,11 @@ NoDataToDisplay(Highcharts);
               }
             }]
           },
-          legend: {
-            enabled: false
+          legend:{ 
+              enabled:true,
+              align:'right',
+              verticalAlign:'middle',
+              layout:'vertical'
           },
           plotOptions: {
             series: {
@@ -86,7 +89,7 @@ NoDataToDisplay(Highcharts);
           {
               name: 'Not Accessible',
               data: [145.8],
-                color: '#ff0000',
+              color: '#ff0000',
             },
           {
               name: 'Accessible',
@@ -127,12 +130,15 @@ NoDataToDisplay(Highcharts);
           
           if (newData !== null) {
             // set the new Accessible and Not Accessible data
-            series_a.setData([
-              {name: 'Accessible', y: Math.round(newData.Accessible_Len * 10) / 10, color:'#15ff2b'},
-            ], false);
-            series_na.setData([
-              {name: 'Not Accessible', y:Math.round(newData.N_Accessible_Len * 10) / 10, color:'#ff15c3'}
-            ], false);
+            series_a.update({
+              data:[{name: 'Accessible', y: Math.round(newData.Accessible_Len * 10) / 10}],
+              color: '#15ff2b'
+            }, false);
+            series_na.update({
+              data:[{name: 'Not Accessible', y: Math.round(newData.N_Accessible_Len * 10) / 10}],
+              color: '#ff15c3'
+            }, false);
+            chart.setTitle({ text: 'Diadromous Fish Extent<br>' + this.fishRun})
 
           // retain stacking
           chart.update({
@@ -147,14 +153,17 @@ NoDataToDisplay(Highcharts);
             xAxis: {
               categories: [this.$store.state.fishRun]
             }
-          }, true)} else {
+          }, true, true)} else {
             // return to overall values
+            
             series_a.setData([
               {name: 'Accessible', y:413.1, color:'#006400'},
             ], false);
             series_na.setData([
               {name: 'Not Accessible', y:145.8, color:'#ff0000'}
             ], false);
+            chart.setTitle({ text: 'Diadromous Fish Extent<br>All Assessment Areas' });
+
 
           // retain stacking
           chart.update({
@@ -169,8 +178,9 @@ NoDataToDisplay(Highcharts);
             xAxis: {
               categories: ['All Assessment Areas']
             }
-          }, true)
+          }, true, true);
           }
+          chart.redraw();
         }},      
 
       plotData() {

@@ -29,11 +29,11 @@
 <script>
 import { waterQualityThresholds } from '../../lib/constants'
 import Highcharts from "highcharts"
-// import Exporting from 'highcharts/modules/exporting';
+import Exporting from 'highcharts/modules/exporting';
 Highcharts.setOptions({lang: {thousandsSep:','}})
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
 NoDataToDisplay(Highcharts);
-// Exporting(Highcharts);
+Exporting(Highcharts);
 
 export default {
   props: ['gwidth', 'gheight'],
@@ -48,9 +48,9 @@ export default {
         chart: {
           type: 'scatter',
         },
-        title: {
-          text: null
-        },
+        // title: {
+        //   text: null
+        // },
         lang: {
           noData: 'No observed data to display in this area.<br> Select a different area to see data.'
         },
@@ -219,7 +219,10 @@ export default {
     },
     plotData() {
       if (this.plotWaterQualityGraph == true) {
-        let parameterCode = this.parameterMapper(this.waterQualityGraphVariable);
+        const chart = this.$refs.chart.chart;
+        chart.setTitle({ text: this.station + ' <br>' + this.waterQualityGraphVariableCapital});
+        
+       let parameterCode = this.parameterMapper(this.waterQualityGraphVariable);
         // fetch water quality data
         fetch('./data/wq/' + this.station +'.json')
         .then(response => {

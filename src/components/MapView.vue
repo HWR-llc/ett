@@ -279,53 +279,22 @@ export default {
           },
           mouseover: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME);
-            event.target.getTooltip().setContent(featureName);
+            const tooltip = event.target.getTooltip();
 
+            tooltip.setContent(featureName);
+            tooltip.setLatLng(event.latlng);
+            tooltip.update();
           },
+          mousemove: (event) => {
+            const tooltip = event.target.getTooltip();
+
+            tooltip.setLatLng(event.latlng);
+            tooltip.update();
+          }
         });
         layer.bindTooltip('');
       };
     },
-    // optionsFishRun() {
-    //    return {
-    //     onEachFeature: this.onEachFishRun
-    //    } 
-    // },
-    // onEachFishRun() {
-    //   return (feature, layer) => {
-    //     layer.on({
-    //       click: (event) => {
-    //         let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
-
-    //         event.target.getTooltip().setContent(featureName);
-
-    //         if (event.target.feature.properties.NAME == this.$store.state.fishRun) {
-    //           this.stopFlyTo = true;
-    //           this.$store.dispatch('setFishRun', null);
-    //           this.$refs.fishBase.setOptionsStyle(this.styleFunction);
-    //           this.$refs.fishBuff.setOptionsStyle(this.buffStyle);
-
-    //           this.$nextTick(() => {
-    //             this.stopFlyTo = false;
-    //           })
-    //         } else {
-    //           this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
-    //           this.$store.dispatch('setFishRun', event.target.feature.properties.Name);
-              
-    //           // this.$refs.fishBase.setOptionsStyle(this.clickedStyle);
-    //           this.$refs.fishBuff.setOptionsStyle(this.buffStyle);
-
-  
-    //           // event.target.setStyle({weight: 2, color:'#00ff00', opacity: 0, stroke:true});
-    //           this.reorderLayers()
-    //         }
-
-    //         this.plotFishData(event, event.target.feature.properties.NAME)
-
-    //       },
-    //     });
-    //   };
-    // },
     optionsEmbayment() {
       return {
         onEachFeature: this.onEachEmbaymentFunction
@@ -725,6 +694,10 @@ export default {
 }
 </script>
 <style scoped>
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+}
 .legend {
   position: absolute;
   top: 5%;

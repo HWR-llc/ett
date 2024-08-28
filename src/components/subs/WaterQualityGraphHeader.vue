@@ -5,7 +5,7 @@
         <h5> {{ stationEmbaymentCapital }}</h5>
       </div>      
     </div>
-    <div class="row bottom-row">
+    <div class="row bottom-row" v-if="!showLargeGraph">
       <div class="col-3 my-auto">
         <img :src="imageLibrary[waterQualityGraphVariable].pic" style="max-height: 60px" :alt="key + ' logo' ">
       </div>
@@ -44,6 +44,9 @@ export default {
     },
     waterQuality() {
       return this.$store.state.waterQuality;
+    },
+    showLargeGraph() {
+      return this.$store.state.showLargeGraph;
     },
     waterQualityGraphVariableCapital() {
       const titles = this.$store.state.waterQualityGraphVariable.split(" ");
