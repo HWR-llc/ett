@@ -37,7 +37,7 @@ Exporting(Highcharts);
 
 export default {
   props: ['gwidth', 'gheight'],
-  
+
   data() {
 
     return {
@@ -47,6 +47,9 @@ export default {
       chartOptions: {
         chart: {
           type: 'scatter',
+          zooming: {
+            type: 'x'
+          }
         },
         // title: {
         //   text: null
@@ -57,10 +60,7 @@ export default {
         tooltip: {
           pointFormat: "{point.x:%Y-%m-%d %H:%M} <br> {point.y}"     
         },
-        rangeSelector: {
-          enabled: true,
-          selected:1
-        },
+
         xAxis: {
           type: 'datetime',
           // title: {
@@ -149,6 +149,17 @@ export default {
       }
       return capitalTitle;
     },
+    stationEmbaymentCapital() {
+      let nameStringArray = this.$store.state.stationEmbayment.split(" ");
+      nameStringArray.forEach((word, index) => {
+        if (word[0] == '(') {
+          nameStringArray[index] = word.substring(0, 2) + word.slice(2).toLowerCase();
+        } else {
+          nameStringArray[index] = word[0] + word.slice(1).toLowerCase();
+        }
+      });
+      return nameStringArray.join(' ');    
+    },
     showLargeGraph() {
       return this.$store.state.showLargeGraph;
     },
@@ -220,7 +231,7 @@ export default {
     plotData() {
       if (this.plotWaterQualityGraph == true) {
         const chart = this.$refs.chart.chart;
-        chart.setTitle({ text: this.station + ' <br>' + this.waterQualityGraphVariableCapital});
+        chart.setTitle({ text: this.station + ": " + this.stationEmbaymentCapital + ' <br>' + this.waterQualityGraphVariableCapital});
         
        let parameterCode = this.parameterMapper(this.waterQualityGraphVariable);
         // fetch water quality data
@@ -239,6 +250,7 @@ export default {
           // console.log(activeData)
           this.chartOptions.yAxis.title.text = this.waterQualityThresholds[this.waterQualityGraphVariable].title + ' (' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ')';    
           this.chartOptions.yAxis.type = this.waterQualityThresholds[this.waterQualityGraphVariable].scale;
+          
           let dataSeries = [];
 
           activeData.values.forEach( row => {

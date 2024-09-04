@@ -3,14 +3,15 @@
     <div class="row">
       <app-habitat-graph-header style="width: 100%"></app-habitat-graph-header>
     </div>
+    <p></p>
     
     <div class="row" style="text-align: center;" v-if="this.$store.state.habitat == 'diadromous fish'">
       <div class="col-12">
-        <b-button class="narrow-button" style="background-color: red" title="view large graph for printing" v-b-modal.modal-df-graph>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
-            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
-            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1"/>
-          </svg>
+        <b-button class="d-inline" style="background-color: red;" size="sm" title="view large graph for download" v-b-modal.modal-df-graph>
+          <b-icon icon="printer" aria-hidden="true"></b-icon>
+        </b-button>
+        <b-button v-if="fishRun != null" variant="success" class="d-inline" size="sm" title="return to all MassBays assessment areas" @click="allFishRun">
+            <b-icon icon="globe" aria-hidden="true"></b-icon>
         </b-button>
       </div>
       <app-diadromous-fish-graph style="width: 100%"></app-diadromous-fish-graph> 
@@ -23,11 +24,6 @@
               </b-button-close>
             </div>
           </div>
-          <div class="row justify-content-center">
-            <div class="col-12" style="width: 100%; padding: 0px">
-              <app-habitat-graph-header></app-habitat-graph-header>
-            </div>
-          </div>
           <div class="row justify-content-center" v-if="true">
             <div class="col-12">
               <app-diadromous-fish-graph-dynamic :gwidth="'100%'" :gheight="'400px'"></app-diadromous-fish-graph-dynamic>
@@ -38,12 +34,11 @@
        
     <div class="row" style="text-align: center" v-else>
       <div class="col-12">
-        <b-button class="narrow-button" title="view large graph for filtering/printing" style="background-color: red; text-align: center" v-b-modal.modal-hab-graph>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer">
-          <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16"> -->
-              <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1"/>
-            <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1"/>
-          </svg>
+        <b-button class="d-inline" style="background-color: red;" size="sm" title="view large graph for download" v-b-modal.modal-hab-graph>
+          <b-icon icon="printer" aria-hidden="true"></b-icon>
+        </b-button>
+        <b-button v-if="this.$store.state.embayment != null" variant="success" class="d-inline" size="sm" title="return to all MassBays assessment areas" @click="allEmbayments">
+            <b-icon icon="globe" aria-hidden="true"></b-icon>
         </b-button>
       </div>
       <div class="col-10" style="padding-bottom: 5px" v-if="showHabitatGraphDynamic">
@@ -58,11 +53,6 @@
               <b-button-close @click="switchHabitatGraphDynamic">
                 <span aria-hidden="true">&times;</span>
               </b-button-close>
-            </div>
-          </div>
-          <div class="row justify-content-center">
-            <div class="col-12" style="width: 100%; padding: 0px">
-              <app-habitat-graph-header></app-habitat-graph-header>
             </div>
           </div>
           <div class="row justify-content-center" v-if="true">
@@ -158,6 +148,13 @@ export default {
     },
     switchShowDiadromousFishGraphDynamic() {
       this.$store.dispatch('switchShowDiadromousFishGraphDynamic');
+    },
+    allEmbayments() {
+      this.$store.dispatch('setEmbayment', null);
+    },
+    allFishRun() {
+      this.$store.dispatch('setFishRun', null);
+      this.$store.dispatch('setDFLegendColor', false);
     }
   }
 };

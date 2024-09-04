@@ -21,7 +21,7 @@
       </div>
     </div>
     <br>
-    <div v-if="!this.$store.state.showHabitatGraphDynamic && this.$store.state.habitat != 'diadromous fish'">
+    <div v-if="this.$store.state.habitat != 'diadromous fish'">
       <!-- <div class="row" style="padding-top: 5px"> -->
         <div class="col-12" style="text-align: center; padding-left: 20px;">
           <h6> {{ habitatCapital}} Extent</h6>       
@@ -34,13 +34,10 @@
         </div>
         <div v-else>
           <h6 class="d-inline" style="padding-right: 10px">{{ embaymentCapital }}</h6>
-          <b-button variant="success" class="d-inline" size="sm" title="return to all MassBays assessment areas" @click="allEmbayments">
-            <b-icon icon="globe" aria-hidden="true"></b-icon>
-          </b-button>
         </div>
       </div>
     </div>
-    <div class="row" v-else-if="!this.$store.state.showDiadromousFishGraphDynamic && this.$store.state.habitat == 'diadromous fish'"> 
+    <div class="row" v-else> 
       <div class="col-12" style="text-align: center">
         <h6> {{ habitatCapital}} Extent</h6>       
       </div>
@@ -50,11 +47,6 @@
         </div>
         <div v-else>
           <h6 class="d-inline" style="text-align:center; padding-right: 10px;">{{ fishRunCapital }}</h6>
-          <!-- <div> -->
-          <b-button variant="success" class="d-inline" size="sm" title="return to all MassBays assessment areas" @click="allFishRun">
-            <b-icon icon="globe" aria-hidden="true"></b-icon>
-          </b-button>
-        <!-- </div> -->
         </div>
       </div>
     </div>
@@ -110,15 +102,6 @@ export default {
         }
       });
       return nameStringArray.join(' ');    
-    }
-  },
-  methods: {
-    allEmbayments() {
-      this.$store.dispatch('setEmbayment', null);
-    },
-    allFishRun() {
-      this.$store.dispatch('setFishRun', null);
-      this.$store.dispatch('setDFLegendColor', false);
     }
   }
 }

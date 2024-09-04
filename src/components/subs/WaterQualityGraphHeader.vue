@@ -5,7 +5,7 @@
         <h5> {{ stationEmbaymentCapital }}</h5>
       </div>      
     </div>
-    <div class="row bottom-row" v-if="!showLargeGraph">
+    <div class="row bottom-row">
       <div class="col-3 my-auto">
         <img :src="imageLibrary[waterQualityGraphVariable].pic" style="max-height: 60px" :alt="key + ' logo' ">
       </div>

@@ -3,9 +3,12 @@
     <div class="row" style="text-align: right">
       <div class="col-2" style="text-align: left; padding-top: 2px">
         <!-- <b-button class="narrow-button" style="background-color: #3B8416"  v-b-modal.modal-large-graph :disabled="!plotWaterQualityGraph"> -->
-        <b-button class="narrow-button" style="background-color: #3B8416"  v-b-modal.modal-large-graph :disabled="!plotWaterQualityGraph">
-          enlarge
+          <b-button class="d-inline" style="background-color: red;" size="sm" title="view large graph for download" v-b-modal.modal-hab-graph>
+          <b-icon icon="printer" aria-hidden="true"></b-icon>
         </b-button>
+          <!-- <b-button class="narrow-button" style="background-color: #3B8416"  v-b-modal.modal-large-graph :disabled="!plotWaterQualityGraph">
+          enlarge
+        </b-button> -->
       </div>
       <div class="col-10" style="padding-bottom: 5px">
         <b-button-close @click="closeWaterQualityGraph">
@@ -24,19 +27,13 @@
         <b-modal v-model="showLargeGraph" id="modal-large-graph" size="lg" modal-class="thin-top" hide-footer hide-header>
           <div class="row" style="text-align: right">
             <div class="col-12" style="padding-bottom: 5px">
-              <!-- <b-button-close @click="plotWaterQualityGraphLarge"> -->
 
               <b-button-close @click="switchLargeGraph">
                 <span aria-hidden="true">&times;</span>
               </b-button-close>
             </div>
           </div>
-          <div class="row justify-content-center">
-            <div class="col-12" style="width: 100%; padding: 0px">
-              <app-water-quality-graph-header></app-water-quality-graph-header>
-            </div>
-            
-          </div>
+
           <div class="row justify-content-center" v-if="true">
             <div class="col-12">
               <app-water-quality-graph-large :gwidth="'100%'" :gheight="'400px'"></app-water-quality-graph-large>
