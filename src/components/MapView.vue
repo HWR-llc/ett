@@ -58,8 +58,9 @@
           <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.current" v-if="habitat=='tidal flats'" :options-style="tfStyleCur"></l-geo-json>	  		
           <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.current" v-if="habitat=='salt marsh'" :options-style="smStyleCur"></l-geo-json>	
           <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.current" v-if="habitat=='eelgrass'" :options-style="egStyleCur"></l-geo-json>
+          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.current" v-if="habitat=='diadromous fish'" :options="optionsBuffer" :options-style="styleFunction" ref="fishBase"></l-geo-json>
           <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.buff" v-if="habitat=='diadromous fish'" :options="optionsBuffer" :options-style="buffStyle" ref="fishBuff"></l-geo-json>
-          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.current" v-if="habitat=='diadromous fish'" :options-style="styleFunction" ref="fishBase"></l-geo-json>
+          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.poly" v-if="habitat=='diadromous fish'" :options="optionsPoly" :options-style="styleFunction" ref="fishPoly"></l-geo-json>
         </l-layer-group>
       </div>
       <div v-if="pointsLayer">
@@ -233,9 +234,35 @@ export default {
         return {
           stroke: false,
           fillColor: '#FF0000',
-          fillOpacity:0.5,
+          fillOpacity: 0.5,
           interactive: false
         };
+      };
+    },
+    optionsPoly() {
+      return {
+        onEachFeature: this.onEachPoly
+      }
+    },
+    onEachPoly() {
+      return (feature, layer) => {
+      layer.on({
+            mouseover: (event) => {
+              let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME);
+              const tooltip = event.target.getTooltip();
+
+              tooltip.setContent(featureName);
+              tooltip.setLatLng(event.latlng);
+              tooltip.update();
+            },
+            mousemove: (event) => {
+              const tooltip = event.target.getTooltip();
+
+              tooltip.setLatLng(event.latlng);
+              tooltip.update();
+            }
+          });
+          layer.bindTooltip('');
       };
     },
     optionsBuffer() {
@@ -256,7 +283,6 @@ export default {
 
               this.stopFlyTo = true;
               this.$store.dispatch('setFishRun', null);
-              this.$refs.fishBase.setOptionsStyle(this.styleFunction);
 
               console.log(this.fishRun)
               this.plotFishData(event, event.target.feature.properties.NAME)
@@ -264,12 +290,10 @@ export default {
               this.$nextTick(() => {
                 this.stopFlyTo = false;
               })
-
-              this.$refs.ettMap.mapObject.flyTo(this.center, this.zoom);   
             
             } else {
               this.$store.dispatch('setDFLegendColor', true)
-
+              // this.$refs.fishBase.setStyle(this.styleFunction);
               this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
 
               this.reorderLayers()
@@ -370,7 +394,8 @@ export default {
           name: 'diadromous fish',
           data: {
             current: null,
-            buff: null
+            buff: null,
+            poly: null
           }
         }
       }, 
@@ -644,7 +669,8 @@ export default {
       },
       diadromousFish: {
         buff: "./data/trial_dissolved.geojson",
-        current: "./data/migratory_habs.geojson"
+        current: "./data/migratory_habs.geojson",
+        poly: "./data/spawning_habs_poly.geojson"
       }
     }
     Object.entries(this.bkgrdGeojson).forEach(([key, value]) => {

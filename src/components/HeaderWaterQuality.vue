@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row align-items-center">
+    <div class="row align-items-center" style="flex-wrap: nowrap;">
       <div class="col-1" style="min-width: 100px"> 
         <div class="row justify-content-center" style="padding-top: 0px">
           <h6 class="water-quality-main-header">Water Quality</h6>

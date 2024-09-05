@@ -1,7 +1,8 @@
 <template>
   <div>
     <highcharts class="chart" :options="chartOptions" ref="Chart" style="width: 100%; min-height: 300px; max-height:500px"></highcharts>
-    <div>
+    <button v-if="zoomed" @click="resetZoom">Reset Zoom</button>
+    <!-- <div>
       <label>Start Year: {{ startYear }}</label>
       <br>
       <input 
@@ -22,7 +23,7 @@
         v-model="endYear"
         @input="updateGraph"
         />
-    </div>
+    </div> -->
  </div>
 </template>
 
@@ -40,6 +41,18 @@ export default {
       chartOptions: {
         chart: {
           type: 'column',
+          // zooming: {
+          //   type: "x"
+          // },
+          zoomType: 'x',
+          events: {
+            selection: (event) => {
+              if (event.xAxis != null) {
+                console.log(event.xAxis[0])
+                this.updateXAxisRange(event.xAxis[0].min, event.xAxis[0].max);
+              } return false;
+            } 
+          }
         },
         // title: {
         //   text: null
@@ -54,11 +67,11 @@ export default {
           title: {
             text: 'Year'
           },
-          categories: [
-            '2000',
-            '2005',
-            '2050 Goal'
-          ],
+          // categories: [
+          //   '2000',
+          //   '2005',
+          //   '2050 Goal'
+          // ],
           crosshair: true,
           type: 'datetime',
           labels: {
@@ -103,6 +116,7 @@ export default {
       endYear: null,
       minYear: null,
       maxYear: null,
+      zoomed: false
     }
   },
   computed: {
@@ -139,40 +153,131 @@ export default {
   },
 
   methods: {
-    setYears(data) {
-      let holdMin = Infinity;
-      let holdMax = -Infinity;
-
-      data.forEach(param => {
-        if (param.YEAR.includes(' ')) {
-          const firstYear = param.YEAR.substring(0,4)
-          if (firstYear < holdMin) holdMin = firstYear;
-          // if (firstYear > holdMax) holdMax = firstYear;
-
-        } else {
-          const firstYear = param.YEAR.substring(0,4)
-          const lastYear = param.YEAR.slice(-4)
-          if (firstYear < holdMin) holdMin = firstYear;
-          if (lastYear > holdMax) holdMax = lastYear;
-        }
-      }
-    );
-
-      this.minYear = holdMin;
-      this.maxYear = holdMax;
-      this.startYear = holdMin;
-      this.endYear = holdMax;
-
-      if (this.$refs.Chart && this.$refs.Chart.chart) {
-        this.$refs.Chart.chart.update(this.minYear)
-        this.$refs.Chart.chart.update(this.maxYear)
-        this.$refs.Chart.chart.update(this.startYear)
-        this.$refs.Chart.chart.update(this.endYear);
-      }
+    resetZoom() {
+      this.updateGraph();
+      this.zoomed = false;
     },
-    updateYears() {
-      this.$refs.Chart.chart.update(this.startYear);
-      this.$refs.Chart.chart.update(this.endYear);
+    // setYears(data) {
+    //   let holdMin = Infinity;
+    //   let holdMax = -Infinity;
+
+    //   data.forEach(param => {
+    //     if (param.YEAR.includes(' ')) {
+    //       const firstYear = param.YEAR.substring(0,4)
+    //       if (firstYear < holdMin) holdMin = firstYear;
+    //       // if (firstYear > holdMax) holdMax = firstYear;
+
+    //     } else {
+    //       const firstYear = param.YEAR.substring(0,4)
+    //       const lastYear = param.YEAR.slice(-4)
+    //       if (firstYear < holdMin) holdMin = firstYear;
+    //       if (lastYear > holdMax) holdMax = lastYear;
+    //     }
+    //   }
+    // );
+
+    //   this.minYear = holdMin;
+    //   this.maxYear = holdMax;
+    //   this.startYear = holdMin;
+    //   this.endYear = holdMax;
+
+    //   if (this.$refs.Chart && this.$refs.Chart.chart) {
+    //     this.$refs.Chart.chart.update(this.minYear)
+    //     this.$refs.Chart.chart.update(this.maxYear)
+    //     this.$refs.Chart.chart.update(this.startYear)
+    //     this.$refs.Chart.chart.update(this.endYear);
+    //   }
+    // },
+    // updateYears() {
+    //   this.$refs.Chart.chart.update(this.startYear);
+    //   this.$refs.Chart.chart.update(this.endYear);
+    // },
+    updateXAxisRange(minIndex, maxIndex) {
+      console.log(minIndex, maxIndex)
+      const chart = this.$refs.Chart.chart;
+      const categories = this.chartOptions.xAxis.categories;
+      let filtCategories = categories.slice(Math.max(Math.floor(minIndex), 0), Math.ceil(maxIndex));
+      let newValues = [];
+      let newUnits = [];
+      let newCategories = [];
+      let matchSet = null;
+      this.zoomed = true;
+
+      this.chartOptions.xAxis.categories = newCategories;
+      // get the new data to push also
+
+      // if (this.$refs.Chart && chart) {
+      //   chart.update(this.chartOptions)
+      // }
+
+      if (this.embayment == null) {
+          chart.setTitle({ text: this.habitatCapital(this.habitat) + ' Extent<br>All Assessment Areas'});
+          matchSet = this.habitatQuantities.filter(row => {
+            return (row.ASSESSMENT_AREA == 'ALL' && row.TYPE == this.habitat)
+          })
+        } else {
+          chart.setTitle({ text: this.habitatCapital(this.habitat) + ' Extent<br>' + this.embayment});
+          matchSet = this.habitatQuantities.filter(row => {
+            return (row.ASSESSMENT_AREA == this.embayment && row.TYPE == this.habitat)
+          });
+        }
+
+        // if ((matchSet.filter(row => row.VALUE == -999).length > 0) && (matchSet.length == 1)) {
+        //   this.chartOptions.yAxis.plotLines[0].value = -100;
+        //   this.chartOptions.series[0].data = [];
+        //   // this.chartOptions.xAxis.categories = [];
+        //   this.chartOptions.yAxis.title.text = '--';         
+        // } else if (matchSet.length == 1) {
+        //   this.chartOptions.yAxis.plotLines[0].value = matchSet[0].VALUE;
+        //   this.chartOptions.yAxis.title.text = matchSet[0].UNITS;
+        //   // this.chartOptions.xAxis.categories =[''];
+        //   this.chartOptions.series[0].data =[0];
+        // } else {
+        //   // if (this.minYear == null) {
+        //   //   this.setYears(matchSet)
+        //   // } else {
+        //   //   this.updateYears()
+        //   // }
+
+          matchSet.sort((a, b) => (a.YEAR > b.YEAR) ? 1 : ((b.YEAR > a.YEAR) ? -1 : 0));
+
+          matchSet.forEach(row => {
+            if (row.YEAR.includes(' ')) {
+              newValues.push(row.VALUE);
+              newCategories.push(row.YEAR);
+              newUnits.push(row.UNITS); 
+            } else {
+              console.log(row.YEAR  + '//'+ filtCategories[0].substring(0,4) + '//'+ filtCategories[(filtCategories.length) - 1])
+              if (row.YEAR.substring(0,4) <= filtCategories[0].substring(0,4) && row.YEAR.substring(0,4) >= filtCategories[filtCategories.length - 1].substring(0,4)) {
+                console.log(row)
+                  newValues.push(row.VALUE);
+                  newCategories.push(row.YEAR);
+                  newUnits.push(row.UNITS); 
+              } 
+            }
+                let updatePlotLineValue = -100;
+          if (newCategories[newCategories.length - 1] == '2050 Goal') {
+            if (newValues[newValues.length - 1] != 0) {
+              updatePlotLineValue = newValues[newValues.length - 1];
+            }          
+            newCategories = newCategories.slice(0, newCategories.length - 1);
+            newValues = newValues.slice(0, newValues.length - 1);
+          }
+          this.chartOptions.yAxis.plotLines[0].value = updatePlotLineValue;
+          this.chartOptions.xAxis.categories = newCategories;
+          this.chartOptions.series[0].data = newValues;
+          this.chartOptions.yAxis.title.text = newUnits[0];
+          this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0]
+          this.chartOptions.yAxis.softMax = updatePlotLineValue * 1.1;
+        } )
+      
+    
+      //   {
+      //   xAxis: {
+      //     categories: newCategories
+      //   }
+      // })
+
     },
     exportChart() {
       const chart = this.$refs.Chart.chart;
@@ -222,26 +327,26 @@ export default {
           this.chartOptions.xAxis.categories =[''];
           this.chartOptions.series[0].data =[0];
         } else {
-          if (this.minYear == null) {
-            this.setYears(matchSet)
-          } else {
-            this.updateYears()
-          }
+          // if (this.minYear == null) {
+          //   this.setYears(matchSet)
+          // } else {
+          //   this.updateYears()
+          // }
 
           matchSet.sort((a, b) => (a.YEAR > b.YEAR) ? 1 : ((b.YEAR > a.YEAR) ? -1 : 0));
 
           matchSet.forEach(row => {
-            if (row.YEAR == '2050 Goal') {
+            // if (row.YEAR == '2050 Goal') {
               newValues.push(row.VALUE);
                 newCategories.push(row.YEAR);
                 newUnits.push(row.UNITS); 
-              } else {
-                if (row.YEAR.substring(0,4) >= this.startYear.substring(0,4) && row.YEAR.substring(0,4) <= this.endYear.slice(-4)) {
-                newValues.push(row.VALUE);
-                newCategories.push(row.YEAR);
-                newUnits.push(row.UNITS); 
-              }
-              } 
+              // } else {
+              //   if (row.YEAR.substring(0,4) >= this.startYear.substring(0,4) && row.YEAR.substring(0,4) <= this.endYear.slice(-4)) {
+              //   newValues.push(row.VALUE);
+              //   newCategories.push(row.YEAR);
+              //   newUnits.push(row.UNITS); 
+              // }
+              // } 
           })
           let updatePlotLineValue = -100;
           if (newCategories[newCategories.length - 1] == '2050 Goal') {

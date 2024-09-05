@@ -1,7 +1,7 @@
 <template>
   <div>
     <highcharts class="chart" :options="chartOptions" ref="chart" :style="styleObject"></highcharts>
-    <div>
+    <!-- <div>
       <label>Start Year: {{ startYear }}</label>
       <br>
       <input 
@@ -22,7 +22,10 @@
         v-model="endYear"
         @input="plotData"
         />
-    </div>
+    </div> -->
+    <div>
+    <p>Click and drag to zoom in to different parts of the graph.</p>
+  </div>
   </div>
 </template>
 
@@ -47,9 +50,7 @@ export default {
       chartOptions: {
         chart: {
           type: 'scatter',
-          zooming: {
-            type: 'x'
-          }
+          zoomType: 'x'
         },
         // title: {
         //   text: null
@@ -178,42 +179,42 @@ export default {
     }
   },
   methods: {
-    setYears(data) {
-      let holdMin = Infinity;
-      let holdMax = -Infinity;
+    // setYears(data) {
+    //   let holdMin = Infinity;
+    //   let holdMax = -Infinity;
 
-      // find the minimum and maximum years
-      data.forEach(param => {
-        if (Array.isArray(param.values)) {
-          param.values.forEach(v => {
-            const date = new Date(v.datetime);
+    //   // find the minimum and maximum years
+    //   data.forEach(param => {
+    //     if (Array.isArray(param.values)) {
+    //       param.values.forEach(v => {
+    //         const date = new Date(v.datetime);
 
-            if (!isNaN(date.getTime())) {
-              const year = date.getFullYear();
+    //         if (!isNaN(date.getTime())) {
+    //           const year = date.getFullYear();
 
-              if (year < holdMin) holdMin = year;
-              if (year > holdMax) holdMax = year;
-            }
-          });
-        }
-      });
+    //           if (year < holdMin) holdMin = year;
+    //           if (year > holdMax) holdMax = year;
+    //         }
+    //       });
+    //     }
+    //   });
 
-      this.minYear = holdMin;
-      this.maxYear = holdMax;
-      this.startYear = holdMin;
-      this.endYear = holdMax;
+    //   this.minYear = holdMin;
+    //   this.maxYear = holdMax;
+    //   this.startYear = holdMin;
+    //   this.endYear = holdMax;
 
-      if (this.$refs.chart && this.$refs.chart.chart) {
-        this.$refs.chart.chart.update(this.minYear)
-        this.$refs.chart.chart.update(this.maxYear)
-        this.$refs.chart.chart.update(this.startYear)
-        this.$refs.chart.chart.update(this.endYear);
-      }
-    },
-    updateYears() {
-      this.$refs.chart.chart.update(this.startYear);
-      this.$refs.chart.chart.update(this.endYear);
-    },
+    //   if (this.$refs.chart && this.$refs.chart.chart) {
+    //     this.$refs.chart.chart.update(this.minYear)
+    //     this.$refs.chart.chart.update(this.maxYear)
+    //     this.$refs.chart.chart.update(this.startYear)
+    //     this.$refs.chart.chart.update(this.endYear);
+    //   }
+    // },
+    // updateYears() {
+    //   this.$refs.chart.chart.update(this.startYear);
+    //   this.$refs.chart.chart.update(this.endYear);
+    // },
     parameterMapper(parameterName) {
       const waterQualityMap = new Map();
       waterQualityMap.set('chlorophyl-a', 'CHLA');
@@ -231,7 +232,7 @@ export default {
     plotData() {
       if (this.plotWaterQualityGraph == true) {
         const chart = this.$refs.chart.chart;
-        chart.setTitle({ text: this.station + ": " + this.stationEmbaymentCapital + ' <br>' + this.waterQualityGraphVariableCapital});
+        chart.setTitle({ text: this.station + ' <br>' + this.stationEmbaymentCapital + " || " + this.waterQualityGraphVariableCapital});
         
        let parameterCode = this.parameterMapper(this.waterQualityGraphVariable);
         // fetch water quality data
@@ -239,11 +240,11 @@ export default {
         .then(response => {
           return response.json()
         }).then(json => {
-          if (this.minYear == null) {
-            this.setYears(json);
-          } else {
-            this.updateYears();
-          }
+          // if (this.minYear == null) {
+          //   this.setYears(json);
+          // } else {
+          //   this.updateYears();
+          // }
 
           let activeData = json.filter(row => row.param == parameterCode)[0];
 
@@ -254,13 +255,13 @@ export default {
           let dataSeries = [];
 
           activeData.values.forEach( row => {
-            let year = new Date(row.datetime).getFullYear();
-            // console.log(year, ' || min: ', this.minYear, ' || max : ', this.maxYear)
-            if (year >= this.startYear && year <= this.endYear) {
+            // let year = new Date(row.datetime).getFullYear();
+            // // console.log(year, ' || min: ', this.minYear, ' || max : ', this.maxYear)
+            // if (year >= this.startYear && year <= this.endYear) {
               dataSeries.push({x: new Date(row.datetime).getTime(), y: row.value})
-            } else {
-              console.log('out of bounds')
-            }
+            // } else {
+            //   console.log('out of bounds')
+            // }
           })
           this.chartOptions.yAxis.min = this.waterQualityThresholds[this.waterQualityGraphVariable].minValue;
           let thresholdValue = Math.max(...this.waterQualityThresholds[this.waterQualityGraphVariable].value);

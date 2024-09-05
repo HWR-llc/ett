@@ -10,7 +10,7 @@
         <b-button class="d-inline" style="background-color: red;" size="sm" title="view large graph for download" v-b-modal.modal-df-graph>
           <b-icon icon="printer" aria-hidden="true"></b-icon>
         </b-button>
-        <b-button v-if="fishRun != null" variant="success" class="d-inline" size="sm" title="return to all MassBays assessment areas" @click="allFishRun">
+        <b-button v-if="fishRun != null" style="margin-left: 5px;" variant="success" class="d-inline" size="sm" title="return to all MassBays assessment areas" @click="allFishRun">
             <b-icon icon="globe" aria-hidden="true"></b-icon>
         </b-button>
       </div>
@@ -37,7 +37,7 @@
         <b-button class="d-inline" style="background-color: red;" size="sm" title="view large graph for download" v-b-modal.modal-hab-graph>
           <b-icon icon="printer" aria-hidden="true"></b-icon>
         </b-button>
-        <b-button v-if="this.$store.state.embayment != null" variant="success" class="d-inline" size="sm" title="return to all MassBays assessment areas" @click="allEmbayments">
+        <b-button v-if="this.$store.state.embayment != null" style="margin-left: 5px;" variant="success" class="d-inline" size="sm" title="return to all MassBays assessment areas" @click="allEmbayments">
             <b-icon icon="globe" aria-hidden="true"></b-icon>
         </b-button>
       </div>

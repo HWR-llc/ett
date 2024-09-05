@@ -1,14 +1,11 @@
 <template>
   <div class="floater">
     <div class="row" style="text-align: right">
-      <div class="col-2" style="text-align: left; padding-top: 2px">
-        <!-- <b-button class="narrow-button" style="background-color: #3B8416"  v-b-modal.modal-large-graph :disabled="!plotWaterQualityGraph"> -->
-          <b-button class="d-inline" style="background-color: red;" size="sm" title="view large graph for download" v-b-modal.modal-hab-graph>
+      <div class="col-2" style="text-align: left; padding-top: 2px; padding-bottom: 2px;">
+
+        <b-button style="background-color: red;" size="sm" title="view large graph for download" v-b-modal.modal-large-graph>
           <b-icon icon="printer" aria-hidden="true"></b-icon>
         </b-button>
-          <!-- <b-button class="narrow-button" style="background-color: #3B8416"  v-b-modal.modal-large-graph :disabled="!plotWaterQualityGraph">
-          enlarge
-        </b-button> -->
       </div>
       <div class="col-10" style="padding-bottom: 5px">
         <b-button-close @click="closeWaterQualityGraph">
