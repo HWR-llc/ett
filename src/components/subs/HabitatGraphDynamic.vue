@@ -2,28 +2,6 @@
   <div>
     <highcharts class="chart" :options="chartOptions" ref="Chart" style="width: 100%; min-height: 300px; max-height:500px"></highcharts>
     <button v-if="zoomed" @click="resetZoom">Reset Zoom</button>
-    <!-- <div>
-      <label>Start Year: {{ startYear }}</label>
-      <br>
-      <input 
-        type="range"
-        :min="minYear"
-        :max="maxYear"
-        v-model="startYear"
-        @input="updateGraph"
-        />
-    </div>
-    <div>
-      <label>End Year: {{ endYear }}</label>
-      <br>
-      <input 
-        type="range"
-        :min="minYear"
-        :max="maxYear"
-        v-model="endYear"
-        @input="updateGraph"
-        />
-    </div> -->
  </div>
 </template>
 
@@ -41,22 +19,15 @@ export default {
       chartOptions: {
         chart: {
           type: 'column',
-          // zooming: {
-          //   type: "x"
-          // },
           zoomType: 'x',
           events: {
             selection: (event) => {
               if (event.xAxis != null) {
-                console.log(event.xAxis[0])
                 this.updateXAxisRange(event.xAxis[0].min, event.xAxis[0].max);
               } return false;
             } 
           }
         },
-        // title: {
-        //   text: null
-        // },
         lang: {
           noData: 'No data to display in this area.<br> Select a different area to see data.'
         },
@@ -67,6 +38,7 @@ export default {
           title: {
             text: 'Year'
           },
+          min: 0,
           // categories: [
           //   '2000',
           //   '2005',
@@ -144,12 +116,11 @@ export default {
         this.updateGraph();
       }      
     },
-    data: {
-      handler(newData) {
-        this.updateYears(newData);
-        // this.updateGraph();
-      }, deep: true
-    }
+    // data: {
+    //   handler(newData) {
+    //     this.updateYears(newData);
+    //   }, deep: true
+    // }
   },
 
   methods: {
@@ -157,58 +128,15 @@ export default {
       this.updateGraph();
       this.zoomed = false;
     },
-    // setYears(data) {
-    //   let holdMin = Infinity;
-    //   let holdMax = -Infinity;
-
-    //   data.forEach(param => {
-    //     if (param.YEAR.includes(' ')) {
-    //       const firstYear = param.YEAR.substring(0,4)
-    //       if (firstYear < holdMin) holdMin = firstYear;
-    //       // if (firstYear > holdMax) holdMax = firstYear;
-
-    //     } else {
-    //       const firstYear = param.YEAR.substring(0,4)
-    //       const lastYear = param.YEAR.slice(-4)
-    //       if (firstYear < holdMin) holdMin = firstYear;
-    //       if (lastYear > holdMax) holdMax = lastYear;
-    //     }
-    //   }
-    // );
-
-    //   this.minYear = holdMin;
-    //   this.maxYear = holdMax;
-    //   this.startYear = holdMin;
-    //   this.endYear = holdMax;
-
-    //   if (this.$refs.Chart && this.$refs.Chart.chart) {
-    //     this.$refs.Chart.chart.update(this.minYear)
-    //     this.$refs.Chart.chart.update(this.maxYear)
-    //     this.$refs.Chart.chart.update(this.startYear)
-    //     this.$refs.Chart.chart.update(this.endYear);
-    //   }
-    // },
-    // updateYears() {
-    //   this.$refs.Chart.chart.update(this.startYear);
-    //   this.$refs.Chart.chart.update(this.endYear);
-    // },
     updateXAxisRange(minIndex, maxIndex) {
-      console.log(minIndex, maxIndex)
       const chart = this.$refs.Chart.chart;
       const categories = this.chartOptions.xAxis.categories;
-      let filtCategories = categories.slice(Math.max(Math.floor(minIndex), 0), Math.ceil(maxIndex));
+      let filtCategories = categories.slice(Math.max(Math.round(minIndex), 0), Math.round(maxIndex) + 1);
       let newValues = [];
       let newUnits = [];
       let newCategories = [];
       let matchSet = null;
       this.zoomed = true;
-
-      this.chartOptions.xAxis.categories = newCategories;
-      // get the new data to push also
-
-      // if (this.$refs.Chart && chart) {
-      //   chart.update(this.chartOptions)
-      // }
 
       if (this.embayment == null) {
           chart.setTitle({ text: this.habitatCapital(this.habitat) + ' Extent<br>All Assessment Areas'});
@@ -222,40 +150,29 @@ export default {
           });
         }
 
-        // if ((matchSet.filter(row => row.VALUE == -999).length > 0) && (matchSet.length == 1)) {
-        //   this.chartOptions.yAxis.plotLines[0].value = -100;
-        //   this.chartOptions.series[0].data = [];
-        //   // this.chartOptions.xAxis.categories = [];
-        //   this.chartOptions.yAxis.title.text = '--';         
-        // } else if (matchSet.length == 1) {
-        //   this.chartOptions.yAxis.plotLines[0].value = matchSet[0].VALUE;
-        //   this.chartOptions.yAxis.title.text = matchSet[0].UNITS;
-        //   // this.chartOptions.xAxis.categories =[''];
-        //   this.chartOptions.series[0].data =[0];
-        // } else {
-        //   // if (this.minYear == null) {
-        //   //   this.setYears(matchSet)
-        //   // } else {
-        //   //   this.updateYears()
-        //   // }
-
+        if ((matchSet.filter(row => row.VALUE == -999).length > 0) && (matchSet.length == 1)) {
+          this.chartOptions.yAxis.plotLines[0].value = -100;
+          this.chartOptions.series[0].data = [];
+          this.chartOptions.yAxis.title.text = '--';         
+        } else if (matchSet.length == 1) {
+          this.chartOptions.yAxis.plotLines[0].value = matchSet[0].VALUE;
+          this.chartOptions.yAxis.title.text = matchSet[0].UNITS;
+          this.chartOptions.series[0].data =[0];
+        } else {
           matchSet.sort((a, b) => (a.YEAR > b.YEAR) ? 1 : ((b.YEAR > a.YEAR) ? -1 : 0));
-
           matchSet.forEach(row => {
             if (row.YEAR.includes(' ')) {
               newValues.push(row.VALUE);
               newCategories.push(row.YEAR);
               newUnits.push(row.UNITS); 
             } else {
-              console.log(row.YEAR  + '//'+ filtCategories[0].substring(0,4) + '//'+ filtCategories[(filtCategories.length) - 1])
-              if (row.YEAR.substring(0,4) <= filtCategories[0].substring(0,4) && row.YEAR.substring(0,4) >= filtCategories[filtCategories.length - 1].substring(0,4)) {
-                console.log(row)
-                  newValues.push(row.VALUE);
-                  newCategories.push(row.YEAR);
-                  newUnits.push(row.UNITS); 
+              if (filtCategories.includes(row.YEAR)) {
+                newValues.push(row.VALUE);
+                newCategories.push(row.YEAR);
+                newUnits.push(row.UNITS); 
               } 
             }
-                let updatePlotLineValue = -100;
+            let updatePlotLineValue = -100;
           if (newCategories[newCategories.length - 1] == '2050 Goal') {
             if (newValues[newValues.length - 1] != 0) {
               updatePlotLineValue = newValues[newValues.length - 1];
@@ -269,15 +186,8 @@ export default {
           this.chartOptions.yAxis.title.text = newUnits[0];
           this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0]
           this.chartOptions.yAxis.softMax = updatePlotLineValue * 1.1;
-        } )
-      
-    
-      //   {
-      //   xAxis: {
-      //     categories: newCategories
-      //   }
-      // })
-
+        }
+      )}
     },
     exportChart() {
       const chart = this.$refs.Chart.chart;
@@ -327,26 +237,11 @@ export default {
           this.chartOptions.xAxis.categories =[''];
           this.chartOptions.series[0].data =[0];
         } else {
-          // if (this.minYear == null) {
-          //   this.setYears(matchSet)
-          // } else {
-          //   this.updateYears()
-          // }
-
           matchSet.sort((a, b) => (a.YEAR > b.YEAR) ? 1 : ((b.YEAR > a.YEAR) ? -1 : 0));
-
           matchSet.forEach(row => {
-            // if (row.YEAR == '2050 Goal') {
-              newValues.push(row.VALUE);
-                newCategories.push(row.YEAR);
-                newUnits.push(row.UNITS); 
-              // } else {
-              //   if (row.YEAR.substring(0,4) >= this.startYear.substring(0,4) && row.YEAR.substring(0,4) <= this.endYear.slice(-4)) {
-              //   newValues.push(row.VALUE);
-              //   newCategories.push(row.YEAR);
-              //   newUnits.push(row.UNITS); 
-              // }
-              // } 
+            newValues.push(row.VALUE);
+            newCategories.push(row.YEAR);
+            newUnits.push(row.UNITS);  
           })
           let updatePlotLineValue = -100;
           if (newCategories[newCategories.length - 1] == '2050 Goal') {
@@ -362,8 +257,8 @@ export default {
           this.chartOptions.yAxis.title.text = newUnits[0];
           this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0]
           this.chartOptions.yAxis.softMax = updatePlotLineValue * 1.1;
-        } 
-      }
+      } 
+    }
   },
   created() {
     // fetch habitat stations
