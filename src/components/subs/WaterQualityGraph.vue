@@ -147,6 +147,7 @@ export default {
       return waterQualityMap.get(parameterName); 
     },
     plotData() {
+      console.log('plotting smth')
       if (this.plotWaterQualityGraph == true) {
         let parameterCode = this.parameterMapper(this.waterQualityGraphVariable);
         // fetch water quality data

@@ -155,7 +155,6 @@ export const store = new Vuex.Store({
       commit('SET_STATION', payload);
     },
     setFishRun: ({commit}, payload) => {
-      console.log('setting fish run: ' +payload)
       commit('SET_FISHRUN', payload)
     },
     setStationEmbayment: ({commit}, payload) => {

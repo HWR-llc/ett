@@ -496,6 +496,7 @@ export default {
       url.searchParams.set('zoom', zoom);
       url.searchParams.set('fishRun', this.$store.state.fishRun);
       url.searchParams.set('station', this.$store.state.station);
+      url.searchParams.set('stationEmb', this.$store.state.stationEmbayment)
       window.history.replaceState({}, '', url);
     },
 
@@ -505,6 +506,8 @@ export default {
       const zoom = url.searchParams.get('zoom');
       const fishRun = url.searchParams.get('fishRun');
       const station = url.searchParams.get('station');
+      const stationEmb = url.searchParams.get('stationEmb');
+
 
       // this.$store.dispatch('onModalStart');
 
@@ -521,19 +524,13 @@ export default {
       } 
       if (station) {
         this.$store.dispatch('setStation', station);
-        this.$store.dispatch('plotWaterQualityGraph', true);
-        console.log(this.$store.state.plotWaterQualityGraph);
+        this.$store.dispatch('setStationEmbayment', stationEmb);
+
+        this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
+        this.$store.dispatch('onWaterQualityGraph');
+        this.$store.dispatch('onPlotWaterQualityGraph');
         this.$store.dispatch('offModalStart');
-        // this.$refs.stations.forEach(s => {
-        //   console.log('S!! ' + s)
-        //   if (s.id == station) {
-        //     this.plotData(null, s.id, s.properties.parameter_list, s.properties.eda_unit_name);
-        //   }
-        // }
-        // ) 
         }
-        
-      
     },
     onMapMoveEnd() {
       this.updateURL();
@@ -669,16 +666,7 @@ export default {
       });
       return activeParameters;
     },
-    plotData(event, stationId, parameterList, stationEmbayment, isInitial) {
-      if (isInitial) {
-        console.log('wochenlsci')
-        this.$nextTick(() =>  {
-          this.$store.dispatch('onWaterQualityGraph');
-        }
-      )
-
-
-      } else {
+    plotData(event, stationId, parameterList, stationEmbayment) {
         if (stationId == this.station) {
           this.$store.dispatch('offWaterQualityGraph');
           this.$store.dispatch('setStation', null);
@@ -703,7 +691,7 @@ export default {
             this.$store.dispatch('setStation', stationId);
             this.$store.dispatch('setStationEmbayment', stationEmbayment);
         }
-      }
+      
     },
     plotFishData(fishRunName, isInitial) {
       if (isInitial) {
