@@ -105,6 +105,7 @@ import WaterQualityFloater from '../components/WaterQualityFloater.vue'
 import { imageLibraryHabitat } from '../lib/constants'
 import { basemaps } from '../lib/constants'
 import { basemapsWms } from '../lib/constants'
+// import { BIconTelephoneMinusFill } from 'bootstrap-vue';
 
 export default {
   components: {
@@ -265,6 +266,17 @@ export default {
           layer.bindTooltip('');
       };
     },
+    // optionsStation() {
+    //   return {
+    //     onEachFeature: this.onEachStation
+    //   }
+    // },
+    // onEachStation() {
+    //   console.log('h')
+    //   return (feature, layer) => {
+    //     console.log(feature, layer)
+    //   }
+    // },
     optionsBuffer() {
        return {
         onEachFeature: this.onEachBuffer
@@ -272,20 +284,21 @@ export default {
     },
     onEachBuffer() {
       return (feature, layer) => {
+
+        // on click function
         layer.on({
           click: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
 
             event.target.getTooltip().setContent(featureName);
 
-            if (event.target.feature.properties.NAME == this.$store.state.fishRun) {
+            if (event.target.feature.properties.NAME == this.fishRun) {
               this.$store.dispatch('setDFLegendColor', false)
 
               this.stopFlyTo = true;
               this.$store.dispatch('setFishRun', null);
 
-              console.log(this.fishRun)
-              this.plotFishData(event, event.target.feature.properties.NAME)
+              this.plotFishData(event.target.feature.properties.NAME, false)
 
               this.$nextTick(() => {
                 this.stopFlyTo = false;
@@ -299,7 +312,7 @@ export default {
               this.reorderLayers()
 
             }
-            this.plotFishData(event, event.target.feature.properties.NAME)
+            this.plotFishData(event.target.feature.properties.NAME, false)
           },
           mouseover: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME);
@@ -326,6 +339,13 @@ export default {
     },
     onEachEmbaymentFunction() {
       return (feature, layer) => {
+        if (feature.properties.NAME == this.$route.query.embayment) {
+          // this.$refs.ettMap.mapObject.flyToBounds(layer.getBounds());
+          this.$store.dispatch('setEmbayment', feature.properties.NAME);
+          this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
+          layer.setStyle({weight: 2, color: 'red', opacity: 1});
+        }
+
         layer.on({
           click: (event) => {
             if (event.target.feature.properties.NAME == this.embayment) {
@@ -409,23 +429,42 @@ export default {
     };
   },
   watch: {
+    '$store.state.habitat': {
+      handler() {
+        this.$router.push({ 
+          query: { habitat: this.habitat, embayment: this.embayment, wq_param: this.waterQuality } 
+        });
+        if (this.habitat != 'diadromous fish') {
+          this.$store.dispatch('setFishRun', null)
+        }
+      }
+    },
     '$store.state.embayment': {
       handler() {
+        this.$router.push({ 
+          query: { habitat: this.habitat, embayment: this.embayment, wq_param: this.waterQuality } 
+        });
+
         if ((this.embayment == null) && (this.stopFlyTo == false)) {
           this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);  
           this.$refs.ettMap.mapObject.flyTo(this.center, this.zoom);     
         } else if (this.embayment == null) {
           this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);          
-        }
+        } 
+   
       }, immediate: true  
     },
     '$store.state.waterQuality': {
       handler() {
+        this.$router.push({ 
+          query: { habitat: this.habitat, embayment: this.embayment, wq_param: this.waterQuality } 
+        });
         this.$store.dispatch('setStation', null);
       }, immediate: true  
     },
    '$store.state.fishRun': {
       handler() {
+        this.updateURL();
         if ((this.fishRun == null) && (this.stopFlyTo == false)) {
           this.$refs.fishBase.setOptionsStyle(this.styleFunction);  
           this.$refs.ettMap.mapObject.flyTo(this.center, this.zoom);     
@@ -434,8 +473,74 @@ export default {
         } 
       }, immediate: true  
     },
+    '$store.state.station': {
+      handler() {
+        this.updateURL();
+      }
+    },
+    center() {
+      this.setMapView();
+    },
+    zoom() {
+      this.setMapView();
+    }
   },
   methods: {
+    updateURL() {
+      const map = this.$refs.ettMap.mapObject;
+      const center = map.getCenter();
+      const zoom = map.getZoom();
+      const url = new URL(window.location.href);
+  
+      url.searchParams.set('center', `${center.lat},${center.lng}`);
+      url.searchParams.set('zoom', zoom);
+      url.searchParams.set('fishRun', this.$store.state.fishRun);
+      url.searchParams.set('station', this.$store.state.station);
+      window.history.replaceState({}, '', url);
+    },
+
+    restoreMapState() {
+      const url = new URL(window.location.href);
+      const center = url.searchParams.get('center');
+      const zoom = url.searchParams.get('zoom');
+      const fishRun = url.searchParams.get('fishRun');
+      const station = url.searchParams.get('station');
+
+      // this.$store.dispatch('onModalStart');
+
+      if (center && zoom) {
+        const [lat,lng] = center.split(',').map(Number);
+        this.center = [lat, lng];
+        this.zoom = Number(zoom);
+      }
+      if (fishRun) {
+        this.$store.dispatch('setFishRun', fishRun);
+        this.plotFishData(fishRun, true);
+        this.$store.dispatch('setDFLegendColor', true);
+        this.$store.dispatch('offModalStart');
+      } 
+      if (station) {
+        this.$store.dispatch('setStation', station);
+        this.$store.dispatch('plotWaterQualityGraph', true);
+        console.log(this.$store.state.plotWaterQualityGraph);
+        this.$store.dispatch('offModalStart');
+        // this.$refs.stations.forEach(s => {
+        //   console.log('S!! ' + s)
+        //   if (s.id == station) {
+        //     this.plotData(null, s.id, s.properties.parameter_list, s.properties.eda_unit_name);
+        //   }
+        // }
+        // ) 
+        }
+        
+      
+    },
+    onMapMoveEnd() {
+      this.updateURL();
+    },
+    onMapZoomEnd() {
+      this.updateURL();
+    },
     styleFunction(feature) {
       let fish = this.fishRun;
       let name = feature.properties.NAME;
@@ -563,41 +668,55 @@ export default {
         } 
       });
       return activeParameters;
+    },
+    plotData(event, stationId, parameterList, stationEmbayment, isInitial) {
+      if (isInitial) {
+        console.log('wochenlsci')
+        this.$nextTick(() =>  {
+          this.$store.dispatch('onWaterQualityGraph');
+        }
+      )
 
-    },
-    plotData(event, stationId, parameterList, stationEmbayment) {
-      if (stationId == this.station) {
-        this.$store.dispatch('offWaterQualityGraph');
-        this.$store.dispatch('setStation', null);
+
       } else {
-        this.$store.dispatch('onWaterQualityGraph');
-        if (parameterList.includes(this.waterQuality)) {
-          this.$nextTick(() => {
-            this.$store.dispatch('onPlotWaterQualityGraph');
-          })
-        } else {
-          this.$store.dispatch('offPlotWaterQualityGraph')
+        if (stationId == this.station) {
+          this.$store.dispatch('offWaterQualityGraph');
+          this.$store.dispatch('setStation', null);
+          } else {
+            this.$store.dispatch('onWaterQualityGraph');
+            
+            if (parameterList.includes(this.waterQuality)) {
+              this.$nextTick(() => {
+                this.$store.dispatch('onPlotWaterQualityGraph');
+              })
+            } else {
+              this.$store.dispatch('offPlotWaterQualityGraph')
+            }
+            
+            if (this.waterQuality == null) {
+              this.$store.dispatch('setWaterQuality', 'nitrogen');
+              this.$store.dispatch('setWaterQualityGraphVariable', 'nitrogen');
+            } else {
+              this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
+            }
+
+            this.$store.dispatch('setStation', stationId);
+            this.$store.dispatch('setStationEmbayment', stationEmbayment);
         }
-        if (this.waterQuality == null) {
-          this.$store.dispatch('setWaterQuality', 'nitrogen');
-          this.$store.dispatch('setWaterQualityGraphVariable', 'nitrogen');
-        } else {
-          this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
-        }
-        this.$store.dispatch('setStation', stationId);
-        this.$store.dispatch('setStationEmbayment', stationEmbayment);
       }
     },
-    plotFishData(event, fishRunName) {
-      
-      if (fishRunName == this.fishRun) {
-        this.$store.dispatch('offDiadromousFishGraph');
-        this.$store.dispatch('setFishRun', null);
-      } else {
+    plotFishData(fishRunName, isInitial) {
+      if (isInitial) {
         this.$store.dispatch('onDiadromousFishGraph');
-        this.$store.dispatch('setFishRun', fishRunName);
+      } else {
+        if (fishRunName == this.fishRun) {
+          this.$store.dispatch('offDiadromousFishGraph');
+          this.$store.dispatch('setFishRun', null);
+        } else {
+          this.$store.dispatch('onDiadromousFishGraph');
+          this.$store.dispatch('setFishRun', fishRunName);
+        }
       }
-      // console.log(this.$store.state.fishRun)
     },
     capitalizeFirstLetter(nameString) {
       let nameStringArray = nameString.split(' ');
@@ -616,6 +735,12 @@ export default {
         width: '100%',
       }      
     },
+    setMapView() {
+      const map = this.$refs.ettMap.mapObject;
+      if(map) {
+        map.setView(this.center, this.zoom);
+      }
+    },
     reorderLayers () {
       this.$nextTick(() => {
         if (('metric' in this.$refs) && (this.$refs.metric !== undefined)) {
@@ -631,7 +756,7 @@ export default {
           this.$refs.fishBuff.mapObject.bringToFront();
         }
       })
-    }
+    },
   },
   created() {
     // fetch embayments
@@ -694,7 +819,6 @@ export default {
     }).then(json => {
       json.forEach(habitat => {
         this.$store.dispatch('setHabitatLegendYear', {habitat: habitat.HABITAT, period: habitat.PERIOD, value: habitat.YEAR});
-        // console.log(habitat.HABITAT);
       })
     })
     // fetch water quality stations
@@ -709,7 +833,19 @@ export default {
     })
   },
   mounted() {
+    this.restoreMapState();
+
+    this.$nextTick(() => {
+      const map = this.$refs.ettMap.mapObject;
+      if (map) {
+        map.on('moveend', this.onMapMoveEnd);
+        map.on('zoomend', this.onMapZoomEnd);
+
+        this.setMapView();
+      }
+    })
     window.addEventListener('resize', this.onResize);
+
   },
   updated() {
     this.reorderLayers();   

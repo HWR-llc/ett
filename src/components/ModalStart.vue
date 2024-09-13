@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-modal v-model="modalShow" centered hide-header="true" hide-footer="true">
+    <b-modal v-if="$store.state.showModalStart" v-model="modalShow" centered hide-header="true" hide-footer="true">
       <div class="row justify-content-center">
         <h4>Welcome to the ETT</h4>
       </div>

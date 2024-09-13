@@ -50,7 +50,13 @@ export default {
         return this.$store.state.baseLayer;
       },
       set () {
+        this.$store.dispatch('setHabitat', null);
+        this.$store.dispatch('setFishRun', null);
         this.$store.dispatch('switchBaseLayer');
+
+        if (this.habitat != 'diadromous fish') {
+          this.$store.dispatch('setFishRun', null);
+        }
       }      
     },
     embayment() {
@@ -68,6 +74,22 @@ export default {
         this.$store.dispatch('onBaseLayer');
         this.$store.dispatch('offQuickStart');
       }      
+    }
+  },
+  created() {
+    const rq = this.$route.query;
+    console.log(rq);
+
+    if (rq.habitat) {
+      this.$store.dispatch('setHabitat', rq.habitat);
+      this.$store.dispatch('onBaseLayer');
+      this.$store.dispatch('offQuickStart');
+    }
+    if (rq.embayment) {
+      this.$store.dispatch('setEmbayment', rq.embayment);
+      // this.$store.dispatch('onBaseLayer');
+      // this.$store.dispatch('offQuickStart');
+      console.log(rq.embayment)
     }
   }
 }

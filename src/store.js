@@ -22,6 +22,7 @@ export const store = new Vuex.Store({
     stationEmbayment: null,
     habitatGraphData: null,
     showQuickStart: true,
+    showModalStart: true,
     showLargeGraph: false,
     showHabitatGraphDynamic: false,
     showDiadromousFishGraphDynamic: false,
@@ -103,6 +104,12 @@ export const store = new Vuex.Store({
     OFF_QUICK_START: state => {
       state.showQuickStart = false;
     },
+    ON_MODAL_START: state => {
+      state.showModalStart = true;
+    },
+    OFF_MODAL_START: state => {
+      state.showModalStart = false;
+    },
     SWITCH_SHOW_LARGE_GRAPH: state => {
       state.showLargeGraph = !state.showLargeGraph;
     },
@@ -148,6 +155,7 @@ export const store = new Vuex.Store({
       commit('SET_STATION', payload);
     },
     setFishRun: ({commit}, payload) => {
+      console.log('setting fish run: ' +payload)
       commit('SET_FISHRUN', payload)
     },
     setStationEmbayment: ({commit}, payload) => {
@@ -204,6 +212,12 @@ export const store = new Vuex.Store({
     },
     offQuickStart: ({commit}) => {
       commit('OFF_QUICK_START');
+    },
+    onModalStart: ({commit}) => {
+      commit('ON_MODAL_START');
+    },
+    offModalStart: ({commit}) => {
+      commit('OFF_MODAL_START');
     },
     switchShowLargeGraph: ({commit}) => {
       commit('SWITCH_SHOW_LARGE_GRAPH');

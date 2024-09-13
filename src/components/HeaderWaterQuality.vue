@@ -52,6 +52,7 @@ export default {
       set () {
         this.$store.dispatch('switchPointsLayer');
         this.$store.dispatch('offWaterQualityGraph');
+        this.$store.dispatch('setWaterQuality', null);
       }      
     },
     waterQuality: {
@@ -63,6 +64,15 @@ export default {
         this.$store.dispatch('onPointsLayer');
         this.$store.dispatch('offWaterQualityGraph');
       }      
+    }
+  },
+  created() {
+    const rq = this.$route.query;
+
+    if (rq.wq_param) {
+      this.$store.dispatch('setWaterQuality', rq.wq_param);
+      this.$store.dispatch('onPointsLayer');
+      this.$store.dispatch('offWaterQualityGraph');
     }
   }
 }
