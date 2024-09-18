@@ -278,7 +278,7 @@ export default {
     //   }
     // },
     optionsBuffer() {
-       return {
+      return {
         onEachFeature: this.onEachBuffer
        } 
     },
@@ -306,7 +306,6 @@ export default {
             
             } else {
               this.$store.dispatch('setDFLegendColor', true)
-              // this.$refs.fishBase.setStyle(this.styleFunction);
               this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
 
               this.reorderLayers()
@@ -522,7 +521,7 @@ export default {
         this.$store.dispatch('setDFLegendColor', true);
         this.$store.dispatch('offModalStart');
       } 
-      if (station) {
+      if (station != null) {
         this.$store.dispatch('setStation', station);
         this.$store.dispatch('setStationEmbayment', stationEmb);
 
@@ -821,6 +820,7 @@ export default {
     })
   },
   mounted() {
+    this.$store.dispatch();
     this.restoreMapState();
 
     this.$nextTick(() => {
