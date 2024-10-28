@@ -24,13 +24,11 @@
         <b-modal v-model="showLargeGraph" id="modal-large-graph" size="lg" modal-class="thin-top" hide-footer hide-header>
           <div class="row" style="text-align: right">
             <div class="col-12" style="padding-bottom: 5px">
-
               <b-button-close @click="switchLargeGraph">
                 <span aria-hidden="true">&times;</span>
               </b-button-close>
             </div>
           </div>
-
           <div class="row justify-content-center" v-if="true">
             <div class="col-12">
               <app-water-quality-graph-large :gwidth="'100%'" :gheight="'400px'"></app-water-quality-graph-large>

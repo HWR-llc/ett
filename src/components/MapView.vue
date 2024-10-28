@@ -63,6 +63,10 @@
           <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.poly" v-if="habitat=='diadromous fish'" :options="optionsPoly" :options-style="styleFunction" ref="fishPoly"></l-geo-json>
         </l-layer-group>
       </div>
+      <div>
+        <l-easy-print>
+        </l-easy-print>
+      </div>
       <div v-if="pointsLayer">
         <l-layer-group ref="stations" v-for="s in stations" :key="s.id">
           <l-circle-marker
@@ -506,9 +510,6 @@ export default {
       const fishRun = url.searchParams.get('fishRun');
       const station = url.searchParams.get('station');
       const stationEmb = url.searchParams.get('stationEmb');
-
-
-      // this.$store.dispatch('onModalStart');
 
       if (center && zoom) {
         const [lat,lng] = center.split(',').map(Number);

@@ -85,12 +85,6 @@ export default {
       this.$store.dispatch('onBaseLayer');
       this.$store.dispatch('offQuickStart');
     }
-    if (rq.embayment) {
-      this.$store.dispatch('setEmbayment', rq.embayment);
-      // this.$store.dispatch('onBaseLayer');
-      // this.$store.dispatch('offQuickStart');
-      console.log(rq.embayment)
-    }
   }
 }
 </script>
