@@ -15,7 +15,7 @@
     </div>
     <div class="row">
       <div class="col-12" style="width: 100%; padding: 0px">
-        <app-water-quality-graph-header></app-water-quality-graph-header>
+        <app-water-quality-graph-header> </app-water-quality-graph-header>
       </div>
     </div>
     <div class="row">

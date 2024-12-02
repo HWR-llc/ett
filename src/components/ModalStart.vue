@@ -51,16 +51,6 @@ export default {
       this.$store.dispatch('onPlotHabitatGraph');
       this.$store.dispatch('offQuickStart');
       this.modalShow = false;
-      // if (newHab == 'diadromous fish') {
-      //   this.spanShow = true;
-      // } else {
-      //   this.$store.dispatch('setHabitatGraphData', this.stateWideHabitatValues);
-      //   this.$store.dispatch('setHabitat', newHab);
-      //   this.$store.dispatch('onBaseLayer');
-      //   this.$store.dispatch('onPlotHabitatGraph')
-      //   this.$store.dispatch('offQuickStart');
-      //   this.modalShow = false;
-      // }
     },
     buttonClicked() {
       this.$store.dispatch('onPointsLayer');

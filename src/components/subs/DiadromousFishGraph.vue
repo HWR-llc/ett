@@ -1,229 +1,223 @@
-<template>
-    <div>
-      <highcharts class="chart" :options="chartOptions" ref="chart" :style="styleObject"></highcharts>
-    </div>
-  </template>
-  
+<!-- 
+ File: DiadromousFishGraph.vue
+ This file corresponds to the graph that appears in the right-hand side bar when habitat == Diadromous Fish.
+ The graph will update upon selection/deselection of a fish run (river) with the fish run's accessible and 
+ not accessible lengths in the form of a stacked bar chart. The colors of the plot match the highlighted 
+ selected fish run. Default values for the chart are the All Assessment Areas, or the overall accessible
+ and not accessible lengths of all rivers summed.
+ 
+ Last updated: 11/12/2024 
+ -->
+ <template>
+  <div>
+    <highcharts class="chart" :options="chartOptions" ref="chart" :style="styleObject"></highcharts>
+  </div>
+</template>
+
 <script>
 import Highcharts from "highcharts";
 import { Math } from "core-js";({lang: {thousandsSep:','}})
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
 NoDataToDisplay(Highcharts);
-  export default {
-    props: ['gwidth', 'gheight'],
-    data() {
-      return {
-        test: 'test',
-        chartOptions: {
-          chart: {
-            type: 'column',
-          },
-          exporting: {
-            enabled: false
-          },
+export default {
+props: ['gwidth', 'gheight'],
+data() {
+  return {
+    test: 'test',
+    chartOptions: {
+      chart: {
+        type: 'column',
+      },
+      exporting: {
+        enabled: false
+        },
+        title: {
+          text: null
+        },
+        lang: {
+          noData: 'No observed data to display in this area.<br> Select a waterway to see data.'
+        },
+        xAxis: {
+          type: 'string',
+          title: null,
+          categories: ['All Assessment Areas']
+        },
+        yAxis: {
+          type: 'linear',
           title: {
-            text: null
+            text: 'Length (Miles)'
           },
-          lang: {
-            noData: 'No observed data to display in this area.<br> Select a waterway to see data.'
+          stackLabels: {
+            enabled : true,
           },
-          xAxis: {
-            type: 'string',
-            title: null,
-            categories: ['All Assessment Areas']
+          plotLines: [{
+            color: '#ff8737',
+            width: 3,
+            dashStyle: 'LongDash',
+            opacity: 0.5,
+            value: -10,
+            zIndex: 1,
+            label: {
+              text: 'threshold',
+              align: 'right',
+              y: -10
+            }
           },
-          yAxis: {
-            type: 'linear',
-            title: {
-              text: 'Length (Miles)'
-            },
-            stackLabels: {
-              enabled : true,
-            },
-            plotLines: [{
-              color: '#ff8737',
-              width: 3,
-              dashStyle: 'LongDash',
-              opacity: 0.5,
-              value: -10,
-              zIndex: 1,
-              label: {
-                text: 'threshold',
-                align: 'right',
-                // x: 0,
-                y: -10
+          {
+            color: '#ff8737',
+            width: 3,
+            dashStyle: 'LongDash',
+            opacity: 0.5,
+            value: -10,
+            zIndex: 1,
+            label: {
+              text: 'threshold 2',
+              align: 'right',
+              y: -10
+            }
+          }]
+        },
+        legend: {
+          enabled: false
+        },
+        plotOptions: {
+          series: {
+            stacking: 'normal'
+          },
+          tooltip: {
+                headerFormat: '',
+                pointFormat: "{series.name}: {point.y} miles<br/>Total: {point.stackTotal} miles"  
               }
-            },
-            {
-              color: '#ff8737',
-              width: 3,
-              dashStyle: 'LongDash',
-              opacity: 0.5,
-              value: -10,
-              zIndex: 1,
-              label: {
-                text: 'threshold 2',
-                align: 'right',
-                // x: 0,
-                y: -10
-              }
-            }]
+        },
+        // set to the total accessible / not fishruns
+        series: [
+        {
+            name: 'Not Accessible',
+            data: [145.8],
+              color: '#ff0000',
           },
-          legend: {
-            enabled: false
-          },
+        {
+            name: 'Accessible',
+            data: [413.1],
+            color: '#006400'},
+        ]
+      }
+    }
+  },
+  computed: {
+    styleObject() {
+      return {
+        width: this.gwidth,
+        height: this.gheight
+      }
+    },
+    // which fishRun is selected
+    fishRun() {
+      return this.$store.state.fishRun;
+    },
+    // whether to plot the fishRun graph or not
+    plotFishRunGraph() {
+      return this.$store.state.plotFishRunGraph;
+    }
+  },
+  watch: {
+    '$store.state.fishRun': {
+      handler() {
+          this.plotData()
+      }, immediate: true
+    }
+  },
+  methods: {
+    // method to update the chart upon update of data
+    updateChart(newData) {
+      if (this.$refs.chart) {
+        const chart = this.$refs.chart.chart;
+        const series_a = chart.series[1]
+        const series_na = chart.series[0]
+        
+        if (newData != null) {
+           
+          // set the new Accessible and Not Accessible data
+          series_a.setData([
+            {name: 'Accessible', y: Math.round(newData.Accessible_Len * 10) / 10, color:'#15ff2b'},
+          ], false);
+          series_na.setData([
+            {name: 'Not Accessible', y:Math.round(newData.N_Accessible_Len * 10) / 10, color:'#ff15c3'}
+          ], false);
+
+        // retain stacking
+        chart.update({
           plotOptions: {
             series: {
-              stacking: 'normal'
-            },
-            tooltip: {
-                  headerFormat: '',
-                  pointFormat: "{series.name}: {point.y} miles<br/>Total: {point.stackTotal} miles"  
-                }
+              stacking: 'normal',
+              tooltip: {
+                pointFormat: "{series.name}: {point.y} miles<br/>Total: {point.stackTotal} miles"     
+              }
+            }
           },
-          // set to the total accessible/not fishruns
-          series: [
-          {
-              name: 'Not Accessible',
-              data: [145.8],
-                color: '#ff0000',
-            },
-          {
-              name: 'Accessible',
-              data: [413.1],
-              color: '#006400'},
-          ]
-        }
-      }
-    },
-    computed: {
-      styleObject() {
-        return {
-          width: this.gwidth,
-          height: this.gheight
-        }
-      },
-      fishRun() {
-        return this.$store.state.fishRun;
-      },
-      plotFishRunGraph() {
-        return this.$store.state.plotFishRunGraph;
-      }
-    },
-    watch: {
-      '$store.state.fishRun': {
-        handler() {
-            this.plotData()
-        }, immediate: true
-      }
-    },
-    methods: {
-      updateChart(newData) {
-        
-        if (this.$refs.chart) {
-          const chart = this.$refs.chart.chart;
-          const series_a = chart.series[1]
-          const series_na = chart.series[0]
-          
-          if (newData !== null) {
-            // set the new Accessible and Not Accessible data
-            series_a.setData([
-              {name: 'Accessible', y: Math.round(newData.Accessible_Len * 10) / 10, color:'#15ff2b'},
-            ], false);
-            series_na.setData([
-              {name: 'Not Accessible', y:Math.round(newData.N_Accessible_Len * 10) / 10, color:'#ff15c3'}
-            ], false);
-
-          // retain stacking
-          chart.update({
-            plotOptions: {
-              series: {
-                stacking: 'normal',
-                tooltip: {
-                  pointFormat: "{series.name}: {point.y} miles<br/>Total: {point.stackTotal} miles"     
-                }
-              }
-            },
-            xAxis: {
-              categories: [this.$store.state.fishRun]
-            }
-          }, true)} else {
-            // return to overall values
-            series_a.setData([
-              {name: 'Accessible', y:413.1, color:'#006400'},
-            ], false);
-            series_na.setData([
-              {name: 'Not Accessible', y:145.8, color:'#ff0000'}
-            ], false);
-
-          // retain stacking
-          chart.update({
-            plotOptions: {
-              series: {
-                stacking: 'normal',
-                tooltip: {
-                  pointFormat: "{series.name}: {point.y} miles<br/>Total: {point.stackTotal} miles"     
-                }
-              }
-            },
-            xAxis: {
-              categories: ['All Assessment Areas']
-            }
-          }, true)
+          xAxis: {
+            categories: [this.$store.state.fishRun]
           }
-        }},      
+        }, true)} else {
 
-      plotData() {
-        if (this.fishRun == null) {
-          this.updateChart(null)
-        } else {
+          // return to All Assessment Areas values
+          series_a.setData([
+            {name: 'Accessible', y:413.1, color:'#006400'},
+          ], false);
+          series_na.setData([
+            {name: 'Not Accessible', y:145.8, color:'#ff0000'}
+          ], false);
 
-        if (this.$store.state.plotFishRunGraph === true) {
-          // fetch fish run data to update plot with
-          var fn = this.fishRun.replaceAll(" ","").replaceAll("/", "").replaceAll("'","")
-          // const filePath = './data/df/row_'+fn+'.json';
-          const filePath = './data/df_chart_data.json';
-          
-          fetch(filePath)
-            .then(response => {
-              if (!response.ok) {
-                  throw new Error('Network response was not ok');
-                }
-              return response.json()
+        // retain stacking
+        chart.update({
+          plotOptions: {
+            series: {
+              stacking: 'normal',
+              tooltip: {
+                pointFormat: "{series.name}: {point.y} miles<br/>Total: {point.stackTotal} miles"     
+              }
+            }
+          },
+          xAxis: {
+            categories: ['All Assessment Areas']
+          }
+        }, true)
+        }
+      }},      
 
-            }).then(json => {
-              const extractThis = json.find(item => item.Name === fn);
-              this.updateChart(extractThis);
-            } )
-    
-          }}
-    },
+    // method to plot the given data (or return the chart to All Assessment Areas if null)
+    plotData() {
+      if (this.fishRun == null) {
+        this.updateChart(null)
+      } else {
+      if (this.$store.state.plotFishRunGraph === true) {
 
-    mounted() {
-      this.$nextTick(() => {
-        this.plotData();
-      })
-    }
-    }}
-  </script>
+        // fetch data to update plot 
+        var fn = this.fishRun.replaceAll(" ","").replaceAll("/", "").replaceAll("'","")
+        const filePath = './data/df_chart_data.json';
+        
+        fetch(filePath)
+          .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+            return response.json()
+
+          }).then(json => {
+            const extractThis = json.find(item => item.Name === fn);
+            this.updateChart(extractThis);
+          } )
   
-  <style>
-  /* .highcharts-container {
-      position: inherit !important;
+        }}
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      this.plotData();
+    })
   }
-  .highcharts-tooltip {
-      z-index: 9998;
-      background-color:white;
-      border:1px solid green;
-      opacity:1;
-  }
-  
-  .highcharts-tooltip div {
-      background-color:white;
-      border:1px solid green;
-      opacity:1;
-      z-index:9999!important;
-  } */
-  
-  </style>
-  
+  }}
+</script>
+
+<style>
+</style>

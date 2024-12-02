@@ -63,10 +63,6 @@
           <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.poly" v-if="habitat=='diadromous fish'" :options="optionsPoly" :options-style="styleFunction" ref="fishPoly"></l-geo-json>
         </l-layer-group>
       </div>
-      <div>
-        <l-easy-print>
-        </l-easy-print>
-      </div>
       <div v-if="pointsLayer">
         <l-layer-group ref="stations" v-for="s in stations" :key="s.id">
           <l-circle-marker
@@ -109,7 +105,6 @@ import WaterQualityFloater from '../components/WaterQualityFloater.vue'
 import { imageLibraryHabitat } from '../lib/constants'
 import { basemaps } from '../lib/constants'
 import { basemapsWms } from '../lib/constants'
-// import { BIconTelephoneMinusFill } from 'bootstrap-vue';
 
 export default {
   components: {
@@ -270,26 +265,14 @@ export default {
           layer.bindTooltip('');
       };
     },
-    // optionsStation() {
-    //   return {
-    //     onEachFeature: this.onEachStation
-    //   }
-    // },
-    // onEachStation() {
-    //   console.log('h')
-    //   return (feature, layer) => {
-    //     console.log(feature, layer)
-    //   }
-    // },
     optionsBuffer() {
-      return {
+       return {
         onEachFeature: this.onEachBuffer
        } 
     },
     onEachBuffer() {
       return (feature, layer) => {
-
-        // on click function
+        // on click function for the fishRun buffer
         layer.on({
           click: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
@@ -313,7 +296,6 @@ export default {
               this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
 
               this.reorderLayers()
-
             }
             this.plotFishData(event.target.feature.properties.NAME, false)
           },
@@ -343,11 +325,12 @@ export default {
     onEachEmbaymentFunction() {
       return (feature, layer) => {
         if (feature.properties.NAME == this.$route.query.embayment) {
-          // this.$refs.ettMap.mapObject.flyToBounds(layer.getBounds());
+          console.log(feature.properties.NAME, this.$route.query.embayment)
+
           this.$store.dispatch('setEmbayment', feature.properties.NAME);
           this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
           layer.setStyle({weight: 2, color: 'red', opacity: 1});
-        }
+        } 
 
         layer.on({
           click: (event) => {
@@ -365,7 +348,6 @@ export default {
               this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
               this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
               event.target.setStyle({weight: 2, color: 'red', opacity: 1});
-              // this.$refs.embaymentsBase.mapObject.bringToFront();
               this.reorderLayers();
             }
           },
@@ -437,7 +419,7 @@ export default {
         this.$router.push({ 
           query: { habitat: this.habitat, embayment: this.embayment, wq_param: this.waterQuality } 
         });
-        if (this.habitat != 'diadromous fish') {
+        if (this.habitat !== 'diadromous fish') {
           this.$store.dispatch('setFishRun', null)
         }
       }
@@ -489,6 +471,7 @@ export default {
     }
   },
   methods: {
+    // method to update the URL
     updateURL() {
       const map = this.$refs.ettMap.mapObject;
       const center = map.getCenter();
@@ -499,44 +482,70 @@ export default {
       url.searchParams.set('zoom', zoom);
       url.searchParams.set('fishRun', this.$store.state.fishRun);
       url.searchParams.set('station', this.$store.state.station);
-      url.searchParams.set('stationEmb', this.$store.state.stationEmbayment)
       window.history.replaceState({}, '', url);
     },
 
+    // method to restore the map state from the url
     restoreMapState() {
       const url = new URL(window.location.href);
       const center = url.searchParams.get('center');
       const zoom = url.searchParams.get('zoom');
       const fishRun = url.searchParams.get('fishRun');
       const station = url.searchParams.get('station');
-      const stationEmb = url.searchParams.get('stationEmb');
+      const embayment = this.embayment;
 
       if (center && zoom) {
         const [lat,lng] = center.split(',').map(Number);
         this.center = [lat, lng];
         this.zoom = Number(zoom);
-      }
-      if (fishRun) {
+      } 
+      if (fishRun != 'null' || fishRun == null) {
         this.$store.dispatch('setFishRun', fishRun);
         this.plotFishData(fishRun, true);
         this.$store.dispatch('setDFLegendColor', true);
         this.$store.dispatch('offModalStart');
-      } 
-      if (station != null) {
+      } else {
+        this.$store.dispatch('setFishRun', null);
+        this.plotFishData(fishRun, true);
+        this.$store.dispatch('setDFLegendColor', false);
+      }
+      if (station != 'null') {
         this.$store.dispatch('setStation', station);
-        this.$store.dispatch('setStationEmbayment', stationEmb);
+        this.$store.dispatch('setStationEmbayment', this.embayment);
 
         this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
         this.$store.dispatch('onWaterQualityGraph');
         this.$store.dispatch('onPlotWaterQualityGraph');
         this.$store.dispatch('offModalStart');
-        }
+        
+      } else {
+        this.$store.dispatch('setWaterQualityGraphVariable', null);
+        this.$store.dispatch('offPointsLayer');
+
+        this.$store.dispatch('setWaterQuality', null);
+        this.$store.dispatch('offWaterQualityGraph');
+        this.$store.dispatch('offPlotWaterQualityGraph');
+      }
+
+      if (embayment != 'null' || embayment != null) {
+        this.$store.dispatch('setEmbayment', embayment);
+      } else {
+        console.log('no, ', embayment)
+      }
+
+      // initial states (station & habitat null)
+      if (station == null && this.habitat == null) {
+        this.$store.dispatch('onModalStart');
+      } else {
+        this.$store.dispatch('offModalStart')
+      }
     },
+
     onMapMoveEnd() {
       this.updateURL();
     },
     onMapZoomEnd() {
-      this.updateURL();
+      this.updateURL();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
     },
     styleFunction(feature) {
       let fish = this.fishRun;
@@ -690,8 +699,7 @@ export default {
 
             this.$store.dispatch('setStation', stationId);
             this.$store.dispatch('setStationEmbayment', stationEmbayment);
-        }
-      
+      }
     },
     plotFishData(fishRunName, isInitial) {
       if (isInitial) {
@@ -729,6 +737,7 @@ export default {
         map.setView(this.center, this.zoom);
       }
     },
+    // reorder the layers visible on the ett 
     reorderLayers () {
       this.$nextTick(() => {
         if (('metric' in this.$refs) && (this.$refs.metric !== undefined)) {
@@ -793,8 +802,6 @@ export default {
             return response.json()
           }).then(json => {
             this.bkgrdGeojson[key].data[alt] = json;
-            // const year = json.name.split('_').pop()
-            // this.$store.dispatch('setHabitatLegendYear', {habitat: value.name, period: alt, value: year});
         })					
       })
     })
@@ -821,9 +828,14 @@ export default {
     })
   },
   mounted() {
-    this.$store.dispatch();
     this.restoreMapState();
 
+    // if (!restore) {
+    //   this.initMapState();
+    // } else {
+    //   this.restoreMapState();
+    // }
+    
     this.$nextTick(() => {
       const map = this.$refs.ettMap.mapObject;
       if (map) {

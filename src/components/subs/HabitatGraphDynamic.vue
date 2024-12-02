@@ -1,4 +1,16 @@
-<template>
+<!-- 
+ HabitatGraphDynamic.vue
+ This file serves as the dynamic version of the HabitatGraph.vue. It is the pop-out version of the
+ right-hand side bar habitat graph bar chart, available when the red "printer" icon is clicked on.
+ This dynamic graph provides the user with a larger graph with printing and save-as-image capabilities.
+ This dynamic graph will represent the data that is in the right-hand side bar, reflecting any embayment 
+ selections made prior to clicking the red "printer" icon. The graph also allows the user to click
+ and drag, zooming to the selection.
+
+ Last updated: 11/12/2024
+ -->
+ 
+ <template>
   <div>
     <highcharts class="chart" :options="chartOptions" ref="Chart" style="width: 100%; min-height: 300px; max-height:500px"></highcharts>
     <button v-if="zoomed" @click="resetZoom">Reset Zoom</button>
@@ -39,11 +51,6 @@ export default {
             text: 'Year'
           },
           min: 0,
-          // categories: [
-          //   '2000',
-          //   '2005',
-          //   '2050 Goal'
-          // ],
           crosshair: true,
           type: 'datetime',
           labels: {
@@ -84,10 +91,6 @@ export default {
         ]
       },
       habitatQuantities: null,
-      startYear: null,
-      endYear: null,
-      minYear: null,
-      maxYear: null,
       zoomed: false
     }
   },
@@ -116,18 +119,16 @@ export default {
         this.updateGraph();
       }      
     },
-    // data: {
-    //   handler(newData) {
-    //     this.updateYears(newData);
-    //   }, deep: true
-    // }
   },
 
   methods: {
+    // method to reset the graph from the zoom
     resetZoom() {
       this.updateGraph();
       this.zoomed = false;
     },
+
+    // method to update the x axis range
     updateXAxisRange(minIndex, maxIndex) {
       const chart = this.$refs.Chart.chart;
       const categories = this.chartOptions.xAxis.categories;
@@ -150,6 +151,7 @@ export default {
           });
         }
 
+        // filter and plot the data
         if ((matchSet.filter(row => row.VALUE == -999).length > 0) && (matchSet.length == 1)) {
           this.chartOptions.yAxis.plotLines[0].value = -100;
           this.chartOptions.series[0].data = [];
@@ -189,12 +191,13 @@ export default {
         }
       )}
     },
-    exportChart() {
-      const chart = this.$refs.Chart.chart;
-      if (chart) {
-        chart.exportChart();
-      }
-    },
+    // exportChart() {
+    //   const chart = this.$refs.Chart.chart;
+    //   if (chart) {
+    //     chart.exportChart();
+    //   }
+    // },
+    // method to capitalize the habitat name
     habitatCapital(hab) {
       const titles = hab.split(" ");
       const capitalTitle = titles.map((word) => {
@@ -202,6 +205,7 @@ export default {
       }).join(" ");
       return capitalTitle;
     },
+    // method to update the graph with new data
     updateGraph() {
       let newValues = [];
       let newCategories = [];
@@ -209,23 +213,31 @@ export default {
       let matchSet = null;
 
       const chart = this.$refs.Chart.chart;
+
+      // set the data to embayment if one is selected, otherwise All Assessment Areas
       if (this.embayment == null) {
           chart.setTitle({ text: this.habitatCapital(this.habitat) + ' Extent<br>All Assessment Areas'});
-        } else {
-          chart.setTitle({ text: this.habitatCapital(this.habitat) + ' Extent<br>' + this.embayment});
-        }
-        
-
-      if (this.embayment == null) {
           matchSet = this.habitatQuantities.filter(row => {
             return (row.ASSESSMENT_AREA == 'ALL' && row.TYPE == this.habitat)
           })
         } else {
+          chart.setTitle({ text: this.habitatCapital(this.habitat) + ' Extent<br>' + this.embayment});
           matchSet = this.habitatQuantities.filter(row => {
             return (row.ASSESSMENT_AREA == this.embayment && row.TYPE == this.habitat)
           });
         }
+        
+      // if (this.embayment == null) {
+      //     matchSet = this.habitatQuantities.filter(row => {
+      //       return (row.ASSESSMENT_AREA == 'ALL' && row.TYPE == this.habitat)
+      //     })
+      //   } else {
+      //     matchSet = this.habitatQuantities.filter(row => {
+      //       return (row.ASSESSMENT_AREA == this.embayment && row.TYPE == this.habitat)
+      //     });
+      //   }
 
+        // filter and plot the data
         if ((matchSet.filter(row => row.VALUE == -999).length > 0) && (matchSet.length == 1)) {
           this.chartOptions.yAxis.plotLines[0].value = -100;
           this.chartOptions.series[0].data = [];

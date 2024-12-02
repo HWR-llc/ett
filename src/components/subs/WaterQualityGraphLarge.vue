@@ -1,28 +1,6 @@
 <template>
   <div>
     <highcharts class="chart" :options="chartOptions" ref="chart" :style="styleObject"></highcharts>
-    <!-- <div>
-      <label>Start Year: {{ startYear }}</label>
-      <br>
-      <input 
-        type="range"
-        :min="minYear"
-        :max="maxYear"
-        v-model="startYear"
-        @input="plotData"
-        />
-    </div>
-    <div>
-      <label>End Year: {{ endYear }}</label>
-      <br>
-      <input 
-        type="range"
-        :min="minYear"
-        :max="maxYear"
-        v-model="endYear"
-        @input="plotData"
-        />
-    </div> -->
     <div>
     <p>Click and drag to zoom in to different parts of the graph.</p>
   </div>
@@ -52,9 +30,7 @@ export default {
           type: 'scatter',
           zoomType: 'x'
         },
-        // title: {
-        //   text: null
-        // },
+
         lang: {
           noData: 'No observed data to display in this area.<br> Select a different area to see data.'
         },
@@ -64,12 +40,6 @@ export default {
 
         xAxis: {
           type: 'datetime',
-          // title: {
-          //   text: 'Date'
-          // },
-          // min: minTime,
-          // max: maxTime,
-
           labels: {
             format: '{value:%b<br/>%Y}'
           },
@@ -179,42 +149,7 @@ export default {
     }
   },
   methods: {
-    // setYears(data) {
-    //   let holdMin = Infinity;
-    //   let holdMax = -Infinity;
 
-    //   // find the minimum and maximum years
-    //   data.forEach(param => {
-    //     if (Array.isArray(param.values)) {
-    //       param.values.forEach(v => {
-    //         const date = new Date(v.datetime);
-
-    //         if (!isNaN(date.getTime())) {
-    //           const year = date.getFullYear();
-
-    //           if (year < holdMin) holdMin = year;
-    //           if (year > holdMax) holdMax = year;
-    //         }
-    //       });
-    //     }
-    //   });
-
-    //   this.minYear = holdMin;
-    //   this.maxYear = holdMax;
-    //   this.startYear = holdMin;
-    //   this.endYear = holdMax;
-
-    //   if (this.$refs.chart && this.$refs.chart.chart) {
-    //     this.$refs.chart.chart.update(this.minYear)
-    //     this.$refs.chart.chart.update(this.maxYear)
-    //     this.$refs.chart.chart.update(this.startYear)
-    //     this.$refs.chart.chart.update(this.endYear);
-    //   }
-    // },
-    // updateYears() {
-    //   this.$refs.chart.chart.update(this.startYear);
-    //   this.$refs.chart.chart.update(this.endYear);
-    // },
     parameterMapper(parameterName) {
       const waterQualityMap = new Map();
       waterQualityMap.set('chlorophyl-a', 'CHLA');
@@ -240,11 +175,6 @@ export default {
         .then(response => {
           return response.json()
         }).then(json => {
-          // if (this.minYear == null) {
-          //   this.setYears(json);
-          // } else {
-          //   this.updateYears();
-          // }
 
           let activeData = json.filter(row => row.param == parameterCode)[0];
 
@@ -255,13 +185,8 @@ export default {
           let dataSeries = [];
 
           activeData.values.forEach( row => {
-            // let year = new Date(row.datetime).getFullYear();
-            // // console.log(year, ' || min: ', this.minYear, ' || max : ', this.maxYear)
-            // if (year >= this.startYear && year <= this.endYear) {
               dataSeries.push({x: new Date(row.datetime).getTime(), y: row.value})
-            // } else {
-            //   console.log('out of bounds')
-            // }
+
           })
           this.chartOptions.yAxis.min = this.waterQualityThresholds[this.waterQualityGraphVariable].minValue;
           let thresholdValue = Math.max(...this.waterQualityThresholds[this.waterQualityGraphVariable].value);
@@ -297,22 +222,6 @@ export default {
 
             this.chartOptions.yAxis.plotLines[0].label.y = -10;            
           }         
-          // if (this.waterQualityGraphVariable == 'salinity') {
-          //   this.chartOptions.yAxis.plotLines[1].value = this.waterQualityThresholds[this.waterQualityGraphVariable].value[1];
-          //   this.chartOptions.series[1].name = this.waterQualityThresholds[this.waterQualityGraphVariable].type[0] +': <' + this.waterQualityThresholds[this.waterQualityGraphVariable].value[0] + ' (' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + '); ' +
-          //   'Estuarine: ' +  this.waterQualityThresholds[this.waterQualityGraphVariable].value[0] + '-' + this.waterQualityThresholds[this.waterQualityGraphVariable].value[1] + 
-          //   ' ' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + '; ' + this.waterQualityThresholds[this.waterQualityGraphVariable].type[1] + ': >' + this.waterQualityThresholds[this.waterQualityGraphVariable].value[1] +
-          //   ' ' + this.waterQualityThresholds[this.waterQualityGraphVariable].units;
-          // } else if (this.waterQualityGraphVariable == 'pH') {
-          //   this.chartOptions.yAxis.plotLines[1].value = this.waterQualityThresholds[this.waterQualityGraphVariable].value[1];
-          //   this.chartOptions.series[1].name = this.waterQualityThresholds[this.waterQualityGraphVariable].type[0] +' Threshold: ' +
-          //   this.waterQualityThresholds[this.waterQualityGraphVariable].value[0] + ' ' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + '; ' +
-          //   this.waterQualityThresholds[this.waterQualityGraphVariable].type[1] +' Threshold: ' + this.waterQualityThresholds[this.waterQualityGraphVariable].value[1] + 
-          //   ' ' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ''
-          // } else {
-          //   this.chartOptions.yAxis.plotLines[1].value = -10;            
-          //   this.chartOptions.series[1].name = this.waterQualityThresholds[this.waterQualityGraphVariable].type[0] + ' Threshold: ' + thresholdValue + ' ' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + '';
-          // }
           
         });
       } else {

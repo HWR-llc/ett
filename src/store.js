@@ -30,6 +30,7 @@ export const store = new Vuex.Store({
     plotWaterQualityGraph: false,
     plotFishRunGraph: false,
     dfLegendColor: false,
+    init: true,
     legendYears: {
       'eelgrass': {historic: null, current: null},
       'salt marsh': {historic: null, current: null},
@@ -55,6 +56,9 @@ export const store = new Vuex.Store({
     },    
     SET_STATION: (state, payload) => {
       state.station = payload;
+    },
+    SET_INIT: (state, payload) => {
+      state.init = payload;
     },
     SET_FISHRUN: (state, payload) => {
       state.fishRun = payload;
@@ -88,6 +92,9 @@ export const store = new Vuex.Store({
     },
     ON_POINTS_LAYER: state => {
       state.pointsLayer = true;
+    },
+    OFF_POINTS_LAYER: state => {
+      state.pointsLayer = false;
     },
     ON_BASE_LAYER: state => {
       state.baseLayer = true;
@@ -154,6 +161,9 @@ export const store = new Vuex.Store({
     setStation: ({commit}, payload) => {
       commit('SET_STATION', payload);
     },
+    setInit: ({commit}, payload) => {
+      commit('SET_INIT', payload);
+    },
     setFishRun: ({commit}, payload) => {
       commit('SET_FISHRUN', payload)
     },
@@ -179,6 +189,9 @@ export const store = new Vuex.Store({
       if (state.pointsLayer == false) {
         commit('ON_POINTS_LAYER');
       }
+    },
+    offPointsLayer: ({commit}) => {
+      commit('OFF_POINTS_LAYER');
     },
     onBaseLayer: ({commit, state}) => {
       if (state.baseLayer == false) {

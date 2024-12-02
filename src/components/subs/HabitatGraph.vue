@@ -1,4 +1,14 @@
-<template>
+<!-- 
+ File: HabitatGraph.vue
+ This file corresponds to the graph that appears in the right-hand side bar when habitat != Diadromous Fish.
+ The graph will update upon selection/deselection of an embayment with the habitat's current and historic area
+ covered within the embayment displayed in the form of a bar chart, with a dashed line representing the 2050 goal. 
+Default values for the chart are the All Assessment Areas, or the overall habitat areas of all embayments summed.
+ 
+ Last updated: 11/12/2024 
+ -->
+
+ <template>
   <div>
     <highcharts class="chart" :options="chartOptions" ref="Chart" style="width: 100%; min-height: 300px; max-height:500px"></highcharts>
  </div>
@@ -6,11 +16,9 @@
 
 <script>
 import Highcharts from "highcharts"
-// import Exporting from 'highcharts/modules/exporting';
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
 NoDataToDisplay(Highcharts);
 Highcharts.setOptions({lang: {thousandsSep:','}})
-// Exporting(Highcharts);
 export default {
   data() {
     return {
@@ -106,12 +114,13 @@ export default {
   },
 
   methods: {
-    exportChart() {
-      const chart = this.$refs.chart.chart;
-      if (chart) {
-        chart.exportChart();
-      }
-    },
+    // exportChart() {
+    //   const chart = this.$refs.chart.chart;
+    //   if (chart) {
+    //     chart.exportChart();
+    //   }
+    // },
+    // method to update the graph given new data
     updateGraph() {
       let newValues = [];
       let newCategories = [];
