@@ -197,24 +197,7 @@ export default {
             this.chartOptions.yAxis.plotLines[0].label.text = this.waterQualityThresholds[this.waterQualityGraphVariable].type[0] + ' Threshold: ' + thresholdValue + ' ' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + '';
 
             this.chartOptions.yAxis.plotLines[0].label.y = -10;            
-          }         
-          // if (this.waterQualityGraphVariable == 'salinity') {
-          //   this.chartOptions.yAxis.plotLines[1].value = this.waterQualityThresholds[this.waterQualityGraphVariable].value[1];
-          //   this.chartOptions.series[1].name = this.waterQualityThresholds[this.waterQualityGraphVariable].type[0] +': <' + this.waterQualityThresholds[this.waterQualityGraphVariable].value[0] + ' (' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + '); ' +
-          //   'Estuarine: ' +  this.waterQualityThresholds[this.waterQualityGraphVariable].value[0] + '-' + this.waterQualityThresholds[this.waterQualityGraphVariable].value[1] + 
-          //   ' ' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + '; ' + this.waterQualityThresholds[this.waterQualityGraphVariable].type[1] + ': >' + this.waterQualityThresholds[this.waterQualityGraphVariable].value[1] +
-          //   ' ' + this.waterQualityThresholds[this.waterQualityGraphVariable].units;
-          // } else if (this.waterQualityGraphVariable == 'pH') {
-          //   this.chartOptions.yAxis.plotLines[1].value = this.waterQualityThresholds[this.waterQualityGraphVariable].value[1];
-          //   this.chartOptions.series[1].name = this.waterQualityThresholds[this.waterQualityGraphVariable].type[0] +' Threshold: ' +
-          //   this.waterQualityThresholds[this.waterQualityGraphVariable].value[0] + ' ' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + '; ' +
-          //   this.waterQualityThresholds[this.waterQualityGraphVariable].type[1] +' Threshold: ' + this.waterQualityThresholds[this.waterQualityGraphVariable].value[1] + 
-          //   ' ' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ''
-          // } else {
-          //   this.chartOptions.yAxis.plotLines[1].value = -10;            
-          //   this.chartOptions.series[1].name = this.waterQualityThresholds[this.waterQualityGraphVariable].type[0] + ' Threshold: ' + thresholdValue + ' ' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + '';
-          // }
-          
+          }                   
         });
       } else {
         this.chartOptions.yAxis.title.text = 'parameter (units)';

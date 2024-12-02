@@ -71,7 +71,7 @@
             fillOpacity= 1
             :color="activeCircleColorer(s.id, s.properties.parameter_list)"
             radius= 5
-            @click="plotData($event, s.id, s.properties.parameter_list, s.properties.eda_unit_name)"
+            @click="plotData(s.id, s.properties.parameter_list, s.properties.eda_unit_name, false)"
           >
             <l-tooltip ref="tooltip" style="padding-left: 15px; padding-right: 15px">
               <app-station-tooltip 
@@ -419,7 +419,7 @@ export default {
     '$store.state.habitat': {
       handler() {
         this.$router.push({ 
-          query: { habitat: this.habitat } 
+          query: { habitat: this.habitat, wq_param: this.waterQuality } 
         });
         if (this.habitat !== 'diadromous fish') {
           this.$store.dispatch('setFishRun', null)
@@ -440,9 +440,9 @@ export default {
     },
     '$store.state.waterQuality': {
       handler() {
-        // this.$router.push({ 
-        //   query: { habitat: this.habitat, embayment: this.embayment, wq_param: this.waterQuality } 
-        // });
+        this.$router.push({ 
+          query: { habitat: this.habitat, wq_param: this.waterQuality } 
+        });
         this.$store.dispatch('setStation', null);
       }, immediate: true  
     },
@@ -482,7 +482,8 @@ export default {
       url.searchParams.set('fishRun', this.$store.state.fishRun);
       url.searchParams.set('station', this.$store.state.station);
       url.searchParams.set('embayment', this.$store.state.embayment);
-      url.searchParams.set('wq_param', this.$store.state.waterQuality);
+      // url.searchParams.set('wqParam', this.$store.state.waterQuality);
+      url.searchParams.set('stationEmb', this.$store.state.stationEmbayment);
       window.history.replaceState({}, '', url);
     },
 
@@ -494,55 +495,44 @@ export default {
       const fishRun = url.searchParams.get('fishRun');
       const station = url.searchParams.get('station');
       const embayment = url.searchParams.get('embayment');
-      const wq_param = url.searchParams.get('wq_param');
+      // const wqParam = url.searchParams.get('wqParam');
+      const stationEmb = url.searchParams.get('stationEmb');
 
       if (center && zoom) {
         const [lat,lng] = center.split(',').map(Number);
         this.center = [lat, lng];
         this.zoom = Number(zoom);
       } 
-      if (fishRun != 'null' || fishRun == null) {
+
+      if (fishRun && fishRun != 'null') {
         this.$store.dispatch('setFishRun', fishRun);
         this.plotFishData(fishRun, true);
         this.$store.dispatch('setDFLegendColor', true);
-        this.$store.dispatch('offModalStart');
       } else {
         this.$store.dispatch('setFishRun', null);
         this.plotFishData(fishRun, true);
         this.$store.dispatch('setDFLegendColor', false);
       }
-      if (station != 'null' && station != null) {
-        this.$store.dispatch('setStation', station);
-        this.$store.dispatch('setStationEmbayment', this.embayment);
 
-        this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
+      // water quality station graphs
+      if (station && station != 'null') {
+        this.$store.dispatch('setStation', station);
+        this.$store.dispatch('setStationEmbayment', stationEmb);
+
+        // this.$store.dispatch('setWaterQuality', wqParam);
+        this.$store.dispatch('setWaterQualityGraphVariable', this.$route.query.wq_param);
         this.$store.dispatch('onWaterQualityGraph');
         this.$store.dispatch('onPlotWaterQualityGraph');
-        this.$store.dispatch('offModalStart');
 
-      } else {
-        this.$store.dispatch('setWaterQualityGraphVariable', null);
-        this.$store.dispatch('offPointsLayer');
+      } 
 
-        // this.$store.dispatch('setWaterQuality', null);
-        this.$store.dispatch('offWaterQualityGraph');
-        this.$store.dispatch('offPlotWaterQualityGraph');
-      }
-
-      if (wq_param && wq_param != 'null') {
-        this.$store.dispatch('setWaterQuality', wq_param);
-      } else {
-        this.$store.dispatch('setWaterQuality', null);
-      }
-
+      // embayment selection
       if (embayment && embayment != 'null') {
         this.$store.dispatch('setEmbayment', embayment);
-      } else {
-        console.log('no, ', embayment)
-      }
+      } 
 
-      // initial states (station & habitat null)
-      if (station == null && this.habitat == null) {
+      // initial states (water quality & habitat are null)
+      if (this.waterQuality == null && this.habitat == null) {
         this.$store.dispatch('onModalStart');
       } else {
         this.$store.dispatch('offModalStart')
@@ -683,8 +673,8 @@ export default {
       });
       return activeParameters;
     },
-    plotData(event, stationId, parameterList, stationEmbayment) {
-        if (stationId == this.station) {
+    plotData(stationId, parameterList, stationEmbayment, init) {
+        if (!init && stationId == this.station) {
           this.$store.dispatch('offWaterQualityGraph');
           this.$store.dispatch('setStation', null);
           } else {

@@ -114,12 +114,6 @@ export default {
   },
 
   methods: {
-    // exportChart() {
-    //   const chart = this.$refs.chart.chart;
-    //   if (chart) {
-    //     chart.exportChart();
-    //   }
-    // },
     // method to update the graph given new data
     updateGraph() {
       let newValues = [];
