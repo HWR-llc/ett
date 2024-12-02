@@ -324,13 +324,15 @@ export default {
     },
     onEachEmbaymentFunction() {
       return (feature, layer) => {
-        if (feature.properties.NAME == this.$route.query.embayment) {
-          console.log(feature.properties.NAME, this.$route.query.embayment)
+        if (feature.properties.NAME == this.embayment) {
+          console.log(feature.properties.NAME, this.embayment);
 
           this.$store.dispatch('setEmbayment', feature.properties.NAME);
           this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
           layer.setStyle({weight: 2, color: 'red', opacity: 1});
-        } 
+        } else {
+          console.log(this.$route.query.embayment)
+        }
 
         layer.on({
           click: (event) => {
@@ -417,7 +419,7 @@ export default {
     '$store.state.habitat': {
       handler() {
         this.$router.push({ 
-          query: { habitat: this.habitat, embayment: this.embayment, wq_param: this.waterQuality } 
+          query: { habitat: this.habitat } 
         });
         if (this.habitat !== 'diadromous fish') {
           this.$store.dispatch('setFishRun', null)
@@ -426,10 +428,7 @@ export default {
     },
     '$store.state.embayment': {
       handler() {
-        this.$router.push({ 
-          query: { habitat: this.habitat, embayment: this.embayment, wq_param: this.waterQuality } 
-        });
-
+        this.updateURL();
         if ((this.embayment == null) && (this.stopFlyTo == false)) {
           this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);  
           this.$refs.ettMap.mapObject.flyTo(this.center, this.zoom);     
@@ -441,9 +440,9 @@ export default {
     },
     '$store.state.waterQuality': {
       handler() {
-        this.$router.push({ 
-          query: { habitat: this.habitat, embayment: this.embayment, wq_param: this.waterQuality } 
-        });
+        // this.$router.push({ 
+        //   query: { habitat: this.habitat, embayment: this.embayment, wq_param: this.waterQuality } 
+        // });
         this.$store.dispatch('setStation', null);
       }, immediate: true  
     },
@@ -482,6 +481,8 @@ export default {
       url.searchParams.set('zoom', zoom);
       url.searchParams.set('fishRun', this.$store.state.fishRun);
       url.searchParams.set('station', this.$store.state.station);
+      url.searchParams.set('embayment', this.$store.state.embayment);
+      url.searchParams.set('wq_param', this.$store.state.waterQuality);
       window.history.replaceState({}, '', url);
     },
 
@@ -492,7 +493,8 @@ export default {
       const zoom = url.searchParams.get('zoom');
       const fishRun = url.searchParams.get('fishRun');
       const station = url.searchParams.get('station');
-      const embayment = this.embayment;
+      const embayment = url.searchParams.get('embayment');
+      const wq_param = url.searchParams.get('wq_param');
 
       if (center && zoom) {
         const [lat,lng] = center.split(',').map(Number);
@@ -509,7 +511,7 @@ export default {
         this.plotFishData(fishRun, true);
         this.$store.dispatch('setDFLegendColor', false);
       }
-      if (station != 'null') {
+      if (station != 'null' && station != null) {
         this.$store.dispatch('setStation', station);
         this.$store.dispatch('setStationEmbayment', this.embayment);
 
@@ -517,17 +519,23 @@ export default {
         this.$store.dispatch('onWaterQualityGraph');
         this.$store.dispatch('onPlotWaterQualityGraph');
         this.$store.dispatch('offModalStart');
-        
+
       } else {
         this.$store.dispatch('setWaterQualityGraphVariable', null);
         this.$store.dispatch('offPointsLayer');
 
-        this.$store.dispatch('setWaterQuality', null);
+        // this.$store.dispatch('setWaterQuality', null);
         this.$store.dispatch('offWaterQualityGraph');
         this.$store.dispatch('offPlotWaterQualityGraph');
       }
 
-      if (embayment != 'null' || embayment != null) {
+      if (wq_param && wq_param != 'null') {
+        this.$store.dispatch('setWaterQuality', wq_param);
+      } else {
+        this.$store.dispatch('setWaterQuality', null);
+      }
+
+      if (embayment && embayment != 'null') {
         this.$store.dispatch('setEmbayment', embayment);
       } else {
         console.log('no, ', embayment)
@@ -816,6 +824,7 @@ export default {
         this.$store.dispatch('setHabitatLegendYear', {habitat: habitat.HABITAT, period: habitat.PERIOD, value: habitat.YEAR});
       })
     })
+
     // fetch water quality stations
     fetch('./data/stations.json')
     .then(response => {
@@ -830,12 +839,6 @@ export default {
   mounted() {
     this.restoreMapState();
 
-    // if (!restore) {
-    //   this.initMapState();
-    // } else {
-    //   this.restoreMapState();
-    // }
-    
     this.$nextTick(() => {
       const map = this.$refs.ettMap.mapObject;
       if (map) {
