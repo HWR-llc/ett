@@ -10,7 +10,7 @@ export const store = new Vuex.Store({
     fishRun: null,
     habitatGraphVariable: null,
     waterQualityGraphVariable: null,
-    fishRunGraphVariable: null,
+    // fishRunGraphVariable: null,
     habitatIndex: null,
     baseLayer: false,
     pointsLayer: false,

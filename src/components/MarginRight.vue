@@ -108,15 +108,9 @@ export default {
     plotDiadromousFishGraph() {
       return this.$store.state.plotFishRunGraph;
     },
-    // plotDiadromousFishGraphDynamic() {
-    //   return this.$store.state.plotDiadromousFishGraphDynamic;
-    // },
     plotHabitatGraph() {
       return this.$store.state.plotHabitatGraph;
     },
-    // plotHabitatGraphDynamic() {
-    //   return this.$store.state.plotHabitatGraphDynamic;
-    // },
     showHabitatGraphDynamic: {
       get () {
         return this.$store.state.showHabitatGraphDynamic;

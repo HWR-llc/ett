@@ -191,13 +191,6 @@ export default {
         }
       )}
     },
-    // exportChart() {
-    //   const chart = this.$refs.Chart.chart;
-    //   if (chart) {
-    //     chart.exportChart();
-    //   }
-    // },
-    // method to capitalize the habitat name
     habitatCapital(hab) {
       const titles = hab.split(" ");
       const capitalTitle = titles.map((word) => {

@@ -495,7 +495,6 @@ export default {
       const fishRun = url.searchParams.get('fishRun');
       const station = url.searchParams.get('station');
       const embayment = url.searchParams.get('embayment');
-      // const wqParam = url.searchParams.get('wqParam');
       const stationEmb = url.searchParams.get('stationEmb');
 
       if (center && zoom) {

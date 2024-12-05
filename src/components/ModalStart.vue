@@ -17,9 +17,6 @@
             </figure>
           </div>
         </div>
-        <!-- <div class="text-right" style="color: red">
-            &nbsp;<span v-if="spanShow">Diadromous Fish coming soon.</span>
-        </div> -->
         <div class="row justify-content-center">
           <b-button variant="primary" class="water-quality-background no-border" @click="buttonClicked">Water Quality</b-button>
         </div>
