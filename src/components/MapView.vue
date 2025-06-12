@@ -58,9 +58,9 @@
           <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.current" v-if="habitat=='tidal flats'" :options-style="tfStyleCur"></l-geo-json>	  		
           <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.current" v-if="habitat=='salt marsh'" :options-style="smStyleCur"></l-geo-json>	
           <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.current" v-if="habitat=='eelgrass'" :options-style="egStyleCur"></l-geo-json>
-          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.current" v-if="habitat=='diadromous fish'" :options="optionsBuffer" :options-style="styleFunction" ref="fishBase"></l-geo-json>
-          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.buff" v-if="habitat=='diadromous fish'" :options="optionsBuffer" :options-style="buffStyle" ref="fishBuff"></l-geo-json>
-          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.poly" v-if="habitat=='diadromous fish'" :options="optionsPoly" :options-style="styleFunction" ref="fishPoly"></l-geo-json>
+          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.current" v-if="habitat=='diadromous fish'" :options="optionsMigratory" :options-style="migratoryFishStyle" ref="fishBase"></l-geo-json>
+          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.buff" v-if="habitat=='diadromous fish'" :options="optionsMigratory" :options-style="buffStyle" ref="fishBuff"></l-geo-json>
+          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.poly" v-if="habitat=='diadromous fish'" :options="optionsSpawning" :options-style="spawningFishStyle" ref="fishPoly"></l-geo-json>
         </l-layer-group>
       </div>
       <div v-if="pointsLayer">
@@ -204,7 +204,7 @@ export default {
         return {
           stroke: false,
           fillColor: "green",
-          fillOpacity: 0,
+          fillOpacity: 0.15,
           interactive: true
         }
       }
@@ -239,7 +239,7 @@ export default {
         };
       };
     },
-    optionsPoly() {
+    optionsSpawning() {
       return {
         onEachFeature: this.onEachPoly
       }
@@ -265,40 +265,40 @@ export default {
           layer.bindTooltip('');
       };
     },
-    optionsBuffer() {
+    optionsMigratory() {
        return {
-        onEachFeature: this.onEachBuffer
+        onEachFeature: this.onEachBufferLine
        } 
     },
-    onEachBuffer() {
+    onEachBufferLine() {
       return (feature, layer) => {
         // on click function for the fishRun buffer
         layer.on({
-          click: (event) => {
-            let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
+          // click: (event) => {
+          //   let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
 
-            event.target.getTooltip().setContent(featureName);
+          //   event.target.getTooltip().setContent(featureName);
 
-            if (event.target.feature.properties.NAME == this.fishRun) {
-              this.$store.dispatch('setDFLegendColor', false)
+          //   if (event.target.feature.properties.NAME == this.fishRun) {
+          //     this.$store.dispatch('setDFLegendColor', false)
 
-              this.stopFlyTo = true;
-              this.$store.dispatch('setFishRun', null);
+          //     this.stopFlyTo = true;
+          //     this.$store.dispatch('setFishRun', null);
 
-              this.plotFishData(event.target.feature.properties.NAME, false)
+          //     this.plotFishData(event.target.feature.properties.NAME, false)
 
-              this.$nextTick(() => {
-                this.stopFlyTo = false;
-              })
+          //     this.$nextTick(() => {
+          //       this.stopFlyTo = false;
+          //     })
             
-            } else {
-              this.$store.dispatch('setDFLegendColor', true)
-              this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
+          //   } else {
+          //     this.$store.dispatch('setDFLegendColor', true)
+          //     this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
 
-              this.reorderLayers()
-            }
-            this.plotFishData(event.target.feature.properties.NAME, false)
-          },
+          //     this.reorderLayers()
+          //   }
+          //   this.plotFishData(event.target.feature.properties.NAME, false)
+          // },
           mouseover: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME);
             const tooltip = event.target.getTooltip();
@@ -450,10 +450,10 @@ export default {
       handler() {
         this.updateURL();
         if ((this.fishRun == null) && (this.stopFlyTo == false)) {
-          this.$refs.fishBase.setOptionsStyle(this.styleFunction);  
+          this.$refs.fishBase.setOptionsStyle(this.migratoryFishStyle);  
           this.$refs.ettMap.mapObject.flyTo(this.center, this.zoom);     
         } else {
-          this.$refs.fishBase.setOptionsStyle(this.styleFunction);  
+          this.$refs.fishBase.setOptionsStyle(this.migratoryFishStyle);  
         } 
       }, immediate: true  
     },
@@ -544,7 +544,24 @@ export default {
     onMapZoomEnd() {
       this.updateURL();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
     },
-    styleFunction(feature) {
+    spawningFishStyle(feature) {
+      // let fish = this.fishRun;
+      // let name = feature.properties.NAME;
+      if (feature.properties.ACCESSIBLE == "Y") {
+        return {
+          color: this.imageLibraryHabitat['diadromous fish'].accColor,
+          fillOpacity: 1,
+          stroke: false
+        }
+      } else {
+        return {
+          color: this.imageLibraryHabitat['diadromous fish'].naColor,
+          fillOpacity: 1,
+          stroke: false            
+        }
+      }
+    },
+    migratoryFishStyle(feature) {
       let fish = this.fishRun;
       let name = feature.properties.NAME;
       
@@ -787,9 +804,9 @@ export default {
         historic: "./data/eelgrass_historic_wgs.geojson"
       },
       diadromousFish: {
-        buff: "./data/trial_dissolved.geojson",
         current: "./data/migratory_habs.geojson",
-        poly: "./data/spawning_habs_poly.geojson"
+        buff: "./data/migratory_buffer_wgs.geojson",
+        poly: "./data/spawning_habs.geojson"
       }
     }
     Object.entries(this.bkgrdGeojson).forEach(([key, value]) => {
