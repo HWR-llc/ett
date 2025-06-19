@@ -204,7 +204,7 @@ export default {
         return {
           stroke: false,
           fillColor: "green",
-          fillOpacity: 0.15,
+          fillOpacity: 0.0,
           interactive: true
         }
       }

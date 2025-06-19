@@ -23,7 +23,7 @@
             </svg> 
           </div>
           <div class="col-9">
-            Diadromous Fish Extent (Accessible)
+            Diadromous Fish Habitat Extent (Fully or Partially Accessible)
           </div>
         </div>
         <div class="row">
@@ -38,7 +38,7 @@
             </svg> 
           </div>
           <div class="col-9">
-            Diadromous Fish Extent (Not Accessible)
+            Diadromous Fish Habitat Extent (Not Accessible)
           </div>
         </div>
     </div>
