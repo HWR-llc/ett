@@ -6,114 +6,120 @@
  selected fish run. Default values for the chart are the All Assessment Areas, or the overall accessible
  and not accessible lengths of all rivers summed.
  
- Last updated: 11/12/2024 
+ Last updated: 6/17/2025 
  -->
  <template>
   <div>
-    <highcharts class="chart" :options="chartOptions" ref="chart" :style="styleObject"></highcharts>
+    <highcharts class="chart" :options="chartOptions" ref="Chart" style="width: 100%; min-height: 300px; max-height:500px"></highcharts>
   </div>
 </template>
 
 <script>
 import Highcharts from "highcharts";
-import { Math } from "core-js";({lang: {thousandsSep:','}})
+import Exporting from 'highcharts/modules/exporting';
+// import { Math } from "core-js";({lang: {thousandsSep:','}})
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
+Exporting(Highcharts);
 NoDataToDisplay(Highcharts);
 export default {
-props: ['gwidth', 'gheight'],
-data() {
-  return {
-    test: 'test',
-    chartOptions: {
-      chart: {
-        type: 'column',
-      },
-      exporting: {
-        enabled: false
+  props: ['dftype', 'exporting'],
+  data() {
+    return {
+      test: 'test',
+      chartOptions: {
+        chart: {
+          type: 'column',
         },
-        title: {
-          text: null
-        },
-        lang: {
-          noData: 'No observed data to display in this area.<br> Select a waterway to see data.'
-        },
-        xAxis: {
-          type: 'string',
-          title: null,
-          categories: ['All Assessment Areas']
-        },
-        yAxis: {
-          type: 'linear',
+        exporting: {
+          enabled: this.exporting
+          },
           title: {
-            text: 'Length (Miles)'
+            text: null
           },
-          stackLabels: {
-            enabled : true,
-          },
-          plotLines: [{
-            color: '#ff8737',
-            width: 3,
-            dashStyle: 'LongDash',
-            opacity: 0.5,
-            value: -10,
-            zIndex: 1,
-            label: {
-              text: 'threshold',
-              align: 'right',
-              y: -10
-            }
-          },
-          {
-            color: '#ff8737',
-            width: 3,
-            dashStyle: 'LongDash',
-            opacity: 0.5,
-            value: -10,
-            zIndex: 1,
-            label: {
-              text: 'threshold 2',
-              align: 'right',
-              y: -10
-            }
-          }]
-        },
-        legend: {
-          enabled: false
-        },
-        plotOptions: {
-          series: {
-            stacking: 'normal'
+          lang: {
+            noData: 'No diadromous fish habitat in this area.<br> Select a different area to see data.'
           },
           tooltip: {
-                headerFormat: '',
-                pointFormat: "{series.name}: {point.y} miles<br/>Total: {point.stackTotal} miles"  
-              }
-        },
-        // set to the total accessible / not fishruns
-        series: [
-        {
-            name: 'Not Accessible',
-            data: [145.8],
-              color: '#ff0000',
+            pointFormat: "{point.y}"     
           },
-        {
-            name: 'Accessible',
-            data: [413.1],
-            color: '#006400'},
-        ]
+          xAxis: {
+            type: 'string',
+            title: 'Year',
+            categories: ['2023']
+          },
+          yAxis: {
+            min: 0,
+            type: 'linear',
+            title: {
+              text: 'Miles'
+            },
+            stackLabels: {
+             enabled : false,
+           },
+            plotLines: [{
+              color: '#93D051',
+              width: 3,
+              dashStyle: 'LongDash',
+              opacity: 0.5,
+              value: -10,
+              zIndex: 3,
+              label: {
+                text: '2050 Goal',
+                align: 'center',
+                x: 0,
+                y: -10,
+                style: {
+                  fontWeight: 'bold'
+                }
+              }
+            },
+            {
+              color: '#0000FF',
+              width: 3,
+              dashStyle: 'LongDash',
+              opacity: 0.5,
+              value: -100,
+              zIndex: 3,
+              label: {
+                text: '2050 Goal (Improved Access)',
+                align: 'center',
+                x: 0,
+                y: 15,
+                style: {
+                  fontWeight: 'bold'
+                }
+              }
+            }]
+          },
+          legend: {
+            enabled: false
+          },
+          plotOptions: {
+            series: {
+              stacking: 'normal'
+            }
+          },
+          series: [
+            {
+              name: 'Not Accessible',
+              data: [145.8],
+                color: '#ff0000',
+            },
+            {
+              name: 'Accessible',
+              data: [413.1],
+              color: '#006400'
+            },
+          ]
       }
     }
   },
   computed: {
-    styleObject() {
-      return {
-        width: this.gwidth,
-        height: this.gheight
-      }
-    },
-    // which fishRun is selected
-    fishRun() {
-      return this.$store.state.fishRun;
+    habitat() {
+      return this.$store.state.habitat;
+    },    
+    embayment() {
+      return this.$store.state.embayment;
     },
     // whether to plot the fishRun graph or not
     plotFishRunGraph() {
@@ -121,103 +127,99 @@ data() {
     }
   },
   watch: {
-    '$store.state.fishRun': {
+    '$store.state.embayment': {
       handler() {
-          this.plotData()
+          this.updateGraph()
       }, immediate: true
     }
   },
   methods: {
     // method to update the chart upon update of data
-    updateChart(newData) {
-      if (this.$refs.chart) {
-        const chart = this.$refs.chart.chart;
-        const series_a = chart.series[1]
-        const series_na = chart.series[0]
-        
-        if (newData != null) {
-           
-          // set the new Accessible and Not Accessible data
-          series_a.setData([
-            {name: 'Accessible', y: Math.round(newData.Accessible_Len * 10) / 10, color:'#15ff2b'},
-          ], false);
-          series_na.setData([
-            {name: 'Not Accessible', y:Math.round(newData.N_Accessible_Len * 10) / 10, color:'#ff15c3'}
-          ], false);
-
-        // retain stacking
-        chart.update({
-          plotOptions: {
-            series: {
-              stacking: 'normal',
-              tooltip: {
-                pointFormat: "{series.name}: {point.y} miles<br/>Total: {point.stackTotal} miles"     
-              }
-            }
-          },
-          xAxis: {
-            categories: [this.$store.state.fishRun]
-          }
-        }, true)} else {
-
-          // return to All Assessment Areas values
-          series_a.setData([
-            {name: 'Accessible', y:413.1, color:'#006400'},
-          ], false);
-          series_na.setData([
-            {name: 'Not Accessible', y:145.8, color:'#ff0000'}
-          ], false);
-
-        // retain stacking
-        chart.update({
-          plotOptions: {
-            series: {
-              stacking: 'normal',
-              tooltip: {
-                pointFormat: "{series.name}: {point.y} miles<br/>Total: {point.stackTotal} miles"     
-              }
-            }
-          },
-          xAxis: {
-            categories: ['All Assessment Areas']
-          }
-        }, true)
-        }
-      }},      
-
-    // method to plot the given data (or return the chart to All Assessment Areas if null)
-    plotData() {
-      if (this.fishRun == null) {
-        this.updateChart(null)
+    updateGraph() {
+      let dfHabitat = '';
+      if (this.dftype == 'Migratory') {
+        dfHabitat = 'diadromous fish';
       } else {
-      if (this.$store.state.plotFishRunGraph === true) {
+        dfHabitat = 'diadromous fish (spawning)';
+      }
+      let newValues = [];
+      let newCategories = [];
+      let newUnits = [];
+      let matchSet = null;
 
-        // fetch data to update plot 
-        var fn = this.fishRun.replaceAll(" ","").replaceAll("/", "").replaceAll("'","")
-        const filePath = './data/df_chart_data.json';
-        
-        fetch(filePath)
-          .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-              }
-            return response.json()
+      if (this.embayment == null) {
+        matchSet = this.habitatQuantities.filter(row => {
+          return (row.ASSESSMENT_AREA == 'ALL' && row.TYPE == dfHabitat)
+        })
+      } else {
+        matchSet = this.habitatQuantities.filter(row => {
+          return (row.ASSESSMENT_AREA == this.embayment && row.TYPE == dfHabitat)
+        });
+      }
+      if (matchSet.filter(row => row.VALUE == -999).length > 0) {
+        this.chartOptions.yAxis.plotLines[0].value = -100;       
+        this.chartOptions.series[0].data = [];
+        this.chartOptions.series[1].data = [];        
+        this.chartOptions.xAxis.categories = [];
+        this.chartOptions.yAxis.title.text = '--';         
+      } else {
+        matchSet.sort((a, b) => (a.YEAR > b.YEAR) ? 1 : ((b.YEAR > a.YEAR) ? -1 : 0));
+        matchSet.forEach(row => {
+          newValues.push(row.VALUE);
+          newCategories.push(row.YEAR);
+          newUnits.push(row.UNITS);
+          // calculate indices for splitting dataset
+          let goal2050 = newValues[newValues.length - 2];
+          let improve2050 = newValues[newValues.length - 1];
+          let accessible = [];
+          let inaccessible = [];
+          for (var i = 0; i < newValues.length - 2; i += 2) {
+            inaccessible.push(newValues[i]);
+            accessible.push(newValues[i + 1]);
+          }
+          this.chartOptions.series[0].data = accessible;
+          this.chartOptions.series[1].data = inaccessible;
+          if (improve2050 <= 0) {
+            this.chartOptions.yAxis.plotLines[1].value = -100;
+          } else {
+            this.chartOptions.yAxis.plotLines[1].value = improve2050;
+          }
+          if (goal2050 <= 0) {
+            this.chartOptions.yAxis.plotLines[0].value = -100;
+          } else {
+            this.chartOptions.yAxis.plotLines[0].value = goal2050;
+          }
+        })
+        this.chartOptions.yAxis.title.text = this.dftype + " " + newUnits[0];
+        this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0]
 
-          }).then(json => {
-            const extractThis = json.find(item => item.Name === fn);
-            this.updateChart(extractThis);
-          } )
-  
-        }}
+      } 
+    }
   },
-
-  mounted() {
-    this.$nextTick(() => {
-      this.plotData();
+  created() {
+    // fetch habitat stations
+    fetch('./data/habitat_quantities.json')
+    .then(response => {
+      return response.json()
+    }).then(json => {
+      this.habitatQuantities = json;
+      this.updateGraph();
     })
-  }
-  }}
+  }  
+  // mounted() {
+  //   this.$nextTick(() => {
+  //     this.updateGraph();
+  //   })
+  // }
+}
 </script>
 
 <style>
+.floating-text {
+  position: absolute;
+  margin: auto;
+  width: 250px;
+  top: 30%; left: 30%;
+  z-index: 100;
+}
 </style>

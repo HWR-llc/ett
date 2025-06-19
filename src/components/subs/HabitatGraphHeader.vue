@@ -10,53 +10,34 @@
 
  <template>
   <div>
-     <div class="row" :class="habitatKebab + '-background'">
-       <div class="col-12" style="text-align: center; color: #ffffff;">
-         <h2 style="margin-top: 0.4px; margin-bottom: 4px">
-           <b>{{ habitatCapital }}</b>
-         </h2>
-       </div>
-     </div>
-     <div class="row">
-       <div class="col-12">
-         <div v-for="(item, key) in imageLibrary" :key="key">
-           <div v-if="habitat==key" style="width: 100%">
-             <div class="center-cropped"
-                :style="{ 'background-image': 'url(' + item.img + ')' }"
-                :alt="'background image for ' + key">
-             </div>
-           </div>
-         </div>
-       </div>
-     </div>
-     <br>
-     <div v-if="this.$store.state.habitat != 'diadromous fish'">
-         <div class="col-12" style="text-align: center; padding-left: 20px;">
-           <h6> {{ habitatCapital}} Extent</h6>       
-         </div>
-       <div class="col-12" style="text-align: center; padding-left: 20px">
-         <div v-if="embayment == null">
-           <h6>All Assessment Areas</h6>
-         </div>
-         <div v-else>
-           <h6 class="d-inline" style="padding-right: 10px">{{ embaymentCapital }}</h6>
-         </div>
-       </div>
-     </div>
-     <div class="row" v-else> 
-       <div class="col-12" style="text-align: center">
-         <h6> {{ habitatCapital}} Extent</h6>       
-       </div>
-       <div class="col-12" style="text-align: center; padding-left: 20px">
-         <div v-if="fishRun == null">
-           <h6>All Assessment Areas</h6>
-         </div>
-         <div v-else>
-           <h6 class="d-inline" style="text-align:center; padding-right: 10px;">{{ fishRunCapital }}</h6>
-         </div>
-       </div>
-     </div>
-   </div>
+    <div class="row" :class="habitatKebab + '-background'">
+      <div class="col-12" style="text-align: center; color: #ffffff;">
+        <h2 style="margin-top: 0.4px; margin-bottom: 4px">
+          <b>{{ habitatCapital }}</b>
+        </h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div v-for="(item, key) in imageLibrary" :key="key">
+          <div v-if="habitat==key" style="width: 100%">
+            <div class="center-cropped"
+              :style="{ 'background-image': 'url(' + item.img + ')' }"
+              :alt="'background image for ' + key">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-12" style="text-align: center">
+        <h6>{{habitatCapital}} Extent</h6>
+        <h6 v-if="embayment != null">{{embaymentCapital}}</h6>
+        <h6 v-else>All Assessment Areas</h6>
+      </div>
+    </div>
+  </div>
  </template>
  
  <script>

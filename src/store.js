@@ -36,7 +36,8 @@ export const store = new Vuex.Store({
       'salt marsh': {historic: null, current: null},
       'tidal flats': {historic: null, current: null},
       'diadromous fish': {historic: null, current: null}
-    }
+    },
+    resetZoom: false
   },
   mutations: {
     SET_DF_LEGEND_COLOR: (state, payload) => {
@@ -140,6 +141,9 @@ export const store = new Vuex.Store({
     },
     SET_HABITAT_LEGEND_YEAR: (state, payload) => {
       state.legendYears[payload.habitat][payload.period] = payload.value;
+    },
+    SWITCH_RESET_ZOOM: state => {
+      state.resetZoom = !state.resetZoom;
     }
   },
   actions: {
@@ -254,6 +258,9 @@ export const store = new Vuex.Store({
     },
     setHabitatLegendYear: ({commit}, payload) => {
       commit('SET_HABITAT_LEGEND_YEAR', payload);
-    },      
+    },
+    switchResetZoom: ({commit}) => {
+      commit('SWITCH_RESET_ZOOM');
+    }
   }
 });

@@ -1,6 +1,6 @@
 <!-- 
  File: HabitatGraph.vue
- This file corresponds to the graph that appears in the right-hand side bar when habitat != Diadromous Fish.
+ This file corresponds to the graph that appears in the right-hand side bar for habitat not diadromous fish.
  The graph will update upon selection/deselection of an embayment with the habitat's current and historic area
  covered within the embayment displayed in the form of a bar chart, with a dashed line representing the 2050 goal. 
 Default values for the chart are the All Assessment Areas, or the overall habitat areas of all embayments summed.
@@ -16,10 +16,13 @@ Default values for the chart are the All Assessment Areas, or the overall habita
 
 <script>
 import Highcharts from "highcharts"
+import Exporting from 'highcharts/modules/exporting';
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
+Exporting(Highcharts);
 NoDataToDisplay(Highcharts);
 Highcharts.setOptions({lang: {thousandsSep:','}})
 export default {
+  props: ['exporting'],
   data() {
     return {
       chartOptions: {
@@ -27,7 +30,7 @@ export default {
           type: 'column',
         },
         exporting: {
-          enabled: false
+          enabled: this.exporting
         },
         title: {
           text: null
@@ -122,46 +125,46 @@ export default {
       let matchSet = null;
 
       if (this.embayment == null) {
-          matchSet = this.habitatQuantities.filter(row => {
-            return (row.ASSESSMENT_AREA == 'ALL' && row.TYPE == this.habitat)
-          })
-        } else {
-          matchSet = this.habitatQuantities.filter(row => {
-            return (row.ASSESSMENT_AREA == this.embayment && row.TYPE == this.habitat)
-          });
+        matchSet = this.habitatQuantities.filter(row => {
+          return (row.ASSESSMENT_AREA == 'ALL' && row.TYPE == this.habitat)
+        })
+      } else {
+        matchSet = this.habitatQuantities.filter(row => {
+          return (row.ASSESSMENT_AREA == this.embayment && row.TYPE == this.habitat)
+        });
+      }
+      if ((matchSet.filter(row => row.VALUE == -999).length > 0) && (matchSet.length == 1)) {
+        this.chartOptions.yAxis.plotLines[0].value = -100;       
+        this.chartOptions.series[0].data = [];
+        this.chartOptions.xAxis.categories = [];
+        this.chartOptions.yAxis.title.text = '--';         
+      } else if (matchSet.length == 1) {
+        this.chartOptions.yAxis.plotLines[0].value = matchSet[0].VALUE;
+        this.chartOptions.yAxis.title.text = matchSet[0].UNITS;
+        this.chartOptions.xAxis.categories =[''];
+        this.chartOptions.series[0].data =[0];
+      } else {
+        matchSet.sort((a, b) => (a.YEAR > b.YEAR) ? 1 : ((b.YEAR > a.YEAR) ? -1 : 0));
+        matchSet.forEach(row => {
+          newValues.push(row.VALUE);
+          newCategories.push(row.YEAR);
+          newUnits.push(row.UNITS);
+        })
+        let updatePlotLineValue = -100;
+        if (newCategories[newCategories.length - 1] == '2050 Goal') {
+          if (newValues[newValues.length - 1] != 0) {
+            updatePlotLineValue = newValues[newValues.length - 1];
+          }          
+          newCategories = newCategories.slice(0, newCategories.length - 1);
+          newValues = newValues.slice(0, newValues.length - 1);
         }
-        if ((matchSet.filter(row => row.VALUE == -999).length > 0) && (matchSet.length == 1)) {
-          this.chartOptions.yAxis.plotLines[0].value = -100;       
-          this.chartOptions.series[0].data = [];
-          this.chartOptions.xAxis.categories = [];
-          this.chartOptions.yAxis.title.text = '--';         
-        } else if (matchSet.length == 1) {
-          this.chartOptions.yAxis.plotLines[0].value = matchSet[0].VALUE;
-          this.chartOptions.yAxis.title.text = matchSet[0].UNITS;
-          this.chartOptions.xAxis.categories =[''];
-          this.chartOptions.series[0].data =[0];
-        } else {
-          matchSet.sort((a, b) => (a.YEAR > b.YEAR) ? 1 : ((b.YEAR > a.YEAR) ? -1 : 0));
-          matchSet.forEach(row => {
-            newValues.push(row.VALUE);
-            newCategories.push(row.YEAR);
-            newUnits.push(row.UNITS);
-          })
-          let updatePlotLineValue = -100;
-          if (newCategories[newCategories.length - 1] == '2050 Goal') {
-            if (newValues[newValues.length - 1] != 0) {
-              updatePlotLineValue = newValues[newValues.length - 1];
-            }          
-            newCategories = newCategories.slice(0, newCategories.length - 1);
-            newValues = newValues.slice(0, newValues.length - 1);
-          }
-          this.chartOptions.yAxis.plotLines[0].value = updatePlotLineValue;
-          this.chartOptions.xAxis.categories = newCategories;
-          this.chartOptions.series[0].data = newValues;
-          this.chartOptions.yAxis.title.text = newUnits[0];
-          this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0]
-          this.chartOptions.yAxis.softMax = updatePlotLineValue * 1.1;
-        } 
+        this.chartOptions.yAxis.plotLines[0].value = updatePlotLineValue;
+        this.chartOptions.xAxis.categories = newCategories;
+        this.chartOptions.series[0].data = newValues;
+        this.chartOptions.yAxis.title.text = newUnits[0];
+        this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0]
+        this.chartOptions.yAxis.softMax = updatePlotLineValue * 1.1;
+      } 
     }
   },
   created() {

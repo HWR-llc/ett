@@ -325,15 +325,12 @@ export default {
     onEachEmbaymentFunction() {
       return (feature, layer) => {
         if (feature.properties.NAME == this.embayment) {
-          console.log(feature.properties.NAME, this.embayment);
-
           this.$store.dispatch('setEmbayment', feature.properties.NAME);
           this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
           layer.setStyle({weight: 2, color: 'red', opacity: 1});
         } else {
           console.log(this.$route.query.embayment)
         }
-
         layer.on({
           click: (event) => {
             if (event.target.feature.properties.NAME == this.embayment) {
@@ -426,16 +423,14 @@ export default {
         }
       }
     },
+    '$store.state.resetZoom': {
+      handler() {
+        this.$refs.ettMap.mapObject.flyTo(this.origCenter, this.origZoom);
+      }, immediate: true
+    },
     '$store.state.embayment': {
       handler() {
-        this.updateURL();
-        if ((this.embayment == null) && (this.stopFlyTo == false)) {
-          this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);  
-          this.$refs.ettMap.mapObject.flyTo(this.center, this.zoom);     
-        } else if (this.embayment == null) {
-          this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);          
-        } 
-   
+        this.updateURL();   
       }, immediate: true  
     },
     '$store.state.waterQuality': {
@@ -784,7 +779,8 @@ export default {
             embayment.properties['eelgrass_percent_goal'] = json[embayment.properties.NAME].EG_PERCENT_GOAL;
             embayment.properties['salt marsh_percent_goal'] = json[embayment.properties.NAME].SM_PERCENT_GOAL;
             embayment.properties['tidal flats_percent_goal'] = json[embayment.properties.NAME].TF_PERCENT_GOAL;
-            embayment.properties['diadromous fish_percent_goal'] = json[embayment.properties.NAME].DF_PERCENT_GOAL;
+            embayment.properties['diadromous fish_percent_goal'] = json[embayment.properties.NAME].DFM_PERCENT_GOAL;
+            // embayment.properties['diadromous fish (spawning)_percent_goal'] = json[embayment.properties.NAME].DFS_PERCENT_GOAL;
           })
           this.embaymentsGeojson = embaymentsGeoJson;
         })
@@ -804,9 +800,9 @@ export default {
         historic: "./data/eelgrass_historic_wgs.geojson"
       },
       diadromousFish: {
-        current: "./data/migratory_habs.geojson",
-        buff: "./data/migratory_buffer_wgs.geojson",
-        poly: "./data/spawning_habs.geojson"
+        current: "./data/diadromous_fish_current_wgs.geojson",
+        buff: "./data/df_migratory_buffer_wgs.geojson",
+        poly: "./data/df_spawning_current_wgs.geojson"
       }
     }
     Object.entries(this.bkgrdGeojson).forEach(([key, value]) => {
@@ -841,6 +837,8 @@ export default {
         station.properties['parameter_list'] = this.parameterMapper(station.properties.wq_counts);
       });
     })
+    this.origCenter = this.center;
+    this.origZoom = this.zoom;
   },
   mounted() {
     this.restoreMapState();
