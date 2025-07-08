@@ -145,9 +145,6 @@ export default {
     embayment() {
       return this.$store.state.embayment;
     },
-    fishRun() {
-      return this.$store.state.fishRun;
-    },
     embStyle() {
       return () => {
         return {
@@ -272,33 +269,7 @@ export default {
     },
     onEachBufferLine() {
       return (feature, layer) => {
-        // on click function for the fishRun buffer
         layer.on({
-          // click: (event) => {
-          //   let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
-
-          //   event.target.getTooltip().setContent(featureName);
-
-          //   if (event.target.feature.properties.NAME == this.fishRun) {
-          //     this.$store.dispatch('setDFLegendColor', false)
-
-          //     this.stopFlyTo = true;
-          //     this.$store.dispatch('setFishRun', null);
-
-          //     this.plotFishData(event.target.feature.properties.NAME, false)
-
-          //     this.$nextTick(() => {
-          //       this.stopFlyTo = false;
-          //     })
-            
-          //   } else {
-          //     this.$store.dispatch('setDFLegendColor', true)
-          //     this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
-
-          //     this.reorderLayers()
-          //   }
-          //   this.plotFishData(event.target.feature.properties.NAME, false)
-          // },
           mouseover: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME);
             const tooltip = event.target.getTooltip();
@@ -327,7 +298,7 @@ export default {
         if (feature.properties.NAME == this.embayment) {
           this.$store.dispatch('setEmbayment', feature.properties.NAME);
           this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
-          layer.setStyle({weight: 2, color: 'red', opacity: 1});
+          layer.setStyle({weight: 5, color: 'black', opacity: 1});
         } else {
           console.log(this.$route.query.embayment)
         }
@@ -346,7 +317,7 @@ export default {
               this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
               this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
               this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
-              event.target.setStyle({weight: 2, color: 'red', opacity: 1});
+              event.target.setStyle({weight: 5, color: 'black', opacity: 1});
               this.reorderLayers();
             }
           },
@@ -418,14 +389,12 @@ export default {
         this.$router.push({ 
           query: { habitat: this.habitat, wq_param: this.waterQuality } 
         });
-        if (this.habitat !== 'diadromous fish') {
-          this.$store.dispatch('setFishRun', null)
-        }
       }
     },
     '$store.state.resetZoom': {
       handler() {
         this.$refs.ettMap.mapObject.flyTo(this.origCenter, this.origZoom);
+        this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
       }, immediate: true
     },
     '$store.state.embayment': {
@@ -439,17 +408,6 @@ export default {
           query: { habitat: this.habitat, wq_param: this.waterQuality } 
         });
         this.$store.dispatch('setStation', null);
-      }, immediate: true  
-    },
-   '$store.state.fishRun': {
-      handler() {
-        this.updateURL();
-        if ((this.fishRun == null) && (this.stopFlyTo == false)) {
-          this.$refs.fishBase.setOptionsStyle(this.migratoryFishStyle);  
-          this.$refs.ettMap.mapObject.flyTo(this.center, this.zoom);     
-        } else {
-          this.$refs.fishBase.setOptionsStyle(this.migratoryFishStyle);  
-        } 
       }, immediate: true  
     },
     '$store.state.station': {
@@ -474,10 +432,9 @@ export default {
   
       url.searchParams.set('center', `${center.lat},${center.lng}`);
       url.searchParams.set('zoom', zoom);
-      url.searchParams.set('fishRun', this.$store.state.fishRun);
       url.searchParams.set('station', this.$store.state.station);
       url.searchParams.set('embayment', this.$store.state.embayment);
-      // url.searchParams.set('wqParam', this.$store.state.waterQuality);
+      url.searchParams.set('wqParam', this.$store.state.waterQuality);
       url.searchParams.set('stationEmb', this.$store.state.stationEmbayment);
       window.history.replaceState({}, '', url);
     },
@@ -487,7 +444,6 @@ export default {
       const url = new URL(window.location.href);
       const center = url.searchParams.get('center');
       const zoom = url.searchParams.get('zoom');
-      const fishRun = url.searchParams.get('fishRun');
       const station = url.searchParams.get('station');
       const embayment = url.searchParams.get('embayment');
       const stationEmb = url.searchParams.get('stationEmb');
@@ -497,16 +453,6 @@ export default {
         this.center = [lat, lng];
         this.zoom = Number(zoom);
       } 
-
-      if (fishRun && fishRun != 'null') {
-        this.$store.dispatch('setFishRun', fishRun);
-        this.plotFishData(fishRun, true);
-        this.$store.dispatch('setDFLegendColor', true);
-      } else {
-        this.$store.dispatch('setFishRun', null);
-        this.plotFishData(fishRun, true);
-        this.$store.dispatch('setDFLegendColor', false);
-      }
 
       // water quality station graphs
       if (station && station != 'null') {
@@ -522,6 +468,19 @@ export default {
 
       // embayment selection
       if (embayment && embayment != 'null') {
+
+
+
+
+        // console.log(this.$refs.embaymentsBase);
+        
+        
+        
+        
+        
+        
+        
+        
         this.$store.dispatch('setEmbayment', embayment);
       } 
 
@@ -540,8 +499,6 @@ export default {
       this.updateURL();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
     },
     spawningFishStyle(feature) {
-      // let fish = this.fishRun;
-      // let name = feature.properties.NAME;
       if (feature.properties.ACCESSIBLE == "Y") {
         return {
           color: this.imageLibraryHabitat['diadromous fish'].accColor,
@@ -557,32 +514,17 @@ export default {
       }
     },
     migratoryFishStyle(feature) {
-      let fish = this.fishRun;
-      let name = feature.properties.NAME;
-      
-      if (fish !== null && name == fish) {
-        if (feature.properties.ACCESSIBLE == "Y") {
-          return {
-            color: this.imageLibraryHabitat['diadromous fish'].clickAccColor,
-            stroke: true,
-          }} else {
-          return {
-            color: this.imageLibraryHabitat['diadromous fish'].clickNAColor,
-            stroke: true,
-          }}
-        } else {
-          if (feature.properties.ACCESSIBLE == "Y") {
-            return {
-              color: this.imageLibraryHabitat['diadromous fish'].accColor,
-              stroke: true,
-            }
-          } else {
-            return {
-              color: this.imageLibraryHabitat['diadromous fish'].naColor,
-              stroke: true,
-            }
-          }
+      if (feature.properties.ACCESSIBLE == "Y") {
+        return {
+          color: this.imageLibraryHabitat['diadromous fish'].accColor,
+          stroke: true,
         }
+      } else {
+        return {
+          color: this.imageLibraryHabitat['diadromous fish'].naColor,
+          stroke: true,
+        }
+      }
     },
     circleColorer(parameterList) {
       if (parameterList.includes(this.waterQuality)) {
@@ -708,19 +650,6 @@ export default {
 
             this.$store.dispatch('setStation', stationId);
             this.$store.dispatch('setStationEmbayment', stationEmbayment);
-      }
-    },
-    plotFishData(fishRunName, isInitial) {
-      if (isInitial) {
-        this.$store.dispatch('onDiadromousFishGraph');
-      } else {
-        if (fishRunName == this.fishRun) {
-          this.$store.dispatch('offDiadromousFishGraph');
-          this.$store.dispatch('setFishRun', null);
-        } else {
-          this.$store.dispatch('onDiadromousFishGraph');
-          this.$store.dispatch('setFishRun', fishRunName);
-        }
       }
     },
     capitalizeFirstLetter(nameString) {

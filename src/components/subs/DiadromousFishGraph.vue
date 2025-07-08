@@ -10,14 +10,15 @@
  -->
  <template>
   <div>
-    <highcharts class="chart" :options="chartOptions" ref="Chart" style="width: 100%; min-height: 300px; max-height:500px"></highcharts>
+    <highcharts class="chart" :options="chartOptions" ref="Chart" style="width: 100%; min-height: 400px; max-height:500px"></highcharts>
   </div>
 </template>
 
 <script>
 import Highcharts from "highcharts";
+import patternFillInit from "highcharts/modules/pattern-fill"
+patternFillInit(Highcharts);
 import Exporting from 'highcharts/modules/exporting';
-// import { Math } from "core-js";({lang: {thousandsSep:','}})
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
 Exporting(Highcharts);
 NoDataToDisplay(Highcharts);
@@ -29,15 +30,19 @@ export default {
       chartOptions: {
         chart: {
           type: 'column',
+          events: {
+            load: (function(self) {
+              return function() {
+                self.chart = this;
+              };
+            }) (this)
+          }
         },
         exporting: {
           enabled: this.exporting
           },
-          title: {
-            text: null
-          },
           lang: {
-            noData: 'No diadromous fish habitat in this area.<br> Select a different area to see data.'
+            noData: 'No data to display in this area.<br> Select a different area to see data.'
           },
           tooltip: {
             pointFormat: "{point.y}"     
@@ -47,9 +52,10 @@ export default {
             title: 'Year',
             categories: ['2023']
           },
-          yAxis: {
+          yAxis: [{
             min: 0,
             type: 'linear',
+            gridLineWidth: 0,
             title: {
               text: 'Miles'
             },
@@ -64,8 +70,8 @@ export default {
               value: -10,
               zIndex: 3,
               label: {
-                text: '2050 Goal',
-                align: 'center',
+                text: '2050 Goal (new access)',
+                align: 'left',
                 x: 0,
                 y: -10,
                 style: {
@@ -81,18 +87,34 @@ export default {
               value: -100,
               zIndex: 3,
               label: {
-                text: '2050 Goal (Improved Access)',
-                align: 'center',
+                text: '2050 Goal (improved access)',
+                align: 'left',
                 x: 0,
-                y: 15,
+                y: -10,
                 style: {
                   fontWeight: 'bold'
                 }
               }
             }]
-          },
+          },// secondary axis
+          {
+            min: 0,
+            max: 120,
+            type: 'linear',
+            endOnTick: false,
+            opposite: true,
+            gridLineWidth: 0,
+            title: null,
+            labels: {
+              format: '{value}%'
+            },
+            stackLabels: {
+             enabled : false,
+           },
+          }
+          ],
           legend: {
-            enabled: false
+            enabled: true
           },
           plotOptions: {
             series: {
@@ -103,13 +125,13 @@ export default {
             {
               name: 'Not Accessible',
               data: [145.8],
-                color: '#ff0000',
+                color: '#ff95ce',
             },
             {
               name: 'Accessible',
-              data: [413.1],
-              color: '#006400'
-            },
+              data: [413.1-100],
+              color: '#ceff95'
+            }
           ]
       }
     }
@@ -121,9 +143,16 @@ export default {
     embayment() {
       return this.$store.state.embayment;
     },
-    // whether to plot the fishRun graph or not
-    plotFishRunGraph() {
-      return this.$store.state.plotFishRunGraph;
+    embaymentCapital() {
+      let nameStringArray = this.$store.state.embayment.split(" ");
+      nameStringArray.forEach((word, index) => {
+        if (word[0] == '(') {
+          nameStringArray[index] = word.substring(0, 2) + word.slice(2).toLowerCase();
+        } else {
+          nameStringArray[index] = word[0] + word.slice(1).toLowerCase();
+        }
+      });
+      return nameStringArray.join(' ');    
     }
   },
   watch: {
@@ -131,9 +160,21 @@ export default {
       handler() {
           this.updateGraph()
       }, immediate: true
-    }
+    },
+    '$store.state.habitat': {
+      handler() {
+        this.updateGraph();
+      }      
+    },
   },
   methods: {
+    habitatCapital(hab) {
+      const titles = hab.split(" ");
+      const capitalTitle = titles.map((word) => {
+        return word[0].toUpperCase() + word.substring(1);
+      }).join(" ");
+      return capitalTitle;
+    },
     // method to update the chart upon update of data
     updateGraph() {
       let dfHabitat = '';
@@ -148,6 +189,7 @@ export default {
       let matchSet = null;
 
       if (this.embayment == null) {
+
         matchSet = this.habitatQuantities.filter(row => {
           return (row.ASSESSMENT_AREA == 'ALL' && row.TYPE == dfHabitat)
         })
@@ -157,11 +199,13 @@ export default {
         });
       }
       if (matchSet.filter(row => row.VALUE == -999).length > 0) {
-        this.chartOptions.yAxis.plotLines[0].value = -100;       
+        this.chartOptions.yAxis[0].plotLines[0].value = -100; 
+        this.chartOptions.yAxis[0].plotLines[1].value = -100;             
         this.chartOptions.series[0].data = [];
-        this.chartOptions.series[1].data = [];        
-        this.chartOptions.xAxis.categories = [];
-        this.chartOptions.yAxis.title.text = '--';         
+        this.chartOptions.series[1].data = [];               
+        // this.chartOptions.xAxis.categories = [];
+        this.chartOptions.yAxis[0].title.text = '--';
+
       } else {
         matchSet.sort((a, b) => (a.YEAR > b.YEAR) ? 1 : ((b.YEAR > a.YEAR) ? -1 : 0));
         matchSet.forEach(row => {
@@ -180,20 +224,51 @@ export default {
           this.chartOptions.series[0].data = accessible;
           this.chartOptions.series[1].data = inaccessible;
           if (improve2050 <= 0) {
-            this.chartOptions.yAxis.plotLines[1].value = -100;
+            this.chartOptions.yAxis[0].plotLines[1].value = -100;
           } else {
-            this.chartOptions.yAxis.plotLines[1].value = improve2050;
+            this.chartOptions.yAxis[0].plotLines[1].value = improve2050;
           }
           if (goal2050 <= 0) {
-            this.chartOptions.yAxis.plotLines[0].value = -100;
+            this.chartOptions.yAxis[0].plotLines[0].value = -100;
           } else {
-            this.chartOptions.yAxis.plotLines[0].value = goal2050;
+            this.chartOptions.yAxis[0].plotLines[0].value = goal2050;
           }
         })
-        this.chartOptions.yAxis.title.text = this.dftype + " " + newUnits[0];
-        this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0]
-
+        this.chartOptions.yAxis[0].title.text = newUnits[0];
+        this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0];
+        // calculate new max value for 2nd y-axis
+        this.$nextTick(() => {
+          let yAxis0Extreme = this.chart.yAxis[0].getExtremes();
+          let newYAxis1Max = 100 * (yAxis0Extreme.max / yAxis0Extreme.dataMax);
+          this.chartOptions.yAxis[1].max = newYAxis1Max;
+        });
       } 
+
+      const chart = this.$refs.Chart.chart;
+      if (this.exporting == false) {
+        chart.setTitle({
+          text: this.dftype + ' Habitat',
+          style: {
+            fontSize: 'small'
+          },
+          y: 35
+        });
+        chart.setSubtitle({
+          text: '(River Herring)',
+          y: 50
+        })
+      } else {
+        if (this.embayment == null) {
+          chart.setTitle({
+            text: this.habitatCapital(this.habitat) + ' Extent<br> All Assessment Areas',
+          });
+        } else {
+          chart.setTitle({ text: this.habitatCapital(this.habitat) + ' Extent<br>' + this.embaymentCapital});
+        }
+        chart.setSubtitle({text: this.dftype + ' Habitat (River Herring)'});
+
+      }
+
     }
   },
   created() {
@@ -205,12 +280,7 @@ export default {
       this.habitatQuantities = json;
       this.updateGraph();
     })
-  }  
-  // mounted() {
-  //   this.$nextTick(() => {
-  //     this.updateGraph();
-  //   })
-  // }
+  }
 }
 </script>
 

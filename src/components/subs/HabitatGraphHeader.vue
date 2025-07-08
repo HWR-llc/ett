@@ -66,16 +66,6 @@
        console.log(capitalTitle)
        return capitalTitle;
      },
-     fishRun() {
-       return this.$store.state.fishRun;
-     },
-     fishRunCapital() {
-       const titles = this.$store.state.fishRun.split(" ");
-       const capitalTitle = titles.map((word) => {
-         return word[0].toUpperCase() + word.substring(1);
-       }).join(" ");
-       return capitalTitle;
-     },
      embayment() {
        return this.$store.state.embayment;
      },

@@ -51,12 +51,7 @@ export default {
       },
       set () {
         this.$store.dispatch('setHabitat', null);
-        this.$store.dispatch('setFishRun', null);
         this.$store.dispatch('switchBaseLayer');
-
-        if (this.habitat != 'diadromous fish') {
-          this.$store.dispatch('setFishRun', null);
-        }
       }      
     },
     embayment() {

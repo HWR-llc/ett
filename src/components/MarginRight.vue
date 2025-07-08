@@ -16,10 +16,10 @@
     <div class="row" style="text-align: center" v-if="habitat == 'diadromous fish'">
       <div class="col-12">
         <div class="row" style="text-align: center">
-          <div class="col-6" style="padding-right: 0px; padding-left: 0px">
+          <div class="col-12" style="padding-right: 0px; padding-left: 0px">
             <app-diadromous-fish-graph style="width: 100%" :dftype="'Migratory'" :exporting="false"></app-diadromous-fish-graph> 
           </div>
-          <div class="col-6" style="padding-right: 0px; padding-left: 0px">
+          <div class="col-12" style="padding-right: 0px; padding-left: 0px">
             <app-diadromous-fish-graph style="width: 100%" :dftype="'Spawning'" :exporting="false"></app-diadromous-fish-graph> 
           </div>
           <b-modal v-model="showDiadromousFishGraphDynamic" id="modal-df-graph" size="lg" modal-class="thin-top" hide-footer hide-header>
@@ -31,10 +31,10 @@
               </div>
             </div>
             <div class="row justify-content-center" v-if="true">
-              <div class="col-6" style="padding-right: 0px; padding-left: 0px">
+              <div class="col-12" style="padding-right: 0px; padding-left: 0px">
                 <app-diadromous-fish-graph style="width: 100%" :dftype="'Migratory'" :exporting="true"></app-diadromous-fish-graph> 
               </div>
-              <div class="col-6" style="padding-right: 0px; padding-left: 0px">
+              <div class="col-12" style="padding-right: 0px; padding-left: 0px">
                 <app-diadromous-fish-graph style="width: 100%" :dftype="'Spawning'" :exporting="true"></app-diadromous-fish-graph> 
               </div>
             </div>
@@ -96,17 +96,11 @@ export default {
       }).join(" ");
       return capitalTitle;
     },
-    fishRun() {
-      return this.$store.state.fishRun;
-    },
     habitatIndexLayer() {
       return this.$store.state.habitatIndexLayer;
     },
     blockHabitatGraph() {
       return this.$store.state.blockHabitatGraph;
-    },
-    plotDiadromousFishGraph() {
-      return this.$store.state.plotFishRunGraph;
     },
     plotHabitatGraph() {
       return this.$store.state.plotHabitatGraph;
@@ -141,10 +135,6 @@ export default {
     },
     switchShowDiadromousFishGraphDynamic() {
       this.$store.dispatch('switchShowDiadromousFishGraphDynamic');
-    },
-    allFishRun() {
-      this.$store.dispatch('setFishRun', null);
-      this.$store.dispatch('setDFLegendColor', false);
     },
     resetZoom() {
       this.$store.dispatch('setEmbayment', null);

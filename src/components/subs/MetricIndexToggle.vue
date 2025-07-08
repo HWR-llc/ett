@@ -7,7 +7,7 @@
       </div>
       <div class="col-9">
         <div class="row">
-          % of 2050 {{ habitatCapital }} Goal
+          % of 2050 {{ habitatCapital }} Goal <span v-if="habitat == 'diadromous fish'"> (Migratory Habitat)</span>
         </div>
         <div class="row" style="padding-top: 5px">
           <div class="col-12">

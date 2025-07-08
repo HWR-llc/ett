@@ -137,7 +137,7 @@ export default {
         this.chartOptions.yAxis.plotLines[0].value = -100;       
         this.chartOptions.series[0].data = [];
         this.chartOptions.xAxis.categories = [];
-        this.chartOptions.yAxis.title.text = '--';         
+        this.chartOptions.yAxis.title.text = '--';
       } else if (matchSet.length == 1) {
         this.chartOptions.yAxis.plotLines[0].value = matchSet[0].VALUE;
         this.chartOptions.yAxis.title.text = matchSet[0].UNITS;

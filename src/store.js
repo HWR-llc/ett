@@ -7,10 +7,8 @@ export const store = new Vuex.Store({
   state: {
     habitat: null,
     waterQuality: null,
-    fishRun: null,
     habitatGraphVariable: null,
     waterQualityGraphVariable: null,
-    // fishRunGraphVariable: null,
     habitatIndex: null,
     baseLayer: false,
     pointsLayer: false,
@@ -28,7 +26,6 @@ export const store = new Vuex.Store({
     showDiadromousFishGraphDynamic: false,
     plotHabitatGraph: false,
     plotWaterQualityGraph: false,
-    plotFishRunGraph: false,
     dfLegendColor: false,
     init: true,
     legendYears: {
@@ -61,9 +58,6 @@ export const store = new Vuex.Store({
     SET_INIT: (state, payload) => {
       state.init = payload;
     },
-    SET_FISHRUN: (state, payload) => {
-      state.fishRun = payload;
-    },
     SET_STATION_EMBAYMENT: (state, payload) => {
       state.stationEmbayment = payload;
     },
@@ -84,12 +78,6 @@ export const store = new Vuex.Store({
     },
     OFF_WATER_QUALITY_GRAPH: state => {
       state.waterQualityGraph = false;
-    },
-    ON_DIADROMOUS_FISH_GRAPH: state => {
-      state.plotFishRunGraph = true;
-    },
-    OFF_DIADROMOUS_FISH_GRAPH: state => {
-      state.plotFishRunGraph = false;
     },
     ON_POINTS_LAYER: state => {
       state.pointsLayer = true;
@@ -167,9 +155,6 @@ export const store = new Vuex.Store({
     },
     setInit: ({commit}, payload) => {
       commit('SET_INIT', payload);
-    },
-    setFishRun: ({commit}, payload) => {
-      commit('SET_FISHRUN', payload)
     },
     setStationEmbayment: ({commit}, payload) => {
       commit('SET_STATION_EMBAYMENT', payload);
