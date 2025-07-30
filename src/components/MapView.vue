@@ -690,6 +690,9 @@ export default {
         if (('fishBuff' in this.$refs) && (this.$refs.fishBuff !== undefined)) {
           this.$refs.fishBuff.mapObject.bringToFront();
         }
+        if (('fishPoly' in this.$refs) && (this.$refs.fishPoly !== undefined)) {
+          this.$refs.fishPoly.mapObject.bringToFront();
+        }
       })
     },
   },
