@@ -11,7 +11,7 @@
  <template>
   <div>
     <highcharts class="chart" :options="chartOptions" ref="Chart" style="width: 100%; min-height: 400px; max-height:500px"></highcharts>
-    <div>
+    <div style="display: flex; justify-content: flex-start">
       <svg height="20" width="230">
         <line x1="30" y1="07" x2="70" y2="07" style="stroke: #93D051; stroke-width: 3; stroke-dasharray: 7"></line>
         <text x="70" y="11" font-size="small" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif
@@ -225,55 +225,26 @@ export default {
           newCategories.push(row.YEAR);
           newUnits.push(row.UNITS);
         })
-        // console.log(matchSet);
-        // console.log(newValues);
+        console.log(matchSet);
+        console.log(newValues);
         let goal2050 = newValues[newValues.length - 2];
         let accessible = [];
         let partialAccessible = []
         let inaccessible = [];
 
-        for (var i = 0; i < newValues.length - 2; i += 3) {
-          inaccessible.push(newValues[i]);
-          accessible.push(newValues[i + 1]);
+        for (var i = 0; i < newValues.length - 2; i += 4) {
+          accessible.push(newValues[i] - newValues[i + 3]);
+          inaccessible.push(newValues[i + 1]);
           partialAccessible.push(newValues[i + 3])
         }
-        this.chartOptions.series[0].data = accessible;
-        this.chartOptions.series[1].data = inaccessible;
+        this.chartOptions.series[0].data = inaccessible;
+        this.chartOptions.series[1].data = accessible;
         this.chartOptions.series[2].data = partialAccessible;
         if (goal2050 <= 0) {
           this.chartOptions.yAxis[0].plotLines[0].value = -100;
         } else {
           this.chartOptions.yAxis[0].plotLines[0].value = goal2050;
         }
-
-
-        // matchSet.forEach(row => {
-        //   newValues.push(row.VALUE);
-        //   newCategories.push(row.YEAR);
-        //   newUnits.push(row.UNITS);
-        //   // calculate indices for splitting dataset
-        //   console.log(newValues);
-        //   let goal2050 = newValues[newValues.length - 2];
-        //   let improve2050 = newValues[newValues.length - 1];
-        //   let accessible = [];
-        //   let inaccessible = [];
-        //   for (var i = 0; i < newValues.length - 2; i += 2) {
-        //     inaccessible.push(newValues[i]);
-        //     accessible.push(newValues[i + 1]);
-        //   }
-        //   this.chartOptions.series[0].data = accessible;
-        //   this.chartOptions.series[1].data = inaccessible;
-        //   if (improve2050 <= 0) {
-        //     this.chartOptions.yAxis[0].plotLines[1].value = -100;
-        //   } else {
-        //     this.chartOptions.yAxis[0].plotLines[1].value = improve2050;
-        //   }
-        //   if (goal2050 <= 0) {
-        //     this.chartOptions.yAxis[0].plotLines[0].value = -100;
-        //   } else {
-        //     this.chartOptions.yAxis[0].plotLines[0].value = goal2050;
-        //   }
-        // })
         this.chartOptions.yAxis[0].title.text = newUnits[0];
         this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0];
         // calculate new max value for 2nd y-axis
@@ -283,7 +254,6 @@ export default {
           this.chartOptions.yAxis[1].max = newYAxis1Max;
         });
       } 
-
       const chart = this.$refs.Chart.chart;
       if (this.exporting == false) {
         chart.setTitle({
