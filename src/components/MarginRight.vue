@@ -5,10 +5,10 @@
     </div>
     <div class="row" style="text-align: center">
       <div class="col-12">
-        <b-button class="d-inline" style="background-color: red;" size="sm" title="view large graph for download" @click="showModalGraph">
+        <b-button class="d-inline" style="background-color: #D3D3D3;" size="sm" title="view large graph for download" @click="showModalGraph">
           <b-icon icon="printer" aria-hidden="true"></b-icon>
         </b-button>
-        <b-button style="margin-left: 5px;" variant="success" class="d-inline" size="sm" title="zoom to all MassBays assessment areas" @click="resetZoom">
+        <b-button style="margin-left: 5px; background-color: #D3D3D3" class="d-inline" size="sm" title="zoom to all MassBays assessment areas" @click="resetZoom">
             <b-icon icon="globe" aria-hidden="true"></b-icon>
         </b-button>
       </div>

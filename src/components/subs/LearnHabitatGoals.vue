@@ -99,15 +99,23 @@
            <ul>
             <li>
               The ETT displays existing migratory habitat (river miles) and spawning habitat (acres) based on areas where DMF has determined that such habitat for river herring is either fully or partially accessible.
+              <ul>
+                <li>
+                  Although the boundaries of the MassBays assessment areas in the ETT are based on extent of tidal influence, diadromous fish habitat often extends well beyond these boundaries to freshwater portions of rivers, lakes, and ponds. These freshwater areas are included in the ETT diadromous fish habitat data.
+                </li>
+                <li>
+                  In cases where a MassBays assessment area receives flow from one or more upstream assessment areas, the calculation of existing and potential migratory and spawning habitat includes all habitat that is either within or upstream of the selected assessment area.
+                </li>
+              </ul>
             </li>
             <li>
-              The ETT also displays fish migratory habitat and spawning habitat as “not accessible” to river herring in areas where DMF has determined that future habitat restoration is feasible.
+              The ETT also displays fish migratory habitat and spawning habitat as currently “not accessible” to river herring in areas where DMF has determined that future habitat restoration is feasible.
             </li>
             <li>
               Diadromous fish habitat goals for 2050 include (1) areas where <b>new access</b> to habitat may be established, and (2) areas where <b>habitat improvements</b> may be implemented in areas that currently have only partial access for river herring.
             </li>
             <li>
-              The 2050 goals are based on implementation of potential diadromous fish habitat restoration projects in the MassBays region which are in the top 25% of prioritization scoring by DMF.  For more information on diadromous fish habitat restoration projects and DMF prioritization, see the <a href="https://www.mass.gov/info-details/diadromous-fisheries-project" target="_blank">DMF Diadromous Fisheries Project website</a>.
+              The 2050 goals are based on implementation of potential diadromous fish habitat restoration projects in the MassBays study area which are in the top 25% of prioritization scoring by DMF.  For more information on diadromous fish habitat restoration projects and DMF prioritization, see the <a href="https://www.mass.gov/info-details/diadromous-fisheries-project" target="_blank">DMF Diadromous Fisheries Project website</a>.
             </li>
            </ul>
           </li>

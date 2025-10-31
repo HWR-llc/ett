@@ -568,19 +568,40 @@ export default {
         }
       } else {
         let lowerBinValue = null;
-        if (value < 20) {
-          lowerBinValue = 0.0
-        } else if (value >= 20 && value < 40) {
-          lowerBinValue = 0.2;
-        } else if (value >= 40 && value < 60) {
-          lowerBinValue = 0.4;        
-        } else if (value >= 60 && value < 80) {
-          lowerBinValue = 0.6; 
-        } else if (value >= 80 && value < 100) {
-          lowerBinValue = 0.8; 
-        } else if (value >= 100) {
-          lowerBinValue = 1;
+        if (geoHabitat == 'diadromous fish') {
+          if (value == 0) {
+            lowerBinValue = 1.0
+          } else if (value >= 70 && value < 75) {
+            lowerBinValue = 0.000;
+          } else if (value >= 75 && value < 80) {
+            lowerBinValue = 0.167;        
+          } else if (value >= 80 && value < 85) {
+            lowerBinValue = 0.334; 
+          } else if (value >= 85 && value < 90) {
+            lowerBinValue = 0.501; 
+          } else if (value >= 90 && value < 95) {
+            lowerBinValue = 0.668; 
+          } else if (value >= 95 && value < 100) {
+            lowerBinValue = 0.835; 
+          } else if (value >= 100) {
+            lowerBinValue = 1;
+          }
+        } else {
+          if (value < 20) {
+            lowerBinValue = 0.0
+          } else if (value >= 20 && value < 40) {
+            lowerBinValue = 0.2;
+          } else if (value >= 40 && value < 60) {
+            lowerBinValue = 0.4;        
+          } else if (value >= 60 && value < 80) {
+            lowerBinValue = 0.6; 
+          } else if (value >= 80 && value < 100) {
+            lowerBinValue = 0.8; 
+          } else if (value >= 100) {
+            lowerBinValue = 1;
+          }
         }
+
 
         let featureColor = this.colorScale(lowerBinValue, geoHabitat);
         return {
@@ -712,7 +733,6 @@ export default {
             embayment.properties['salt marsh_percent_goal'] = json[embayment.properties.NAME].SM_PERCENT_GOAL;
             embayment.properties['tidal flats_percent_goal'] = json[embayment.properties.NAME].TF_PERCENT_GOAL;
             embayment.properties['diadromous fish_percent_goal'] = json[embayment.properties.NAME].DFM_PERCENT_GOAL;
-            // embayment.properties['diadromous fish (spawning)_percent_goal'] = json[embayment.properties.NAME].DFS_PERCENT_GOAL;
           })
           this.embaymentsGeojson = embaymentsGeoJson;
         })
