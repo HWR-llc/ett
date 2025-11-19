@@ -15,7 +15,7 @@
       <svg height="20" width="230">
         <line x1="30" y1="07" x2="70" y2="07" style="stroke: #93D051; stroke-width: 3; stroke-dasharray: 7"></line>
         <text x="70" y="11" font-size="small" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif
-; font-weight: bold; fill: rgb(51, 51, 51)">2050 Goal for New Access</text>
+; font-weight: bold; fill: rgb(51, 51, 51)">2050 Access Goal</text>
 
       </svg>
     </div>

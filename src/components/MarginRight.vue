@@ -19,6 +19,11 @@
           <div class="col-12" style="padding-right: 0px; padding-left: 0px">
             <app-diadromous-fish-graph style="width: 100%" :dftype="'Migratory'" :exporting="false"></app-diadromous-fish-graph> 
           </div>
+
+          <div class="col-12" style="padding-right: 25px; padding-left: 25px">
+            <div class="row" style="border-bottom: 2px solid black"> </div>
+          </div>         
+          
           <div class="col-12" style="padding-right: 0px; padding-left: 0px">
             <app-diadromous-fish-graph style="width: 100%" :dftype="'Spawning'" :exporting="false"></app-diadromous-fish-graph> 
           </div>
