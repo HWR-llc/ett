@@ -193,8 +193,10 @@ export default {
       let dfHabitat = '';
       if (this.dftype == 'Migratory') {
         dfHabitat = 'diadromous fish';
+        this.chartOptions.lang.noData = 'Assessment area has no known migratory habitat.'
       } else {
         dfHabitat = 'diadromous fish (spawning)';
+        this.chartOptions.lang.noData = 'Assessment area has no known spawning habitat.'        
       }
       let newValues = [];
       let newCategories = [];
