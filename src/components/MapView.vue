@@ -324,7 +324,7 @@ export default {
           mouseover: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
             if ((this.metricLayer == true) && (feature.properties[this.habitat + '_percent_goal'] == '-999')) {
-              event.target.getTooltip().setContent(featureName + '<br>Goal Not Yet Established');
+              event.target.getTooltip().setContent(featureName + '<br>Goal Not Established');
             } else if (this.metricLayer == true) {
               event.target.getTooltip().setContent(featureName + '<br>% of 2050 Goal: ' + feature.properties[this.habitat + '_percent_goal'] + '%');
             } else {
