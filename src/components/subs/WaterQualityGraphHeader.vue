@@ -45,6 +45,9 @@ export default {
     waterQuality() {
       return this.$store.state.waterQuality;
     },
+    showLargeGraph() {
+      return this.$store.state.showLargeGraph;
+    },
     waterQualityGraphVariableCapital() {
       const titles = this.$store.state.waterQualityGraphVariable.split(" ");
       let capitalTitle = titles.map((word) => {

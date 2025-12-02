@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-modal v-model="modalShow" centered hide-header="true" hide-footer="true">
+    <b-modal v-if="$store.state.showModalStart" v-model="modalShow" centered hide-header="true" hide-footer="true">
       <div class="row justify-content-center">
         <h4>Welcome to the ETT</h4>
       </div>
@@ -16,9 +16,6 @@
               <figcaption style="text-align: center">{{item.title}}</figcaption>
             </figure>
           </div>
-        </div>
-        <div class="text-right" style="color: red">
-            &nbsp;<span v-if="spanShow">Diadromous Fish coming soon.</span>
         </div>
         <div class="row justify-content-center">
           <b-button variant="primary" class="water-quality-background no-border" @click="buttonClicked">Water Quality</b-button>
@@ -45,16 +42,12 @@ export default {
   },
   methods: {
     iconClicked(newHab) {
-      if (newHab == 'diadromous fish') {
-        this.spanShow = true;
-      } else {
-        this.$store.dispatch('setHabitatGraphData', this.stateWideHabitatValues);
-        this.$store.dispatch('setHabitat', newHab);
-        this.$store.dispatch('onBaseLayer');
-        this.$store.dispatch('onPlotHabitatGraph')
-        this.$store.dispatch('offQuickStart');
-        this.modalShow = false;
-      }
+      this.$store.dispatch('setHabitatGraphData', this.stateWideHabitatValues);
+      this.$store.dispatch('setHabitat', newHab);
+      this.$store.dispatch('onBaseLayer');
+      this.$store.dispatch('onPlotHabitatGraph');
+      this.$store.dispatch('offQuickStart');
+      this.modalShow = false;
     },
     buttonClicked() {
       this.$store.dispatch('onPointsLayer');

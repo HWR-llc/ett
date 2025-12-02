@@ -7,10 +7,10 @@
       </div>
       <div class="col-9">
         <div class="row">
-          % of 2050 {{ habitatCapital }} Goal
+          % of 2050 {{ habitatCapital }} Goal <span v-if="habitat == 'diadromous fish'"> (Migratory Habitat)</span>
         </div>
         <div class="row" style="padding-top: 5px">
-          <div class="col-12">
+          <div class="col-12" v-if="habitat != 'diadromous fish'">
             <svg height="60">
               <rect id="patch 1" x="5" y="0" width="35" height="25" :style="{fill: colorScale(0)}"/>
               <rect id="patch 2" x="40" y="0" width="35" height="25" :style="{fill: colorScale(0.2)}"/>
@@ -18,12 +18,30 @@
               <rect id="patch 4" x="110" y="0" width="35" height="25" :style="{fill: colorScale(0.6)}"/>
               <rect id="patch 5" x="145" y="0" width="35" height="25" :style="{fill: colorScale(0.8)}"/>
               <rect id="patch 6" x="180" y="0" width="35" height="25" :style="{fill: colorScale(1)}"/>
-              <text x="0" y="40" class="small">0</text>
+              <text x="0" y="40" class="small" >0</text>
               <text x="35" y="40" class="small">20</text>
               <text x="70" y="40" class="small">40</text>
               <text x="105" y="40" class="small">60</text>
               <text x="140" y="40" class="small">80</text>
               <text x="170" y="40" class="small">100+</text>
+            </svg>
+          </div>
+          <div class="col-12" v-else>
+            <svg height="60">
+              <rect id="patch 1" x="5" y="0" width="35" height="25" :style="{fill: colorScale(0)}"/>
+              <rect id="patch 2" x="40" y="0" width="35" height="25" :style="{fill: colorScale(0.167)}"/>
+              <rect id="patch 3" x="75" y="0" width="35" height="25" :style="{fill: colorScale(0.334)}"/>
+              <rect id="patch 4" x="110" y="0" width="35" height="25" :style="{fill: colorScale(0.501)}"/>
+              <rect id="patch 5" x="145" y="0" width="35" height="25" :style="{fill: colorScale(0.668)}"/>
+              <rect id="patch 6" x="180" y="0" width="35" height="25" :style="{fill: colorScale(0.835)}"/>
+              <rect id="patch 7" x="215" y="0" width="35" height="25" :style="{fill: colorScale(1.000)}"/>
+              <text x="0" y="40" class="small" >70</text>
+              <text x="35" y="40" class="small">75</text>
+              <text x="70" y="40" class="small">80</text>
+              <text x="105" y="40" class="small">85</text>
+              <text x="140" y="40" class="small">90</text>
+              <text x="175" y="40" class="small">95</text>
+              <text x="210" y="40" class="small">100+</text>
             </svg>
           </div>
         </div>     

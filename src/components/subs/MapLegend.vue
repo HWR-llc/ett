@@ -10,6 +10,39 @@
         MassBays Assessment Area
       </div>
     </div>
+    <div v-if="habitat== 'diadromous fish'">
+        <div class="row">
+          <div v-if="this.$store.state.dfLegendColor" class="col-3">
+            <svg height="20" width="30">
+              <rect id="legend 2" x="0" y="0" width="30" height="20" :style="{fill: this.imageLibraryHabitat['diadromous fish'].clickAccColor}"/>
+            </svg> 
+          </div>
+          <div v-else class="col-3">
+            <svg height="20" width="30">
+              <rect id="legend 2" x="0" y="0" width="30" height="20" :style="{fill: this.imageLibraryHabitat['diadromous fish'].accColor}"/>
+            </svg> 
+          </div>
+          <div class="col-9">
+            Diadromous Fish Habitat Extent (Fully or Partially Accessible)
+          </div>
+        </div>
+        <div class="row">
+          <div v-if="this.$store.state.dfLegendColor" class="col-3">
+            <svg height="20" width="30">
+              <rect :id="'legend' + key" x="0" y="0" width="30" height="20" :style="{fill: this.imageLibraryHabitat['diadromous fish'].clickNAColor}"/>
+            </svg> 
+          </div>
+          <div v-else class="col-3">
+            <svg height="20" width="30">
+              <rect :id="'legend' + key" x="0" y="0" width="30" height="20" :style="{fill: this.imageLibraryHabitat['diadromous fish'].naColor}"/>
+            </svg> 
+          </div>
+          <div class="col-9">
+            Diadromous Fish Habitat Extent (Not Accessible)
+          </div>
+        </div>
+    </div>
+    <div v-else>
     <div v-for="(item, key) in imageLibraryHabitat" :key="key">
       <div v-if="habitat == key">
         <div class="row">
@@ -37,6 +70,7 @@
           </div>
         </div>
       </div>
+      <div v-if="habitat == false"></div>
     </div> 
     <div class="row" v-if="pointsLayer == true">
       <div class="col-12">
@@ -67,6 +101,7 @@
         Selected Parameter
       </div>
     </div>
+  </div>
   </div>
 </template>
 

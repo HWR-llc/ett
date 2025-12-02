@@ -95,7 +95,29 @@
             <b>Some areas are already meeting or exceeding habitat goals.</b> MassBays set the habitat goals using a process that looks across embayment ecotypes (described above) in an effort to compare like-with-like. Individual embayments might be in better condition compared to similarly categorized embayments. In addition, habitat maps are a snapshot of habitat extent, and change in area can shift dramatically from year to year. Not to mention the limitations of remote sensing data and the potential that some habitats were missed in some survey years. In any case, meeting or exceeding a goal for habitat extent does not mean there is no work to do in your area! Reducing pollution through better stormwater management, for example, is needed throughout the Bays to improve habitat health.
           </li>
           <li>
-           <b>Diadromous fish habitat goals are still in development.</b> MassBays continues to work with EPA researchers and local scientists to map habitat needed by migrating fish for spawning and feeding, and to set goals for its restoration and protection. Once available, those goals will also be made available through the ETT.
+           <b>Diadromous fish habitat goals</b> are based on existing and potential fish <b>migratory habitat</b> and <b>spawning habitat</b> extents, as determined by the Massachusetts Division of Marine Fisheries (DMF):
+           <ul>
+            <li>
+              The ETT displays existing migratory habitat (river miles) and spawning habitat (acres) based on areas where DMF has determined that such habitat for river herring is either fully or partially accessible.
+              <ul>
+                <li>
+                  Although the boundaries of the MassBays assessment areas in the ETT are based on extent of tidal influence, diadromous fish habitat often extends well beyond these boundaries to freshwater portions of rivers, lakes, and ponds. These freshwater areas are included in the ETT diadromous fish habitat data.
+                </li>
+                <li>
+                  In cases where a MassBays assessment area receives flow from one or more upstream assessment areas, the calculation of existing and potential migratory and spawning habitat includes all habitat that is either within or upstream of the selected assessment area.
+                </li>
+              </ul>
+            </li>
+            <li>
+              The ETT also displays fish migratory habitat and spawning habitat as currently “not accessible” to river herring in areas where DMF has determined that future habitat restoration is feasible.
+            </li>
+            <li>
+              Diadromous fish habitat goals for 2050 include (1) areas where <b>new access</b> to habitat may be established, and (2) areas where <b>habitat improvements</b> may be implemented in areas that currently have only partial access for river herring.
+            </li>
+            <li>
+              The 2050 goals are based on implementation of potential diadromous fish habitat restoration projects in the MassBays study area which are in the top 25% of prioritization scoring by DMF.  For more information on diadromous fish habitat restoration projects and DMF prioritization, see the <a href="https://www.mass.gov/info-details/diadromous-fisheries-project" target="_blank">DMF Diadromous Fisheries Project website</a>.
+            </li>
+           </ul>
           </li>
         </ul>
       </div>

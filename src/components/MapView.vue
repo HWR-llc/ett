@@ -46,6 +46,7 @@
         <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='tidal flats'" :options-style="tidalFlatsColorer" ref="metric"></l-geo-json>	  		
         <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='salt marsh'" :options-style="saltMarshColorer" ref="metric"></l-geo-json>	  
         <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='eelgrass'" :options-style="eelgrassColorer" ref="metric"></l-geo-json>	  
+        <l-geo-json :geojson="embaymentsGeojson" v-if="habitat=='diadromous fish'" :options-style="diadromousFishColorer" ref="metric"></l-geo-json>	  
       </div>
       <div v-if="baseLayer">
         <l-layer-group ref="historic">
@@ -57,6 +58,9 @@
           <l-geo-json :geojson="bkgrdGeojson.tidalFlats.data.current" v-if="habitat=='tidal flats'" :options-style="tfStyleCur"></l-geo-json>	  		
           <l-geo-json :geojson="bkgrdGeojson.saltMarsh.data.current" v-if="habitat=='salt marsh'" :options-style="smStyleCur"></l-geo-json>	
           <l-geo-json :geojson="bkgrdGeojson.eelGrass.data.current" v-if="habitat=='eelgrass'" :options-style="egStyleCur"></l-geo-json>
+          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.current" v-if="habitat=='diadromous fish'" :options="optionsMigratory" :options-style="migratoryFishStyle" ref="fishBase"></l-geo-json>
+          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.buff" v-if="habitat=='diadromous fish'" :options="optionsMigratory" :options-style="buffStyle" ref="fishBuff"></l-geo-json>
+          <l-geo-json :geojson="bkgrdGeojson.diadromousFish.data.poly" v-if="habitat=='diadromous fish'" :options="optionsSpawning" :options-style="spawningFishStyle" ref="fishPoly"></l-geo-json>
         </l-layer-group>
       </div>
       <div v-if="pointsLayer">
@@ -64,10 +68,10 @@
           <l-circle-marker
             :lat-lng="[s.geometry.coordinates[1], s.geometry.coordinates[0]]"
             :fillColor="circleColorer(s.properties.parameter_list)"
-            fillOpacity=1
+            fillOpacity= 1
             :color="activeCircleColorer(s.id, s.properties.parameter_list)"
-            radius=5
-            @click="plotData($event, s.id, s.properties.parameter_list, s.properties.eda_unit_name)"
+            radius= 5
+            @click="plotData(s.id, s.properties.parameter_list, s.properties.eda_unit_name, false)"
           >
             <l-tooltip ref="tooltip" style="padding-left: 15px; padding-right: 15px">
               <app-station-tooltip 
@@ -101,6 +105,7 @@ import WaterQualityFloater from '../components/WaterQualityFloater.vue'
 import { imageLibraryHabitat } from '../lib/constants'
 import { basemaps } from '../lib/constants'
 import { basemapsWms } from '../lib/constants'
+
 export default {
   components: {
     LMap,
@@ -191,6 +196,16 @@ export default {
         };
       };
     },
+    buffStyle() {
+      return () => {
+        return {
+          stroke: false,
+          fillColor: "green",
+          fillOpacity: 0.0,
+          interactive: true
+        }
+      }
+    },
     tfStyleCur() {
       return () => {
         return {
@@ -216,9 +231,61 @@ export default {
         return {
           stroke: false,
           fillColor: '#FF0000',
-          fillOpacity:0.5,
+          fillOpacity: 0.5,
           interactive: false
         };
+      };
+    },
+    optionsSpawning() {
+      return {
+        onEachFeature: this.onEachPoly
+      }
+    },
+    onEachPoly() {
+      return (feature, layer) => {
+      layer.on({
+            mouseover: (event) => {
+              let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME);
+              const tooltip = event.target.getTooltip();
+
+              tooltip.setContent(featureName);
+              tooltip.setLatLng(event.latlng);
+              tooltip.update();
+            },
+            mousemove: (event) => {
+              const tooltip = event.target.getTooltip();
+
+              tooltip.setLatLng(event.latlng);
+              tooltip.update();
+            }
+          });
+          layer.bindTooltip('');
+      };
+    },
+    optionsMigratory() {
+       return {
+        onEachFeature: this.onEachBufferLine
+       } 
+    },
+    onEachBufferLine() {
+      return (feature, layer) => {
+        layer.on({
+          mouseover: (event) => {
+            let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME);
+            const tooltip = event.target.getTooltip();
+
+            tooltip.setContent(featureName);
+            tooltip.setLatLng(event.latlng);
+            tooltip.update();
+          },
+          mousemove: (event) => {
+            const tooltip = event.target.getTooltip();
+
+            tooltip.setLatLng(event.latlng);
+            tooltip.update();
+          }
+        });
+        layer.bindTooltip('');
       };
     },
     optionsEmbayment() {
@@ -228,28 +295,36 @@ export default {
     },
     onEachEmbaymentFunction() {
       return (feature, layer) => {
+        if (feature.properties.NAME == this.embayment) {
+          this.$store.dispatch('setEmbayment', feature.properties.NAME);
+          this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
+          layer.setStyle({weight: 5, color: 'black', opacity: 1});
+        } else {
+          console.log(this.$route.query.embayment)
+        }
         layer.on({
           click: (event) => {
             if (event.target.feature.properties.NAME == this.embayment) {
               this.stopFlyTo = true;
               this.$store.dispatch('setEmbayment', null);
+              
               this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
               this.$nextTick(() => {
                 this.stopFlyTo = false;
               })
+              this.$store.dispatch('setEmbayment', null);
             } else {
               this.$refs.ettMap.mapObject.flyToBounds(event.target.getBounds());
               this.$store.dispatch('setEmbayment', event.target.feature.properties.NAME);
               this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
-              event.target.setStyle({weight: 2, color: 'red', opacity: 1});
-              // this.$refs.embaymentsBase.mapObject.bringToFront();
+              event.target.setStyle({weight: 5, color: 'black', opacity: 1});
               this.reorderLayers();
             }
           },
           mouseover: (event) => {
             let featureName = this.capitalizeFirstLetter(event.target.feature.properties.NAME)
             if ((this.metricLayer == true) && (feature.properties[this.habitat + '_percent_goal'] == '-999')) {
-              event.target.getTooltip().setContent(featureName + '<br>Goal Not Yet Established');
+              event.target.getTooltip().setContent(featureName + '<br>Goal Not Established');
             } else if (this.metricLayer == true) {
               event.target.getTooltip().setContent(featureName + '<br>% of 2050 Goal: ' + feature.properties[this.habitat + '_percent_goal'] + '%');
             } else {
@@ -289,8 +364,16 @@ export default {
             current: null,
             historic: null		    			
           }
+        },
+        diadromousFish: {
+          name: 'diadromous fish',
+          data: {
+            current: null,
+            buff: null,
+            poly: null
+          }
         }
-      },
+      }, 
       embaymentsGeojson: null,
       stations: null,
       mapStyleObj: {
@@ -301,23 +384,148 @@ export default {
     };
   },
   watch: {
+    '$store.state.habitat': {
+      handler() {
+        this.$router.push({ 
+          query: { habitat: this.habitat, wq_param: this.waterQuality } 
+        });
+      }
+    },
+    '$store.state.resetZoom': {
+      handler() {
+        this.$refs.ettMap.mapObject.flyTo(this.origCenter, this.origZoom);
+        this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);
+      }, immediate: true
+    },
     '$store.state.embayment': {
       handler() {
-        if ((this.embayment == null) && (this.stopFlyTo == false)) {
-          this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);  
-          this.$refs.ettMap.mapObject.flyTo(this.center, this.zoom);     
-        } else if (this.embayment == null) {
-          this.$refs.embaymentsBase.setOptionsStyle(this.embStyle);          
-        }
+        this.updateURL();   
       }, immediate: true  
     },
     '$store.state.waterQuality': {
       handler() {
+        this.$router.push({ 
+          query: { habitat: this.habitat, wq_param: this.waterQuality } 
+        });
         this.$store.dispatch('setStation', null);
       }, immediate: true  
+    },
+    '$store.state.station': {
+      handler() {
+        this.updateURL();
+      }
+    },
+    center() {
+      this.setMapView();
+    },
+    zoom() {
+      this.setMapView();
     }
   },
   methods: {
+    // method to update the URL
+    updateURL() {
+      const map = this.$refs.ettMap.mapObject;
+      const center = map.getCenter();
+      const zoom = map.getZoom();
+      const url = new URL(window.location.href);
+  
+      url.searchParams.set('center', `${center.lat},${center.lng}`);
+      url.searchParams.set('zoom', zoom);
+      url.searchParams.set('station', this.$store.state.station);
+      url.searchParams.set('embayment', this.$store.state.embayment);
+      url.searchParams.set('wqParam', this.$store.state.waterQuality);
+      url.searchParams.set('stationEmb', this.$store.state.stationEmbayment);
+      window.history.replaceState({}, '', url);
+    },
+
+    // method to restore the map state from the url
+    restoreMapState() {
+      const url = new URL(window.location.href);
+      const center = url.searchParams.get('center');
+      const zoom = url.searchParams.get('zoom');
+      const station = url.searchParams.get('station');
+      const embayment = url.searchParams.get('embayment');
+      const stationEmb = url.searchParams.get('stationEmb');
+
+      if (center && zoom) {
+        const [lat,lng] = center.split(',').map(Number);
+        this.center = [lat, lng];
+        this.zoom = Number(zoom);
+      } 
+
+      // water quality station graphs
+      if (station && station != 'null') {
+        this.$store.dispatch('setStation', station);
+        this.$store.dispatch('setStationEmbayment', stationEmb);
+
+        // this.$store.dispatch('setWaterQuality', wqParam);
+        this.$store.dispatch('setWaterQualityGraphVariable', this.$route.query.wq_param);
+        this.$store.dispatch('onWaterQualityGraph');
+        this.$store.dispatch('onPlotWaterQualityGraph');
+
+      } 
+
+      // embayment selection
+      if (embayment && embayment != 'null') {
+
+
+
+
+        // console.log(this.$refs.embaymentsBase);
+        
+        
+        
+        
+        
+        
+        
+        
+        this.$store.dispatch('setEmbayment', embayment);
+      } 
+
+      // initial states (water quality & habitat are null)
+      if (this.waterQuality == null && this.habitat == null) {
+        this.$store.dispatch('onModalStart');
+      } else {
+        this.$store.dispatch('offModalStart')
+      }
+    },
+
+    onMapMoveEnd() {
+      this.updateURL();
+    },
+    onMapZoomEnd() {
+      this.updateURL();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+    },
+    spawningFishStyle(feature) {
+      if (feature.properties.ACCESSIBLE == "Y") {
+        return {
+          color: this.imageLibraryHabitat['diadromous fish'].accColor,
+          fillOpacity: 1,
+          stroke: false
+        }
+      } else {
+        return {
+          color: this.imageLibraryHabitat['diadromous fish'].naColor,
+          fillOpacity: 1,
+          stroke: false            
+        }
+      }
+    },
+    migratoryFishStyle(feature) {
+      if (feature.properties.ACCESSIBLE == "Y") {
+        return {
+          color: this.imageLibraryHabitat['diadromous fish'].accColor,
+          stroke: true,
+        }
+      } else {
+        return {
+          color: this.imageLibraryHabitat['diadromous fish'].naColor,
+          stroke: true,
+        }
+      }
+    },
     circleColorer(parameterList) {
       if (parameterList.includes(this.waterQuality)) {
         return '#00B0F0';
@@ -360,19 +568,40 @@ export default {
         }
       } else {
         let lowerBinValue = null;
-        if (value < 20) {
-          lowerBinValue = 0.0
-        } else if (value >= 20 && value < 40) {
-          lowerBinValue = 0.2;
-        } else if (value >= 40 && value < 60) {
-          lowerBinValue = 0.4;        
-        } else if (value >= 60 && value < 80) {
-          lowerBinValue = 0.6; 
-        } else if (value >= 80 && value < 100) {
-          lowerBinValue = 0.8; 
-        } else if (value >= 100) {
-          lowerBinValue = 1;
+        if (geoHabitat == 'diadromous fish') {
+          if (value == 0) {
+            lowerBinValue = 1.0
+          } else if (value >= 70 && value < 75) {
+            lowerBinValue = 0.000;
+          } else if (value >= 75 && value < 80) {
+            lowerBinValue = 0.167;        
+          } else if (value >= 80 && value < 85) {
+            lowerBinValue = 0.334; 
+          } else if (value >= 85 && value < 90) {
+            lowerBinValue = 0.501; 
+          } else if (value >= 90 && value < 95) {
+            lowerBinValue = 0.668; 
+          } else if (value >= 95 && value < 100) {
+            lowerBinValue = 0.835; 
+          } else if (value >= 100) {
+            lowerBinValue = 1;
+          }
+        } else {
+          if (value < 20) {
+            lowerBinValue = 0.0
+          } else if (value >= 20 && value < 40) {
+            lowerBinValue = 0.2;
+          } else if (value >= 40 && value < 60) {
+            lowerBinValue = 0.4;        
+          } else if (value >= 60 && value < 80) {
+            lowerBinValue = 0.6; 
+          } else if (value >= 80 && value < 100) {
+            lowerBinValue = 0.8; 
+          } else if (value >= 100) {
+            lowerBinValue = 1;
+          }
         }
+
 
         let featureColor = this.colorScale(lowerBinValue, geoHabitat);
         return {
@@ -417,29 +646,31 @@ export default {
         } 
       });
       return activeParameters;
-
     },
-    plotData(event, stationId, parameterList, stationEmbayment) {
-      if (stationId == this.station) {
-        this.$store.dispatch('offWaterQualityGraph');
-        this.$store.dispatch('setStation', null);
-      } else {
-        this.$store.dispatch('onWaterQualityGraph');
-        if (parameterList.includes(this.waterQuality)) {
-          this.$nextTick(() => {
-            this.$store.dispatch('onPlotWaterQualityGraph');
-          })
-        } else {
-          this.$store.dispatch('offPlotWaterQualityGraph')
-        }
-        if (this.waterQuality == null) {
-          this.$store.dispatch('setWaterQuality', 'nitrogen');
-          this.$store.dispatch('setWaterQualityGraphVariable', 'nitrogen');
-        } else {
-          this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
-        }
-        this.$store.dispatch('setStation', stationId);
-        this.$store.dispatch('setStationEmbayment', stationEmbayment);
+    plotData(stationId, parameterList, stationEmbayment, init) {
+        if (!init && stationId == this.station) {
+          this.$store.dispatch('offWaterQualityGraph');
+          this.$store.dispatch('setStation', null);
+          } else {
+            this.$store.dispatch('onWaterQualityGraph');
+            
+            if (parameterList.includes(this.waterQuality)) {
+              this.$nextTick(() => {
+                this.$store.dispatch('onPlotWaterQualityGraph');
+              })
+            } else {
+              this.$store.dispatch('offPlotWaterQualityGraph')
+            }
+            
+            if (this.waterQuality == null) {
+              this.$store.dispatch('setWaterQuality', 'nitrogen');
+              this.$store.dispatch('setWaterQualityGraphVariable', 'nitrogen');
+            } else {
+              this.$store.dispatch('setWaterQualityGraphVariable', this.waterQuality);
+            }
+
+            this.$store.dispatch('setStation', stationId);
+            this.$store.dispatch('setStationEmbayment', stationEmbayment);
       }
     },
     capitalizeFirstLetter(nameString) {
@@ -459,6 +690,13 @@ export default {
         width: '100%',
       }      
     },
+    setMapView() {
+      const map = this.$refs.ettMap.mapObject;
+      if(map) {
+        map.setView(this.center, this.zoom);
+      }
+    },
+    // reorder the layers visible on the ett 
     reorderLayers () {
       this.$nextTick(() => {
         if (('metric' in this.$refs) && (this.$refs.metric !== undefined)) {
@@ -467,8 +705,17 @@ export default {
         if (('embaymentsBase' in this.$refs) && (this.$refs.embaymentsBase !== undefined)) {
           this.$refs.embaymentsBase.mapObject.bringToFront();
         }
+        if (('fishBase' in this.$refs) && (this.$refs.fishBase !== undefined)) {
+          this.$refs.fishBase.mapObject.bringToFront();
+        }
+        if (('fishBuff' in this.$refs) && (this.$refs.fishBuff !== undefined)) {
+          this.$refs.fishBuff.mapObject.bringToFront();
+        }
+        if (('fishPoly' in this.$refs) && (this.$refs.fishPoly !== undefined)) {
+          this.$refs.fishPoly.mapObject.bringToFront();
+        }
       })
-    }
+    },
   },
   created() {
     // fetch embayments
@@ -485,7 +732,7 @@ export default {
             embayment.properties['eelgrass_percent_goal'] = json[embayment.properties.NAME].EG_PERCENT_GOAL;
             embayment.properties['salt marsh_percent_goal'] = json[embayment.properties.NAME].SM_PERCENT_GOAL;
             embayment.properties['tidal flats_percent_goal'] = json[embayment.properties.NAME].TF_PERCENT_GOAL;
-            embayment.properties['diadromous fish_percent_goal'] = json[embayment.properties.NAME].DF_PERCENT_GOAL;
+            embayment.properties['diadromous fish_percent_goal'] = json[embayment.properties.NAME].DFM_PERCENT_GOAL;
           })
           this.embaymentsGeojson = embaymentsGeoJson;
         })
@@ -504,6 +751,11 @@ export default {
         current: "./data/eelgrass_current_wgs.geojson",
         historic: "./data/eelgrass_historic_wgs.geojson"
       },
+      diadromousFish: {
+        current: "./data/diadromous_fish_current_wgs.geojson",
+        buff: "./data/df_migratory_buffer_wgs.geojson",
+        poly: "./data/df_spawning_current_wgs.geojson"
+      }
     }
     Object.entries(this.bkgrdGeojson).forEach(([key, value]) => {
       Object.entries(value.data).forEach(([alt]) => {
@@ -512,11 +764,10 @@ export default {
             return response.json()
           }).then(json => {
             this.bkgrdGeojson[key].data[alt] = json;
-            // const year = json.name.split('_').pop()
-            // this.$store.dispatch('setHabitatLegendYear', {habitat: value.name, period: alt, value: year});
         })					
       })
     })
+
     // fetch years file for legend
     const yearsFile = "./data/habitat_legend_years.json"
     fetch(yearsFile)
@@ -525,9 +776,9 @@ export default {
     }).then(json => {
       json.forEach(habitat => {
         this.$store.dispatch('setHabitatLegendYear', {habitat: habitat.HABITAT, period: habitat.PERIOD, value: habitat.YEAR});
-        // console.log(habitat.HABITAT);
       })
     })
+
     // fetch water quality stations
     fetch('./data/stations.json')
     .then(response => {
@@ -538,9 +789,23 @@ export default {
         station.properties['parameter_list'] = this.parameterMapper(station.properties.wq_counts);
       });
     })
+    this.origCenter = this.center;
+    this.origZoom = this.zoom;
   },
   mounted() {
+    this.restoreMapState();
+
+    this.$nextTick(() => {
+      const map = this.$refs.ettMap.mapObject;
+      if (map) {
+        map.on('moveend', this.onMapMoveEnd);
+        map.on('zoomend', this.onMapZoomEnd);
+
+        this.setMapView();
+      }
+    })
     window.addEventListener('resize', this.onResize);
+
   },
   updated() {
     this.reorderLayers();   
@@ -551,6 +816,10 @@ export default {
 }
 </script>
 <style scoped>
+.tooltip {
+  position: absolute;
+  pointer-events: none;
+}
 .legend {
   position: absolute;
   top: 5%;

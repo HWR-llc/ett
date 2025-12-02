@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row align-items-center" style="padding-left: 20px">
+    <div class="row align-items-center" style="padding-left: 20px; flex-wrap: nowrap;">
       <div class="col-2" style="min-width: 100px">    
         <div class="row justify-content-center" style="padding-top: 0px">
           <h6 class="habitat-main-header">Habitats</h6>
@@ -18,14 +18,14 @@
             </div>
           </div>
           <div class="col-7">
-            <div class="form-check" v-for="selection in habitatSelections.slice(2,3)" :key="selection.id">
+            <div class="form-check" v-for="selection in habitatSelections.slice(2,4)" :key="selection.id">
               <input class="form-check-input" type="radio" :id="selection.id" :value="selection.id" v-model="habitat">
               <label class="form-check-label" :for="selection.id" style="color: white"> {{selection.capital}} </label>
             </div>
-            <div class="form-check" v-for="selection in habitatSelections.slice(3,4)" :key="selection.id">
-              <input class="form-check-input" type="radio" :id="selection.id" :value="selection.id" v-model="habitat" disabled="true">
+            <!-- <div class="form-check" v-for="selection in habitatSelections.slice(3,4)" :key="selection.id">
+              <input class="form-check-input" type="radio" :id="selection.id" :value="selection.id" v-model="habitat">
               <label v-b-tooltip.hover class="form-check-label" :for="selection.id" style="color: white" title="Diadromous fish coming soon"> {{selection.capital}} </label>
-            </div>
+            </div> -->
           </div>          
         </div>
 
@@ -50,6 +50,7 @@ export default {
         return this.$store.state.baseLayer;
       },
       set () {
+        this.$store.dispatch('setHabitat', null);
         this.$store.dispatch('switchBaseLayer');
       }      
     },
@@ -68,6 +69,16 @@ export default {
         this.$store.dispatch('onBaseLayer');
         this.$store.dispatch('offQuickStart');
       }      
+    }
+  },
+  created() {
+    const rq = this.$route.query;
+    console.log(rq);
+
+    if (rq.habitat) {
+      this.$store.dispatch('setHabitat', rq.habitat);
+      this.$store.dispatch('onBaseLayer');
+      this.$store.dispatch('offQuickStart');
     }
   }
 }

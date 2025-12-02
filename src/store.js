@@ -20,17 +20,26 @@ export const store = new Vuex.Store({
     stationEmbayment: null,
     habitatGraphData: null,
     showQuickStart: true,
+    showModalStart: true,
     showLargeGraph: false,
+    showHabitatGraphDynamic: false,
+    showDiadromousFishGraphDynamic: false,
     plotHabitatGraph: false,
     plotWaterQualityGraph: false,
+    dfLegendColor: false,
+    init: true,
     legendYears: {
       'eelgrass': {historic: null, current: null},
       'salt marsh': {historic: null, current: null},
       'tidal flats': {historic: null, current: null},
       'diadromous fish': {historic: null, current: null}
-    }
+    },
+    resetZoom: false
   },
   mutations: {
+    SET_DF_LEGEND_COLOR: (state, payload) => {
+      state.dfLegendColor = payload;
+    },
     SET_HABITAT: (state, payload) => {
       state.habitat = payload;
     },
@@ -45,6 +54,9 @@ export const store = new Vuex.Store({
     },    
     SET_STATION: (state, payload) => {
       state.station = payload;
+    },
+    SET_INIT: (state, payload) => {
+      state.init = payload;
     },
     SET_STATION_EMBAYMENT: (state, payload) => {
       state.stationEmbayment = payload;
@@ -70,6 +82,9 @@ export const store = new Vuex.Store({
     ON_POINTS_LAYER: state => {
       state.pointsLayer = true;
     },
+    OFF_POINTS_LAYER: state => {
+      state.pointsLayer = false;
+    },
     ON_BASE_LAYER: state => {
       state.baseLayer = true;
     },
@@ -85,8 +100,20 @@ export const store = new Vuex.Store({
     OFF_QUICK_START: state => {
       state.showQuickStart = false;
     },
+    ON_MODAL_START: state => {
+      state.showModalStart = true;
+    },
+    OFF_MODAL_START: state => {
+      state.showModalStart = false;
+    },
     SWITCH_SHOW_LARGE_GRAPH: state => {
       state.showLargeGraph = !state.showLargeGraph;
+    },
+    SWITCH_SHOW_HABITAT_GRAPH_DYNAMIC: state => {
+      state.showHabitatGraphDynamic = !state.showHabitatGraphDynamic;
+    },
+    SWITCH_SHOW_DIADROMOUS_FISH_GRAPH_DYNAMIC: state => {
+      state.showDiadromousFishGraphDynamic = !state.showDiadromousFishGraphDynamic;
     },
     ON_PLOT_HABITAT_GRAPH: state => {
       state.plotHabitatGraph = true;
@@ -103,8 +130,14 @@ export const store = new Vuex.Store({
     SET_HABITAT_LEGEND_YEAR: (state, payload) => {
       state.legendYears[payload.habitat][payload.period] = payload.value;
     },
+    SWITCH_RESET_ZOOM: state => {
+      state.resetZoom = !state.resetZoom;
+    }
   },
   actions: {
+    setDFLegendColor: ({commit}, payload) => {
+      commit('SET_DF_LEGEND_COLOR', payload)
+    },
     setHabitat: ({commit}, payload) => {
       commit('SET_HABITAT', payload);
     },
@@ -120,6 +153,9 @@ export const store = new Vuex.Store({
     setStation: ({commit}, payload) => {
       commit('SET_STATION', payload);
     },
+    setInit: ({commit}, payload) => {
+      commit('SET_INIT', payload);
+    },
     setStationEmbayment: ({commit}, payload) => {
       commit('SET_STATION_EMBAYMENT', payload);
     },
@@ -128,6 +164,9 @@ export const store = new Vuex.Store({
     },
     setHabitatGraphData: ({commit}, payload) => {
       commit('SET_HABITAT_GRAPH_DATA', payload);
+    },
+    setDiadromousFishData: ({commit}, payload) => {
+      commit('SET_DIADROMOUS_FISH_DATA', payload);
     },    
     switchBaseLayer: ({commit}) => {
       commit('SWITCH_BASE_LAYER');
@@ -140,6 +179,9 @@ export const store = new Vuex.Store({
         commit('ON_POINTS_LAYER');
       }
     },
+    offPointsLayer: ({commit}) => {
+      commit('OFF_POINTS_LAYER');
+    },
     onBaseLayer: ({commit, state}) => {
       if (state.baseLayer == false) {
         commit('ON_BASE_LAYER');
@@ -150,6 +192,12 @@ export const store = new Vuex.Store({
     },
     offWaterQualityGraph: ({commit}) => {
       commit('OFF_WATER_QUALITY_GRAPH');
+    },
+    onDiadromousFishGraph: ({commit}) => {
+      commit('ON_DIADROMOUS_FISH_GRAPH');
+    },
+    offDiadromousFishGraph: ({commit}) => {
+      commit('OFF_DIADROMOUS_FISH_GRAPH');
     },
     switchMetricLayer: ({commit}) => {
       commit('SWITCH_METRIC_LAYER');
@@ -166,8 +214,20 @@ export const store = new Vuex.Store({
     offQuickStart: ({commit}) => {
       commit('OFF_QUICK_START');
     },
+    onModalStart: ({commit}) => {
+      commit('ON_MODAL_START');
+    },
+    offModalStart: ({commit}) => {
+      commit('OFF_MODAL_START');
+    },
     switchShowLargeGraph: ({commit}) => {
       commit('SWITCH_SHOW_LARGE_GRAPH');
+    }, 
+    switchShowHabitatGraphDynamic: ({commit}) => {
+      commit('SWITCH_SHOW_HABITAT_GRAPH_DYNAMIC');
+    }, 
+    switchShowDiadromousFishGraphDynamic: ({commit}) => {
+      commit('SWITCH_SHOW_DIADROMOUS_FISH_GRAPH_DYNAMIC');
     }, 
     onPlotHabitatGraph: ({commit}) => {
       commit('ON_PLOT_HABITAT_GRAPH');
@@ -183,6 +243,9 @@ export const store = new Vuex.Store({
     },
     setHabitatLegendYear: ({commit}, payload) => {
       commit('SET_HABITAT_LEGEND_YEAR', payload);
-    },      
+    },
+    switchResetZoom: ({commit}) => {
+      commit('SWITCH_RESET_ZOOM');
+    }
   }
 });

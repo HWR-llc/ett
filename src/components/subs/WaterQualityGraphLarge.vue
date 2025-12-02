@@ -1,19 +1,24 @@
 <template>
   <div>
     <highcharts class="chart" :options="chartOptions" ref="chart" :style="styleObject"></highcharts>
+    <div>
+    <p>Click and drag to zoom in to different parts of the graph.</p>
+  </div>
   </div>
 </template>
 
 <script>
 import { waterQualityThresholds } from '../../lib/constants'
 import Highcharts from "highcharts"
+import Exporting from 'highcharts/modules/exporting';
 Highcharts.setOptions({lang: {thousandsSep:','}})
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
 NoDataToDisplay(Highcharts);
+Exporting(Highcharts);
 
 export default {
   props: ['gwidth', 'gheight'],
-  
+
   data() {
 
     return {
@@ -23,26 +28,18 @@ export default {
       chartOptions: {
         chart: {
           type: 'scatter',
+          zoomType: 'x'
         },
-        exporting: {
-          enabled: false
-        },
-        title: {
-          text: null
-        },
+
         lang: {
           noData: 'No observed data to display in this area.<br> Select a different area to see data.'
         },
         tooltip: {
           pointFormat: "{point.x:%Y-%m-%d %H:%M} <br> {point.y}"     
         },
-        rangeSelector: {
-          enabled: true,
-          selected:1
-        },
+
         xAxis: {
           type: 'datetime',
-
           labels: {
             format: '{value:%b<br/>%Y}'
           },
@@ -94,6 +91,10 @@ export default {
           },
         ]
       },
+      startYear: null,
+      endYear: null,
+      minYear: null,
+      maxYear: null,
     }
   },
   computed: {
@@ -119,6 +120,17 @@ export default {
       }
       return capitalTitle;
     },
+    stationEmbaymentCapital() {
+      let nameStringArray = this.$store.state.stationEmbayment.split(" ");
+      nameStringArray.forEach((word, index) => {
+        if (word[0] == '(') {
+          nameStringArray[index] = word.substring(0, 2) + word.slice(2).toLowerCase();
+        } else {
+          nameStringArray[index] = word[0] + word.slice(1).toLowerCase();
+        }
+      });
+      return nameStringArray.join(' ');    
+    },
     showLargeGraph() {
       return this.$store.state.showLargeGraph;
     },
@@ -129,9 +141,15 @@ export default {
   watch: {
     '$store.state.station'() {
       this.plotData();
+    },
+    data: {
+      handler(newData) {
+        this.updateYears(newData);
+      }, deep: true
     }
   },
   methods: {
+
     parameterMapper(parameterName) {
       const waterQualityMap = new Map();
       waterQualityMap.set('chlorophyl-a', 'CHLA');
@@ -148,7 +166,10 @@ export default {
     },
     plotData() {
       if (this.plotWaterQualityGraph == true) {
-        let parameterCode = this.parameterMapper(this.waterQualityGraphVariable);
+        const chart = this.$refs.chart.chart;
+        chart.setTitle({ text: this.station + ' <br>' + this.stationEmbaymentCapital + " || " + this.waterQualityGraphVariableCapital});
+        
+       let parameterCode = this.parameterMapper(this.waterQualityGraphVariable);
         // fetch water quality data
         fetch('./data/wq/' + this.station +'.json')
         .then(response => {
@@ -157,12 +178,15 @@ export default {
 
           let activeData = json.filter(row => row.param == parameterCode)[0];
 
+          // console.log(activeData)
           this.chartOptions.yAxis.title.text = this.waterQualityThresholds[this.waterQualityGraphVariable].title + ' (' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + ')';    
           this.chartOptions.yAxis.type = this.waterQualityThresholds[this.waterQualityGraphVariable].scale;
+          
           let dataSeries = [];
 
           activeData.values.forEach( row => {
-            dataSeries.push({x: new Date(row.datetime).getTime(), y: row.value})
+              dataSeries.push({x: new Date(row.datetime).getTime(), y: row.value})
+
           })
           this.chartOptions.yAxis.min = this.waterQualityThresholds[this.waterQualityGraphVariable].minValue;
           let thresholdValue = Math.max(...this.waterQualityThresholds[this.waterQualityGraphVariable].value);
@@ -197,7 +221,8 @@ export default {
             this.chartOptions.yAxis.plotLines[0].label.text = this.waterQualityThresholds[this.waterQualityGraphVariable].type[0] + ' Threshold: ' + thresholdValue + ' ' + this.waterQualityThresholds[this.waterQualityGraphVariable].units + '';
 
             this.chartOptions.yAxis.plotLines[0].label.y = -10;            
-          }                   
+          }         
+          
         });
       } else {
         this.chartOptions.yAxis.title.text = 'parameter (units)';

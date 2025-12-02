@@ -1,20 +1,36 @@
-<template>
+<!-- 
+ File: HabitatGraph.vue
+ This file corresponds to the graph that appears in the right-hand side bar for habitat not diadromous fish.
+ The graph will update upon selection/deselection of an embayment with the habitat's current and historic area
+ covered within the embayment displayed in the form of a bar chart, with a dashed line representing the 2050 goal. 
+Default values for the chart are the All Assessment Areas, or the overall habitat areas of all embayments summed.
+ 
+ Last updated: 11/12/2024 
+ -->
+
+ <template>
   <div>
     <highcharts class="chart" :options="chartOptions" ref="Chart" style="width: 100%; min-height: 300px; max-height:500px"></highcharts>
-  </div>
+ </div>
 </template>
 
 <script>
 import Highcharts from "highcharts"
+import Exporting from 'highcharts/modules/exporting';
 import NoDataToDisplay from 'highcharts/modules/no-data-to-display'
+Exporting(Highcharts);
 NoDataToDisplay(Highcharts);
 Highcharts.setOptions({lang: {thousandsSep:','}})
 export default {
+  props: ['exporting'],
   data() {
     return {
       chartOptions: {
         chart: {
           type: 'column',
+        },
+        exporting: {
+          enabled: this.exporting
         },
         title: {
           text: null
@@ -73,7 +89,7 @@ export default {
           }
         ]
       },
-      habitatQuantities: null
+      habitatQuantities: null,
     }
   },
   computed: {
@@ -99,12 +115,15 @@ export default {
       }      
     }
   },
+
   methods: {
+    // method to update the graph given new data
     updateGraph() {
       let newValues = [];
       let newCategories = [];
       let newUnits = [];
       let matchSet = null;
+
       if (this.embayment == null) {
         matchSet = this.habitatQuantities.filter(row => {
           return (row.ASSESSMENT_AREA == 'ALL' && row.TYPE == this.habitat)
@@ -118,7 +137,7 @@ export default {
         this.chartOptions.yAxis.plotLines[0].value = -100;       
         this.chartOptions.series[0].data = [];
         this.chartOptions.xAxis.categories = [];
-        this.chartOptions.yAxis.title.text = '--';         
+        this.chartOptions.yAxis.title.text = '--';
       } else if (matchSet.length == 1) {
         this.chartOptions.yAxis.plotLines[0].value = matchSet[0].VALUE;
         this.chartOptions.yAxis.title.text = matchSet[0].UNITS;
@@ -145,11 +164,11 @@ export default {
         this.chartOptions.yAxis.title.text = newUnits[0];
         this.chartOptions.tooltip.pointFormat = "{point.y} " + newUnits[0]
         this.chartOptions.yAxis.softMax = updatePlotLineValue * 1.1;
-      }
+      } 
     }
   },
   created() {
-    // fetch water quality stations
+    // fetch habitat stations
     fetch('./data/habitat_quantities.json')
     .then(response => {
       return response.json()

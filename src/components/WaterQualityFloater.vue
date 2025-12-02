@@ -1,9 +1,10 @@
 <template>
   <div class="floater">
     <div class="row" style="text-align: right">
-      <div class="col-2" style="text-align: left; padding-top: 2px">
-        <b-button class="narrow-button" style="background-color: #3B8416"  v-b-modal.modal-large-graph :disabled="!plotWaterQualityGraph">
-          enlarge
+      <div class="col-2" style="text-align: left; padding-top: 2px; padding-bottom: 2px;">
+
+        <b-button style="background-color: red;" size="sm" title="view large graph for download" v-b-modal.modal-large-graph>
+          <b-icon icon="printer" aria-hidden="true"></b-icon>
         </b-button>
       </div>
       <div class="col-10" style="padding-bottom: 5px">
@@ -14,7 +15,7 @@
     </div>
     <div class="row">
       <div class="col-12" style="width: 100%; padding: 0px">
-        <app-water-quality-graph-header></app-water-quality-graph-header>
+        <app-water-quality-graph-header> </app-water-quality-graph-header>
       </div>
     </div>
     <div class="row">
@@ -28,15 +29,9 @@
               </b-button-close>
             </div>
           </div>
-          <div class="row justify-content-center">
-            <div class="col-12" style="width: 100%; padding: 0px">
-              <app-water-quality-graph-header></app-water-quality-graph-header>
-            </div>
-            
-          </div>
           <div class="row justify-content-center" v-if="true">
             <div class="col-12">
-              <app-water-quality-graph :gwidth="'100%'" :gheight="'400px'"></app-water-quality-graph>
+              <app-water-quality-graph-large :gwidth="'100%'" :gheight="'400px'"></app-water-quality-graph-large>
             </div>
           </div>
         </b-modal> 
@@ -45,6 +40,7 @@
 
 <script>
 import WaterQualityGraph from './subs/WaterQualityGraph.vue'
+import WaterQualityGraphLarge from './subs/WaterQualityGraphLarge.vue'
 import WaterQualityGraphHeader from './subs/WaterQualityGraphHeader.vue'
 export default {
   data () {
@@ -57,6 +53,9 @@ export default {
   computed: {
     plotWaterQualityGraph() {
       return this.$store.state.plotWaterQualityGraph;
+    },
+    plotWaterQualityGraphLarge() {
+      return this.$store.state.plotWaterQualityGraphLarge;
     },
     styleObject: function () {
       return {
@@ -75,6 +74,7 @@ export default {
   },
   components: {
     appWaterQualityGraph: WaterQualityGraph,
+    appWaterQualityGraphLarge: WaterQualityGraphLarge,
     appWaterQualityGraphHeader: WaterQualityGraphHeader,
   },
   methods: {
@@ -114,7 +114,8 @@ export default {
   padding: 2px;
   margin: 2px;
 }
-/deep/ .thin-top {
+
+.thin-top {
   padding-top: 0px!important;
 }
 </style>

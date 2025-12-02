@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row align-items-center">
+    <div class="row align-items-center" style="flex-wrap: nowrap;">
       <div class="col-1" style="min-width: 100px"> 
         <div class="row justify-content-center" style="padding-top: 0px">
           <h6 class="water-quality-main-header">Water Quality</h6>
@@ -52,6 +52,7 @@ export default {
       set () {
         this.$store.dispatch('switchPointsLayer');
         this.$store.dispatch('offWaterQualityGraph');
+        this.$store.dispatch('setWaterQuality', null);
       }      
     },
     waterQuality: {
@@ -63,6 +64,15 @@ export default {
         this.$store.dispatch('onPointsLayer');
         this.$store.dispatch('offWaterQualityGraph');
       }      
+    }
+  },
+  created() {
+    const rq = this.$route.query;
+
+    if (rq.wq_param) {
+      this.$store.dispatch('setWaterQuality', rq.wq_param);
+      this.$store.dispatch('onPointsLayer');
+      this.$store.dispatch('offWaterQualityGraph');
     }
   }
 }
